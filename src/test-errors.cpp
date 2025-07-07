@@ -14,11 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Error, RuntimeError
-                                        // get_api_error()
-                                        // get_os_error()
-                                        // reset_api_error()
-                                        // reset_os_error()
+#include "network/network.hpp"          // Error, RuntimeError,
+                                        // get_api_error(),
+                                        // get_os_error(),
+                                        // reset_api_error(),
+                                        // reset_os_error(),
+                                        // to_handle(),
                                         // to_name_length(),
                                         // to_os_error(),
                                         // to_path_length(),
@@ -40,6 +41,7 @@ namespace
     using Network::ValueError;
     using Network::get_api_error;
     using Network::get_os_error;
+    using Network::handle_type;
     using Network::length_type;
     using Network::name_length_max;
     using Network::name_length_min;
@@ -62,6 +64,7 @@ namespace
     using Network::sun_length_max;
     using Network::sun_length_min;
 #endif
+    using Network::to_handle;
     using Network::to_name_length;
     using Network::to_os_error;
 #ifndef WIN32
@@ -124,64 +127,39 @@ namespace
         }
     }
 
-    auto test_api_error() -> void
+    auto test_get_api_error() -> void
     {
         reset_api_error();
         assert(get_api_error() == 0);
     }
 
-    auto test_os_error() -> void
+    auto test_get_os_error() -> void
     {
         reset_os_error();
         assert(get_os_error() == 0);
     }
 
-    auto test_throw_error() -> void
+    auto test_handle_valid(auto value) -> void
     {
-        const std::string expected {"Error"};
-        std::string actual;
+        std::string actual_str;
 
         try {
-            throw Error(expected);
+            static_cast<void>(to_handle(value));
         }
-        catch (const Error& error) {
+        catch (const ValueError<handle_type>& error) {
             print(error);
-            actual = error.what();
+            actual_str = error.what();
         }
 
-        assert(actual == expected);
+        assert(actual_str.empty());
     }
 
-    auto test_throw_logic_error() -> void
+    auto test_handle_valid() -> void
     {
-        const std::string expected {"LogicError"};
-        std::string actual;
-
-        try {
-            throw LogicError(expected);
-        }
-        catch (const LogicError& error) {
-            print(error);
-            actual = error.what();
-        }
-
-        assert(actual == expected);
-    }
-
-    auto test_throw_runtime_error() -> void
-    {
-        const std::string expected {"RuntimeError"};
-        std::string actual;
-
-        try {
-            throw RuntimeError(expected);
-        }
-        catch (const RuntimeError& error) {
-            print(error);
-            actual = error.what();
-        }
-
-        assert(actual == expected);
+        const long long max {std::numeric_limits<handle_type>::max()};
+        const long long min {std::numeric_limits<handle_type>::min()};
+        test_handle_valid(min);
+        test_handle_valid(max);
     }
 
     auto test_name_length_invalid(auto value) -> void
@@ -324,15 +302,64 @@ namespace
     }
 
 #endif
+
+    auto test_throw_error() -> void
+    {
+        const std::string expected {"Error"};
+        std::string actual;
+
+        try {
+            throw Error(expected);
+        }
+        catch (const Error& error) {
+            print(error);
+            actual = error.what();
+        }
+
+        assert(actual == expected);
+    }
+
+    auto test_throw_logic_error() -> void
+    {
+        const std::string expected {"LogicError"};
+        std::string actual;
+
+        try {
+            throw LogicError(expected);
+        }
+        catch (const LogicError& error) {
+            print(error);
+            actual = error.what();
+        }
+
+        assert(actual == expected);
+    }
+
+    auto test_throw_runtime_error() -> void
+    {
+        const std::string expected {"RuntimeError"};
+        std::string actual;
+
+        try {
+            throw RuntimeError(expected);
+        }
+        catch (const RuntimeError& error) {
+            print(error);
+            actual = error.what();
+        }
+
+        assert(actual == expected);
+    }
 }
 
 auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        test_api_error();
+        test_get_api_error();
+        test_get_os_error();
+        test_handle_valid();
         test_name_length_invalid();
-        test_os_error();
         test_os_error_invalid();
 #ifndef WIN32
         test_path_length_invalid();
