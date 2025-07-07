@@ -22,7 +22,6 @@
 #include "network/handle-null.hpp"              // handle_null
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/socketdata.hpp"               // SocketData
-#include "network/to-long-handle.hpp"           // to_long_handle()
 #include "network/to-os-error.hpp"              // to_os_error()
 #include "network/to-string-span-byte.hpp"      // to_string()
 
@@ -94,5 +93,5 @@ auto Network::accept(const SocketData& sd) -> AcceptData
         // clang-format on
     }
 
-    return {to_long_handle(handle_2), sd.family(), sd.runtime(), *buffer};
+    return {handle_2, sd.family(), sd.runtime(), *buffer};
 }

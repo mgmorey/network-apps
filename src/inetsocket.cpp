@@ -24,14 +24,12 @@
 #include "network/get-openhandler.hpp"          // get_openhandler()
 #include "network/handle-null.hpp"              // handle_null
 #include "network/listen.hpp"                   // listen()
-#include "network/long-handle-type.hpp"         // long_handle_type
 #include "network/open-handle.hpp"              // open()
 #include "network/oserror.hpp"                  // OsError
 #include "network/read.hpp"                     // read()
 #include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/shutdown.hpp"                 // shutdown()
 #include "network/socketdata.hpp"               // SocketData
-#include "network/to-long-handle.hpp"           // to_long_handle()
 #include "network/write.hpp"                    // write()
 
 Network::InetSocket::InetSocket(const SocketData& t_sd) : m_sd(t_sd)
@@ -48,9 +46,9 @@ Network::InetSocket::operator bool() const noexcept
     return m_sd.handle() != handle_null;
 }
 
-Network::InetSocket::operator long_handle_type() const
+Network::InetSocket::operator handle_type() const
 {
-    return to_long_handle(m_sd.handle());
+    return m_sd.handle();
 }
 
 auto Network::InetSocket::accept() const -> AcceptData

@@ -19,7 +19,6 @@
 #include "network/acceptdata.hpp"               // AcceptData
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/charspan.hpp"                 // CharSpan
-#include "network/long-handle-type.hpp"         // long_handle_type
 #include "network/oserror.hpp"                  // OsError
 
 #include <ostream>      // std::ostream
@@ -38,7 +37,7 @@ namespace Network
         auto operator=(Socket&&) noexcept -> Socket& = delete;
 
         explicit virtual operator bool() const noexcept = 0;
-        explicit virtual operator long_handle_type() const = 0;
+        explicit virtual operator handle_type() const = 0;
 
         [[nodiscard]] virtual auto accept() const -> AcceptData = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const -> OsError = 0;

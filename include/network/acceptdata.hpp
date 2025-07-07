@@ -18,14 +18,14 @@
 
 #include "network/bytestring.hpp"               // ByteString
 #include "network/family-type.hpp"              // family_type
-#include "network/long-handle-type.hpp"         // long_handle_type
+#include "network/handle-type.hpp"              // handle_type
 #include "network/sharedruntime.hpp"            // SharedRuntime
 
 namespace Network
 {
     struct AcceptData
     {
-        AcceptData(long_handle_type t_handle, family_type t_family,
+        AcceptData(handle_type t_handle, family_type t_family,
                    const SharedRuntime& t_runtime, const ByteString& t_accept) :
             m_runtime(t_runtime), m_accept(t_accept), m_handle(t_handle),
             m_family(t_family)
@@ -42,7 +42,7 @@ namespace Network
             return m_family;
         }
 
-        [[nodiscard]] auto handle() const noexcept -> long_handle_type
+        [[nodiscard]] auto handle() const noexcept -> handle_type
         {
             return m_handle;
         }
@@ -55,7 +55,7 @@ namespace Network
     private:
         SharedRuntime m_runtime;
         ByteString m_accept;
-        long_handle_type m_handle;
+        handle_type m_handle;
         family_type m_family;
     };
 }

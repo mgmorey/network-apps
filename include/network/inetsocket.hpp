@@ -19,7 +19,6 @@
 #include "network/acceptdata.hpp"               // AcceptData
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/charspan.hpp"                 // CharSpan
-#include "network/long-handle-type.hpp"         // long_handle_type
 #include "network/oserror.hpp"                  // OsError
 #include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/socket.hpp"                   // Socket
@@ -43,7 +42,7 @@ namespace Network
         auto operator=(InetSocket&&) noexcept -> InetSocket& = delete;
 
         explicit operator bool() const noexcept final;
-        explicit operator long_handle_type() const final;
+        explicit operator handle_type() const final;
 
         [[nodiscard]] auto accept() const -> AcceptData final;
         [[nodiscard]] auto listen(int t_backlog) const -> OsError final;

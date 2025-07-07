@@ -19,11 +19,9 @@
                                         // SocketHints, UniqueSocket,
                                         // close(), create_socket(),
                                         // family_type, handle_null,
-                                        // handle_type,
-                                        // long_handle_type,
-                                        // os_error_type, run()
+                                        // handle_type, os_error_type,
+                                        // run()
 #include "network/parse.hpp"            // parse()
-#include "network/to-long-handle.hpp"   // to_long_handle()
 
 #ifdef WIN32
 #include <winsock2.h>   // AF_INET, AF_UNSPEC, SOCK_STREAM, ::close(),
@@ -55,19 +53,9 @@ namespace
     using Network::handle_type;
     using Network::os_error_type;
     using Network::parse;
-    using Network::long_handle_type;
     using Network::run;
-    using Network::to_long_handle;
+    using Network::to_handle;
 
-#ifdef WIN32
-    constexpr auto expected_handle_null_re {
-        ""
-    };
-#else
-    constexpr auto expected_handle_null_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of .+)"
-    };
-#endif
     constexpr auto expected_invalid_re {
         R"(Null socket descriptor)"
     };
@@ -108,7 +96,7 @@ namespace
         std::string actual_str;
 
         try {
-            assert(std::cmp_equal(to_long_handle(handle), handle));
+            assert(std::cmp_equal(to_handle(handle), handle));
         }
         catch (const Error& error) {
             print(error);
@@ -137,8 +125,8 @@ namespace
             std::ostringstream oss;
             oss << sock;
             assert(static_cast<bool>(sock));
-            assert(std::cmp_equal(static_cast<long_handle_type>(sock), handle));
-            assert(oss.str() == std::to_string(static_cast<long_handle_type>(sock)));
+            assert(std::cmp_equal(static_cast<handle_type>(sock), handle));
+            assert(oss.str() == std::to_string(static_cast<handle_type>(sock)));
         }
         catch (const Error& error) {
             print(error);
@@ -201,7 +189,7 @@ namespace
 
     auto test_handle_null() -> void
     {
-        test(handle_null, expected_handle_null_re);
+        test(handle_null, "");
     }
 
     auto test_handle_zero() -> void
