@@ -1,4 +1,4 @@
-// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,20 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_HOSTNAMERESULT_HPP
-#define NETWORK_GET_HOSTNAMERESULT_HPP
+#ifndef NETWORK_CHARSPAN_HPP
+#define NETWORK_CHARSPAN_HPP
 
-#include "network/charspan.hpp"         // CharSpan
-#include "network/hostnameresult.hpp"   // HostnameResult
-#include "network/oserror.hpp"          // OsError
-#include "network/sharedruntime.hpp"    // SharedRuntime
+#include <span>         // std::span
 
 namespace Network
 {
-    extern auto get_hostnameresult(CharSpan hostname,
-                                   const SharedRuntime& sr) -> OsError;
-    extern auto get_hostnameresult(const SharedRuntime& sr) -> HostnameResult;
-    extern auto get_hostnameresult(bool is_verbose = false) -> HostnameResult;
+    using CharSpan = std::span<char>;
 }
 
 #endif

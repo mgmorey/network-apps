@@ -15,6 +15,7 @@
 
 #include "network/get-endpointresult.hpp"       // get_endpoint()
 #include "network/bytespan.hpp"                 // ByteSpan
+#include "network/charspan.hpp"                 // CharSpan
 #include "network/endpoint.hpp"                 // Endpoint
 #include "network/endpointresult.hpp"           // EndpointResult
 #include "network/format-ai-error.hpp"          // format_ai_error()
@@ -22,7 +23,6 @@
 #include "network/hostname-length-limits.hpp"   // hostname_length_max
 #include "network/oserror.hpp"                  // OsError
 #include "network/quote.hpp"                    // quote()
-#include "network/run.hpp"                      // run()
 #include "network/service-length-limits.hpp"    // service_length_max
 #include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/textbuffer.hpp"               // TextBuffer
@@ -37,12 +37,11 @@
 
 #include <expected>     // std::unexpected
 #include <iostream>     // std::cout, std::endl
-#include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
-auto Network::get_endpointresult(std::span<char> hostname,
-                                 std::span<char> service,
+auto Network::get_endpointresult(CharSpan hostname,
+                                 CharSpan service,
                                  ByteSpan bs, int flags,
                                  const SharedRuntime& sr) -> OsError
 {

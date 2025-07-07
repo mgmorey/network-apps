@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-hostnameresult.hpp"       // get_hostname()
+#include "network/charspan.hpp"                 // CharSpan
 #include "network/format-os-error.hpp"          // format_os_error()
 #include "network/get-api-error.hpp"            // get_api_error()
 #include "network/hostname-length-limits.hpp"   // hostname_length_max
@@ -34,11 +35,10 @@
 
 #include <expected>     // std::unexpected
 #include <iostream>     // std::cout, std::endl
-#include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
-auto Network::get_hostnameresult(std::span<char> hostname,
+auto Network::get_hostnameresult(CharSpan hostname,
                                  const SharedRuntime& sr) -> OsError
 {
     const std::string_view hostname_sv {hostname.data(), hostname.size()};

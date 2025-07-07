@@ -16,6 +16,7 @@
 #ifdef WIN32
 
 #include "network/read.hpp"             // read()
+#include "network/charspan.hpp"         // CharSpan
 #include "network/error.hpp"            // Error
 #include "network/format-os-error.hpp"  // format_os_error()
 #include "network/get-api-error.hpp"    // get_api_error()
@@ -29,11 +30,10 @@
 #include <winsock2.h>       // ::recv()
 
 #include <iostream>     // std::cout, std::endl
-#include <span>         // std::span
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
-auto Network::read(const SocketData& sd, std::span<char> cs) -> ssize_t
+auto Network::read(const SocketData& sd, CharSpan cs) -> ssize_t
 {
     const std::string_view sv {cs.data(), cs.size()};
     const auto handle {sd.handle()};

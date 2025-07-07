@@ -16,16 +16,14 @@
 #ifndef NETWORK_READ_HPP
 #define NETWORK_READ_HPP
 
+#include "network/charspan.hpp"         // CharSpan
 #include "network/socketdata.hpp"       // SocketData
 
 #include <sys/types.h>      // ssize_t
 
-#include <span>         // std::span
-
 namespace Network
 {
-    extern auto read(const SocketData& sd, std::span<char> cs) ->
-        ssize_t;
+    extern auto read(const SocketData& sd, CharSpan cs) -> ssize_t;
 }
 
 #endif

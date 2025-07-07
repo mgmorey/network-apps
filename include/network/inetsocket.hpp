@@ -18,6 +18,7 @@
 
 #include "network/acceptdata.hpp"               // AcceptData
 #include "network/bytespan.hpp"                 // ByteSpan
+#include "network/charspan.hpp"                 // CharSpan
 #include "network/long-handle-type.hpp"         // long_handle_type
 #include "network/oserror.hpp"                  // OsError
 #include "network/sharedruntime.hpp"            // SharedRuntime
@@ -26,7 +27,6 @@
 
 #include <sys/types.h>      // ssize_t
 
-#include <span>         // std::span
 #include <string_view>  // std::string_view
 
 namespace Network
@@ -49,7 +49,7 @@ namespace Network
         [[nodiscard]] auto listen(int t_backlog) const -> OsError final;
         [[nodiscard]] auto name(bool t_is_sock) const -> ByteSpan final;
         [[nodiscard]] auto open(ByteSpan t_bs, bool t_is_bind) -> OsError override;
-        [[nodiscard]] auto read(std::span<char> t_cs) const -> ssize_t final;
+        [[nodiscard]] auto read(CharSpan t_cs) const -> ssize_t final;
         [[nodiscard]] auto shutdown(int t_how) const -> OsError final;
         [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
 

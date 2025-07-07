@@ -17,6 +17,7 @@
 #include "network/accept.hpp"                   // accept()
 #include "network/acceptdata.hpp"               // AcceptData
 #include "network/bytespan.hpp"                 // ByteSpan
+#include "network/charspan.hpp"                 // CharSpan
 #include "network/close.hpp"                    // close()
 #include "network/get-name.hpp"                 // get_name()
 #include "network/get-namehandler.hpp"          // get_namehandler()
@@ -32,8 +33,6 @@
 #include "network/socketdata.hpp"               // SocketData
 #include "network/to-long-handle.hpp"           // to_long_handle()
 #include "network/write.hpp"                    // write()
-
-#include <span>         // std::span
 
 Network::InetSocket::InetSocket(const SocketData& t_sd) : m_sd(t_sd)
 {
@@ -89,7 +88,7 @@ auto Network::InetSocket::open(ByteSpan t_bs, bool t_is_bind) -> OsError
     return {};
 }
 
-auto Network::InetSocket::read(std::span<char> t_cs) const -> ssize_t
+auto Network::InetSocket::read(CharSpan t_cs) const -> ssize_t
 {
     return Network::read(m_sd, t_cs);
 }

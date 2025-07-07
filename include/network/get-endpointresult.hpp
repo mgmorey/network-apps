@@ -17,16 +17,15 @@
 #define NETWORK_GET_ENDPOINTRESULT_HPP
 
 #include "network/bytespan.hpp"         // ByteSpan
+#include "network/charspan.hpp"         // CharSpan
 #include "network/endpointresult.hpp"   // EndpointResult
 #include "network/oserror.hpp"          // OsError
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
-#include <span>         // std::span
-
 namespace Network
 {
-    extern auto get_endpointresult(std::span<char> hostname,
-                                   std::span<char> service,
+    extern auto get_endpointresult(CharSpan hostname,
+                                   CharSpan service,
                                    ByteSpan bs, int flags,
                                    const SharedRuntime& sr) -> OsError;
     extern auto get_endpointresult(ByteSpan bs, int flags,
