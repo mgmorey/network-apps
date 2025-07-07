@@ -1,4 +1,4 @@
-// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,15 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ACCEPT_HPP
-#define NETWORK_ACCEPT_HPP
+#ifndef NETWORK_ACCEPTDATA_HPP
+#define NETWORK_ACCEPTDATA_HPP
 
-#include "network/acceptdata.hpp"       // AcceptData
-#include "network/socketdata.hpp"       // SocketData
+#include "network/bytestring.hpp"               // ByteString
+#include "network/family-type.hpp"              // family_type
+#include "network/long-handle-type.hpp"         // long_handle_type
+#include "network/sharedruntime.hpp"            // SharedRuntime
+
+#include <tuple>
 
 namespace Network
 {
-    extern auto accept(const SocketData& sd) -> AcceptData;
+    using AcceptData = std::tuple <long_handle_type, family_type,
+                                   SharedRuntime, ByteString>;
 }
 
 #endif

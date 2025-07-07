@@ -16,6 +16,7 @@
 #ifndef NETWORK_INETSOCKET_HPP
 #define NETWORK_INETSOCKET_HPP
 
+#include "network/acceptdata.hpp"               // AcceptData
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/long-handle-type.hpp"         // long_handle_type
 #include "network/oserror.hpp"                  // OsError
@@ -44,7 +45,7 @@ namespace Network
         explicit operator bool() const noexcept final;
         explicit operator long_handle_type() const final;
 
-        [[nodiscard]] auto accept() const -> SocketData final;
+        [[nodiscard]] auto accept() const -> AcceptData final;
         [[nodiscard]] auto listen(int t_backlog) const -> OsError final;
         [[nodiscard]] auto name(bool t_is_sock) const -> ByteSpan final;
         [[nodiscard]] auto open(ByteSpan t_bs, bool t_is_bind) -> OsError override;

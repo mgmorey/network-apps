@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/accept.hpp"                   // accept()
+#include "network/acceptdata.hpp"               // AcceptData
 #include "network/binarybuffer.hpp"             // BinaryBuffer
 #include "network/error.hpp"                    // Error
 #include "network/format-os-error.hpp"          // format_os_error()
@@ -21,6 +22,7 @@
 #include "network/handle-null.hpp"              // handle_null
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/socketdata.hpp"               // SocketData
+#include "network/to-long-handle.hpp"           // to_long_handle()
 #include "network/to-os-error.hpp"              // to_os_error()
 #include "network/to-string-span-byte.hpp"      // to_string()
 
@@ -34,7 +36,7 @@
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
 
-auto Network::accept(const SocketData& sd) -> SocketData
+auto Network::accept(const SocketData& sd) -> AcceptData
 {
     BinaryBuffer buffer;
     const std::span bs {buffer};
@@ -92,5 +94,5 @@ auto Network::accept(const SocketData& sd) -> SocketData
         // clang-format on
     }
 
-    return {sd, *buffer, handle_2};
+    return {to_long_handle(handle_2), sd.family(), sd.runtime(), *buffer};
 }

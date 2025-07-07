@@ -21,12 +21,14 @@
 #include "network/handle-type.hpp"      // handle_type
 #include "network/logicerror.hpp"       // LogicError
 #include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/to-handle.hpp"        // to_handle()
 
 #include <string_view>  // std::string_view
 
 Network::SocketData::SocketData(handle_type t_handle,
                                 family_type t_family,
-                                const SharedRuntime& t_sr) :
+                                const SharedRuntime& t_sr,
+                                const ByteString* t_accept) :
     m_sr(t_sr),
     m_handle(t_handle),
     m_family(t_family)
@@ -46,14 +48,10 @@ Network::SocketData::SocketData(handle_type t_handle,
     if (!error.empty()) {
         throw LogicError(error);
     }
-}
 
-Network::SocketData::SocketData(const SocketData& t_sd,
-                                const ByteString& t_accept,
-                                handle_type t_handle) :
-    SocketData(t_handle, t_sd.m_family, t_sd.m_sr)
-{
-    m_bs[Symbol::accept] = t_accept;
+    if (t_accept != nullptr) {
+        m_bs[Symbol::accept] = *t_accept;
+    }
 }
 
 auto Network::SocketData::cache(Symbol t_symbol) const noexcept -> ByteString&

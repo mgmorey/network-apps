@@ -1,4 +1,4 @@
-// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,15 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ACCEPT_HPP
-#define NETWORK_ACCEPT_HPP
+#ifndef NETWORK_TO_HANDLE_HPP
+#define NETWORK_TO_HANDLE_HPP
 
-#include "network/acceptdata.hpp"       // AcceptData
-#include "network/socketdata.hpp"       // SocketData
+#include "network/handle-type.hpp"      // handle_type
+#include "network/to-value.hpp"         // to_value()
 
 namespace Network
 {
-    extern auto accept(const SocketData& sd) -> AcceptData;
+    auto to_handle(auto value) -> handle_type
+    {
+        return to_value<handle_type>("handle_type", value);
+    }
 }
 
 #endif

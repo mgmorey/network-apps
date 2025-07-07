@@ -28,18 +28,24 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
+#include <tuple>        // std::get()
 #include <utility>      // std::move()
 
 namespace
 {
     using Network::Address;
+    using Network::ByteString;
     using Network::Error;
+    using Network::SharedRuntime;
     using Network::Socket;
-    using Network::Symbol;
+    using Network::SocketData;
     using Network::TextBuffer;
     using Network::create_socket;
+    using Network::family_type;
+    using Network::long_handle_type;
     using Network::socket_error;
     using Network::to_bytestring;
+    using Network::to_handle;
 
     using Number = long long;
 
@@ -49,14 +55,21 @@ namespace
 
     auto accept_verbose(const Socket& s)
     {
-        const auto sd {s.accept()};
+        const auto ad {s.accept()};
 
         if (is_verbose) {
             std::cout << "Accepted connection from "
-                      << Address(sd.cache(Symbol::accept))
+                      << Address(std::get<ByteString>(ad))
                       << std::endl;
         }
 
+        const SocketData sd
+        {
+            to_handle(std::get<long_handle_type>(ad)),
+            std::get<family_type>(ad),
+            std::get<SharedRuntime>(ad),
+            &std::get<ByteString>(ad),
+        };
         return create_socket(sd);
     }
 
