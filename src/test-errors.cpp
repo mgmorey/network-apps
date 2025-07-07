@@ -73,25 +73,25 @@ namespace
     using Network::to_sun_length;
 #endif
 
-    constexpr auto expected_error_name_length_re {
+    constexpr auto expected_name_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_length_type)"
     };
-    constexpr auto expected_error_os_error_re {
+    constexpr auto expected_os_error_re {
         R"(Value (\d+|-\d+) is out of range \[-?\d+, \d+\] of os_error_type)"
     };
 #ifndef WIN32
-    constexpr auto expected_error_path_length_re {
+    constexpr auto expected_path_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
     };
 #endif
-    constexpr auto expected_error_sa_length_re {
+    constexpr auto expected_sa_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sa_length_type)"
     };
-    constexpr auto expected_error_std_size_re {
+    constexpr auto expected_std_size_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of std::size_t)"
     };
 #ifndef WIN32
-    constexpr auto expected_error_sun_length_re {
+    constexpr auto expected_sun_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sun_length_type)"
     };
 #endif
@@ -186,18 +186,18 @@ namespace
 
     auto test_name_length_invalid(auto value) -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             static_cast<void>(to_name_length(value));
         }
         catch (const ValueError<name_length_type>& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_name_length_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        const std::regex expected_regex {expected_name_length_re};
+        assert(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_name_length_invalid() -> void
@@ -208,18 +208,18 @@ namespace
 
     auto test_os_error_invalid(auto value) -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             static_cast<void>(to_os_error(value));
         }
         catch (const ValueError<os_error_type>& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_os_error_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        const std::regex expected_regex {expected_os_error_re};
+        assert(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_os_error_invalid() -> void
@@ -234,18 +234,18 @@ namespace
 
     auto test_path_length_invalid(auto value) -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             static_cast<void>(to_path_length(value));
         }
         catch (const ValueError<length_type>& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_path_length_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        const std::regex expected_regex {expected_path_length_re};
+        assert(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_path_length_invalid() -> void
@@ -258,18 +258,18 @@ namespace
 
     auto test_sa_length_invalid(auto value) -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             static_cast<void>(to_sa_length(value));
         }
         catch (const ValueError<length_type>& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_sa_length_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        const std::regex expected_regex {expected_sa_length_re};
+        assert(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_sa_length_invalid() -> void
@@ -280,18 +280,18 @@ namespace
 
     auto test_std_size_invalid(auto value) -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             static_cast<void>(to_size(value));
         }
         catch (const ValueError<std::size_t>& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_std_size_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        const std::regex expected_regex {expected_std_size_re};
+        assert(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_std_size_invalid() -> void
@@ -303,18 +303,18 @@ namespace
 
     auto test_sun_length_invalid(auto value) -> void
     {
-        std::string actual_error_str;
+        std::string actual_str;
 
         try {
             static_cast<void>(to_sun_length(value));
         }
         catch (const ValueError<length_type>& error) {
             print(error);
-            actual_error_str = error.what();
+            actual_str = error.what();
         }
 
-        const std::regex expected_error_regex {expected_error_sun_length_re};
-        assert(std::regex_match(actual_error_str, expected_error_regex));
+        const std::regex expected_regex {expected_sun_length_re};
+        assert(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_sun_length_invalid() -> void
