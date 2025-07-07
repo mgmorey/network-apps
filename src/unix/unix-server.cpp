@@ -53,7 +53,7 @@ namespace
 
         if (is_verbose) {
             std::cout << "Accepted connection from "
-                      << Address(sd.name(Symbol::accept))
+                      << Address(sd.cache(Symbol::accept))
                       << std::endl;
         }
 

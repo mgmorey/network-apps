@@ -56,6 +56,11 @@ Network::SocketData::SocketData(const SocketData& t_sd,
     m_bs[Symbol::accept] = t_accept;
 }
 
+auto Network::SocketData::cache(Symbol t_symbol) const noexcept -> ByteString&
+{
+    return m_bs[t_symbol];
+}
+
 auto Network::SocketData::family() const noexcept -> family_type
 {
     return m_family;
@@ -64,11 +69,6 @@ auto Network::SocketData::family() const noexcept -> family_type
 auto Network::SocketData::handle() const noexcept -> handle_type
 {
     return m_handle;
-}
-
-auto Network::SocketData::name(Symbol t_symbol) const noexcept -> ByteString&
-{
-    return m_bs[t_symbol];
 }
 
 auto Network::SocketData::runtime() const noexcept -> SharedRuntime

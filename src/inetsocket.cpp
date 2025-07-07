@@ -66,7 +66,7 @@ auto Network::InetSocket::listen(int t_backlog) const -> OsError
 auto Network::InetSocket::name(bool t_is_sock) const -> ByteSpan
 {
     const auto nh {get_namehandler(t_is_sock)};
-    auto& nm {m_sd.name(nh.symbol())};
+    auto& nm {m_sd.cache(nh.symbol())};
 
     if (nm.empty()) {
         nm = Network::get_name(m_sd, nh);
@@ -83,7 +83,7 @@ auto Network::InetSocket::open(ByteSpan t_bs, bool t_is_bind) -> OsError
         return error;
     }
 
-    auto& nm {m_sd.name(oh.symbol())};
+    auto& nm {m_sd.cache(oh.symbol())};
     nm.assign(t_bs.begin(), t_bs.end());
     return {};
 }

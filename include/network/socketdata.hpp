@@ -47,9 +47,9 @@ namespace Network
         auto operator=(const SocketData&) noexcept -> SocketData& = default;
         auto operator=(SocketData&&) noexcept -> SocketData& = default;
 
+        [[nodiscard]] auto cache(Symbol t_symbol) const noexcept -> ByteString&;
         [[nodiscard]] auto family() const noexcept -> family_type;
         [[nodiscard]] auto handle() const noexcept -> handle_type;
-        [[nodiscard]] auto name(Symbol t_symbol) const noexcept -> ByteString&;
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     private:
