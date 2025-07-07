@@ -23,6 +23,7 @@
 
 #include <ostream>      // std::ostream
 #include <span>         // std::span
+#include <string_view>  // std::string_view
 
 namespace Network
 {
@@ -42,7 +43,7 @@ namespace Network
         [[nodiscard]] virtual auto accept() const -> SocketData = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const -> OsError = 0;
         [[nodiscard]] virtual auto name(bool t_is_sock) const -> ByteSpan = 0;
-        [[nodiscard]] virtual auto open(ByteSpan t_bs, bool is_bind) ->
+        [[nodiscard]] virtual auto open(ByteSpan t_bs, bool t_is_bind) ->
             OsError = 0;
         [[nodiscard]] virtual auto read(std::span<char> t_cs) const ->
             ssize_t = 0;
@@ -72,7 +73,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Socket& sock) -> std::ostream&;
+                           const Socket& s) -> std::ostream&;
 }
 
 #endif
