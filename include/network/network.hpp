@@ -125,7 +125,6 @@
 #include "network/textbuffer.hpp"               // TextBuffer
 #include "network/to-bytestring.hpp"            // to_bytestring()
 #include "network/to-handle.hpp"                // to_handle()
-#include "network/to-long-handle.hpp"           // to_long_handle()
 #include "network/to-name-length.hpp"           // to_name_length()
 #include "network/to-os-error.hpp"              // to_os_error()
 #ifndef WIN32
@@ -150,7 +149,6 @@
                                                 // family_type,
                                                 // handle_type,
                                                 // length_type,
-                                                // long_handle_type,
                                                 // os_error_type,
                                                 // port_type,
                                                 // result_type,

@@ -23,7 +23,6 @@
 #include "network/integer-types.hpp"    // byte_type, error_type,
                                         // family_type, handle_type,
                                         // length_type,
-                                        // long_handle_type,
                                         // name_length_type,
                                         // os_error_type, port_type,
                                         // sa_family_type,

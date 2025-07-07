@@ -20,7 +20,6 @@
 #include "network/family-type.hpp"                  // family_type
 #include "network/handle-type.hpp"                  // handle_type
 #include "network/length-type.hpp"                  // length_type
-#include "network/long-handle-type.hpp"             // long_handle_type
 #include "network/name-length-type.hpp"             // name_length_type
 #include "network/os-error-type.hpp"                // os_error_type
 #include "network/port-type.hpp"                    // port_type
