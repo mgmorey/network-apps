@@ -26,10 +26,9 @@ namespace Network
     struct AcceptData
     {
         AcceptData(long_handle_type t_handle, family_type t_family,
-                   const SharedRuntime& t_runtime,
-                   const ByteString& t_accept) :
-            m_runtime(t_runtime), m_accept(t_accept),
-            m_handle(t_handle), m_family(t_family)
+                   const SharedRuntime& t_runtime, const ByteString& t_accept) :
+            m_runtime(t_runtime), m_accept(t_accept), m_handle(t_handle),
+            m_family(t_family)
         {
         }
 
