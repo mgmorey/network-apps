@@ -16,13 +16,14 @@
 #ifndef NETWORK_SOCKETDATA_HPP
 #define NETWORK_SOCKETDATA_HPP
 
-#include "network/bytestring.hpp"               // ByteString
-#include "network/family-null.hpp"              // family_null
-#include "network/family-type.hpp"              // family_type
-#include "network/handle-null.hpp"              // handle_null
-#include "network/handle-type.hpp"              // handle_type
-#include "network/sharedruntime.hpp"            // SharedRuntime
-#include "network/symbol.hpp"                   // Symbol
+#include "network/acceptdata.hpp"       // AcceptData
+#include "network/bytestring.hpp"       // ByteString
+#include "network/family-null.hpp"      // family_null
+#include "network/family-type.hpp"      // family_type
+#include "network/handle-null.hpp"      // handle_null
+#include "network/handle-type.hpp"      // handle_type
+#include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/symbol.hpp"           // Symbol
 
 #include <map>          // std::map
 
@@ -35,8 +36,8 @@ namespace Network
 
         SocketData(handle_type t_handle,
                    family_type t_family,
-                   const SharedRuntime& t_sr,
-                   const ByteString* t_accept = nullptr);
+                   const SharedRuntime& t_sr);
+        explicit SocketData(const AcceptData& ad);
 
         SocketData() = delete;
         SocketData(const SocketData&) noexcept = default;

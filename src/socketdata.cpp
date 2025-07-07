@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socketdata.hpp"       // SocketData
+#include "network/acceptdata.hpp"       // AcceptData
 #include "network/bytestring.hpp"       // ByteString
 #include "network/family-null.hpp"      // family_null
 #include "network/family-type.hpp"      // family_type
@@ -25,10 +26,8 @@
 
 #include <string_view>  // std::string_view
 
-Network::SocketData::SocketData(handle_type t_handle,
-                                family_type t_family,
-                                const SharedRuntime& t_sr,
-                                const ByteString* t_accept) :
+Network::SocketData::SocketData(handle_type t_handle, family_type t_family,
+                                const SharedRuntime& t_sr) :
     m_sr(t_sr),
     m_handle(t_handle),
     m_family(t_family)
@@ -48,10 +47,14 @@ Network::SocketData::SocketData(handle_type t_handle,
     if (!error.empty()) {
         throw LogicError(error);
     }
+}
 
-    if (t_accept != nullptr) {
-        m_bs[Symbol::accept] = *t_accept;
-    }
+Network::SocketData::SocketData(const AcceptData& ad) :
+    SocketData(to_handle(ad.handle()),
+               ad.family(),
+               ad.runtime())
+{
+    m_bs[Symbol::accept] = ad.accept();
 }
 
 auto Network::SocketData::cache(Symbol t_symbol) const noexcept -> ByteString&

@@ -17,7 +17,8 @@
 // example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
 #include "network/network.hpp"          // Address, Error, Socket,
-                                        // UnixSocketHints,
+                                        // SocketData, TextBuffer,
+                                        // create_socket,
                                         // socket_error,
                                         // to_bytestring()
 #include "network/parse.hpp"            // parse()
@@ -28,24 +29,18 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
-#include <tuple>        // std::get()
 #include <utility>      // std::move()
 
 namespace
 {
     using Network::Address;
-    using Network::ByteString;
     using Network::Error;
-    using Network::SharedRuntime;
     using Network::Socket;
     using Network::SocketData;
     using Network::TextBuffer;
     using Network::create_socket;
-    using Network::family_type;
-    using Network::long_handle_type;
     using Network::socket_error;
     using Network::to_bytestring;
-    using Network::to_handle;
 
     using Number = long long;
 
@@ -59,17 +54,11 @@ namespace
 
         if (is_verbose) {
             std::cout << "Accepted connection from "
-                      << Address(std::get<ByteString>(ad))
+                      << Address(ad.accept())
                       << std::endl;
         }
 
-        const SocketData sd
-        {
-            to_handle(std::get<long_handle_type>(ad)),
-            std::get<family_type>(ad),
-            std::get<SharedRuntime>(ad),
-            &std::get<ByteString>(ad),
-        };
+        const SocketData sd {ad};
         return create_socket(sd);
     }
 

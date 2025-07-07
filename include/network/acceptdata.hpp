@@ -21,12 +21,44 @@
 #include "network/long-handle-type.hpp"         // long_handle_type
 #include "network/sharedruntime.hpp"            // SharedRuntime
 
-#include <tuple>
-
 namespace Network
 {
-    using AcceptData = std::tuple <long_handle_type, family_type,
-                                   SharedRuntime, ByteString>;
+    struct AcceptData
+    {
+        AcceptData(long_handle_type t_handle, family_type t_family,
+                   const SharedRuntime& t_runtime,
+                   const ByteString& t_accept) :
+            m_runtime(t_runtime), m_accept(t_accept),
+            m_handle(t_handle), m_family(t_family)
+        {
+        }
+
+        [[nodiscard]] auto accept() const noexcept -> ByteString
+        {
+            return m_accept;
+        }
+
+        [[nodiscard]] auto family() const noexcept -> family_type
+        {
+            return m_family;
+        }
+
+        [[nodiscard]] auto handle() const noexcept -> long_handle_type
+        {
+            return m_handle;
+        }
+
+        [[nodiscard]] auto runtime() const noexcept -> SharedRuntime
+        {
+            return m_runtime;
+        }
+
+    private:
+        SharedRuntime m_runtime;
+        ByteString m_accept;
+        long_handle_type m_handle;
+        family_type m_family;
+    };
 }
 
 #endif
