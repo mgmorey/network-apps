@@ -76,6 +76,15 @@ namespace
     using Network::to_sun_length;
 #endif
 
+#ifndef WIN32
+    constexpr auto expected_handle_re {
+        ""
+    };
+#else
+    constexpr auto expected_handle_re {
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of handle_type)"
+    };
+#endif
     constexpr auto expected_name_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_length_type)"
     };
@@ -139,7 +148,7 @@ namespace
         assert(get_os_error() == 0);
     }
 
-    auto test_handle_valid(auto value) -> void
+    auto test_handle_invalid(auto value) -> void
     {
         std::string actual_str;
 
@@ -151,15 +160,13 @@ namespace
             actual_str = error.what();
         }
 
-        assert(actual_str.empty());
+        const std::regex expected_regex {expected_handle_re};
+        assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_handle_valid() -> void
+    auto test_handle_invalid() -> void
     {
-        const long long max {std::numeric_limits<handle_type>::max()};
-        const long long min {std::numeric_limits<handle_type>::min()};
-        test_handle_valid(min);
-        test_handle_valid(max);
+        test_handle_invalid(-1);
     }
 
     auto test_name_length_invalid(auto value) -> void
@@ -358,7 +365,7 @@ auto main(int argc, char* argv[]) -> int
         parse_arguments(argc, argv);
         test_get_api_error();
         test_get_os_error();
-        test_handle_valid();
+        test_handle_invalid();
         test_name_length_invalid();
         test_os_error_invalid();
 #ifndef WIN32
