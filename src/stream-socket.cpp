@@ -14,6 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socket.hpp"                   // Socket, operator<<()
+#include "network/handle-null.hpp"              // handle_null
+#include "network/handle-type.hpp"              // handle_type
 #include "network/string-null.hpp"              // string_null
 
 #include <ostream>      // std::ostream
@@ -21,11 +23,13 @@
 auto Network::operator<<(std::ostream& os,
                          const Socket& s) -> std::ostream&
 {
-    if (static_cast<bool>(s)) {
-        os << static_cast<handle_type>(s);
+    handle_type handle {s};
+
+    if (handle == handle_null) {
+        os << string_null;
     }
     else {
-        os << string_null;
+        os << handle;
     }
 
     return os;
