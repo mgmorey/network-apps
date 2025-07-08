@@ -27,12 +27,14 @@
 
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
+#include <iomanip>      // std::right, std::setwa()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
 #include <utility>      // std::move()
 
 namespace
 {
+    using Network::AcceptData;
     using Network::Address;
     using Network::Error;
     using Network::Socket;
@@ -45,20 +47,26 @@ namespace
     using Number = long long;
 
     constexpr auto backlog_size {20};
+    constexpr auto handle_width {6};
 
     auto is_verbose {false};  // NOLINT
 
     auto accept_verbose(const Socket& s)
     {
-        const auto ad {s.accept()};
+        const AcceptData ad {s.accept()};
+        const SocketData sd {ad};
 
         if (is_verbose) {
-            std::cout << "Accepted connection from "
-                      << Address(ad.accept())
+            const Address peer {ad.accept()};
+            // clang-format off
+            std::cout << "Socket "
+                      << std::right << std::setw(handle_width) << sd.handle()
+                      << " connected to "
+                      << peer
                       << std::endl;
+            // clang-format on
         }
 
-        const SocketData sd {ad};
         return create_socket(sd);
     }
 
@@ -71,6 +79,17 @@ namespace
             std::exit(EXIT_FAILURE);
         }
 
+        if (is_verbose) {
+            const Address self {ps->sockname()};
+            // clang-format off
+            std::cout << "Socket "
+                      << std::right << std::setw(handle_width) << *ps
+                      << " bound to "
+                      << self
+                      << std::endl;
+            // clang-format on
+        }
+
         return ps;
     }
 
@@ -79,6 +98,14 @@ namespace
         if (const auto error {s.listen(backlog_size)}) {
             std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
+        }
+
+        if (is_verbose) {
+            std::cout << "Socket "
+                      << std::right << std::setw(handle_width) << s
+                      << " listening with backlog "
+                      << backlog_size
+                      << std::endl;
         }
     }
 
