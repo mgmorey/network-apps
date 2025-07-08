@@ -27,8 +27,8 @@ auto Network::get_namehandler(Symbol symbol) -> NameHandler
 {
     switch (symbol) {
     case Symbol::getsockname:
-        return {::getsockname, "::getsockname", Symbol::getsockname};
+        return {::getsockname, "::getsockname"};
     default:
-        return {::getpeername, "::getpeername", Symbol::getpeername};
+        return {::getpeername, "::getpeername"};
     }
 }

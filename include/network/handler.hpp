@@ -16,8 +16,6 @@
 #ifndef NETWORK_HANDLER_HPP
 #define NETWORK_HANDLER_HPP
 
-#include "network/symbol.hpp"   // Symbol
-
 #include <string_view>  // std::string_view
 
 namespace Network
@@ -27,12 +25,8 @@ namespace Network
     {
         using String = std::string_view;
 
-        Handler(Function t_function,
-                String t_string,
-                Symbol t_symbol) :
-            m_function(t_function),
-            m_string(t_string),
-            m_symbol(t_symbol)
+        Handler(Function t_function, String t_string) :
+            m_function(t_function), m_string(t_string)
         {
         }
 
@@ -46,15 +40,9 @@ namespace Network
             return m_string;
         }
 
-        [[nodiscard]] auto symbol() const noexcept -> Symbol
-        {
-            return m_symbol;
-        }
-
     private:
         Function m_function;
         String m_string;
-        Symbol m_symbol;
     };
 }
 

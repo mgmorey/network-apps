@@ -27,8 +27,8 @@ auto Network::get_openhandler(Symbol symbol) -> OpenHandler
 {
     switch (symbol) {
     case Symbol::bind:
-        return {::bind, "::bind", Symbol::bind};
+        return {::bind, "::bind"};
     default:
-        return {::connect, "::connect", Symbol::connect};
+        return {::connect, "::connect"};
     }
 }
