@@ -30,6 +30,8 @@ namespace Network
         SocketCore(handle_type t_handle,
                    family_type t_family,
                    const SharedRuntime& t_sr);
+        SocketCore(const SocketCore& t_core,
+                   handle_type t_handle);
 
         SocketCore() = delete;
         SocketCore(const SocketCore&) noexcept = default;
@@ -43,7 +45,7 @@ namespace Network
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     private:
-        SharedRuntime m_runtime;
+        SharedRuntime m_sr;
         handle_type m_handle {handle_null};
         family_type m_family {family_null};
     };

@@ -20,7 +20,7 @@
 Network::AcceptData::AcceptData(const ByteString& t_accept,
                                 const SocketCore& t_core,
                                 handle_type t_handle) :
-    m_accept(t_accept), m_core(t_handle, t_core.family(), t_core.runtime())
+    m_accept(t_accept), m_core(t_core, t_handle)
 {
 }
 

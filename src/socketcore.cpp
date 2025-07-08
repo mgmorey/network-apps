@@ -26,13 +26,13 @@
 Network::SocketCore::SocketCore(handle_type t_handle,
                                 family_type t_family,
                                 const SharedRuntime& t_sr) :
-    m_runtime(t_sr),
+    m_sr(t_sr),
     m_handle(t_handle),
     m_family(t_family)
 {
     std::string_view error;
 
-    if (m_runtime == nullptr) {
+    if (m_sr == nullptr) {
         error = "Null runtime pointer";
     }
     else if (m_handle == handle_null) {
@@ -47,6 +47,12 @@ Network::SocketCore::SocketCore(handle_type t_handle,
     }
 }
 
+Network::SocketCore::SocketCore(const SocketCore& t_core,
+                                handle_type t_handle) :
+    SocketCore(t_handle, t_core.m_family, t_core.m_sr)
+{
+}
+
 auto Network::SocketCore::family() const noexcept -> family_type
 {
     return m_family;
@@ -59,5 +65,5 @@ auto Network::SocketCore::handle() const noexcept -> handle_type
 
 auto Network::SocketCore::runtime() const noexcept -> SharedRuntime
 {
-    return m_runtime;
+    return m_sr;
 }
