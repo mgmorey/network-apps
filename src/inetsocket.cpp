@@ -20,7 +20,6 @@
 #include "network/charspan.hpp"                 // CharSpan
 #include "network/close.hpp"                    // close()
 #include "network/get-name.hpp"                 // get_name()
-#include "network/get-namehandler.hpp"          // get_namehandler()
 #include "network/get-openhandler.hpp"          // get_openhandler()
 #include "network/listen.hpp"                   // listen()
 #include "network/open-handle.hpp"              // open()
@@ -64,8 +63,7 @@ auto Network::InetSocket::name(Symbol t_symbol) const -> ByteSpan
         switch (t_symbol) {
         case Symbol::getpeername:
         case Symbol::getsockname: {
-            const auto nh {get_namehandler(t_symbol == Symbol::getsockname)};
-            nm = Network::get_name(m_sd.core(), nh);
+            nm = Network::get_name(m_sd.core(), t_symbol);
             break;
         }
         default:

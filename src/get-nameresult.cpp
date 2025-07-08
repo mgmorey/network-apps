@@ -18,11 +18,12 @@
 #include "network/bytestringresult.hpp"         // ByteStringResult
 #include "network/format-os-error.hpp"          // format_os_error()
 #include "network/get-api-error.hpp"            // get_api_error()
-#include "network/namehandler.hpp"              // NameHandler
+#include "network/get-namehandler.hpp"          // get_namehandler()
 #include "network/oserror.hpp"                  // OsError
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/socket-error.hpp"             // socket_error
 #include "network/socketcore.hpp"               // SocketCore
+#include "network/symbol.hpp"                   // Symbol
 #include "network/to-os-error.hpp"              // to_os_error()
 #include "network/to-string-span-byte.hpp"      // to_string()
 
@@ -32,11 +33,13 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::get_nameresult(const SocketCore& sc,
-                             const NameHandler& nh) -> ByteStringResult
+                             Symbol symbol) -> ByteStringResult
 {
     BinaryBuffer buffer;
     const std::span bs {buffer};
     auto [sa, sa_length] {buffer.span()};
+    const auto is_sock {symbol == Symbol::getsockname};
+    const auto nh {get_namehandler(is_sock)};
     const auto handle {sc.handle()};
     const auto is_verbose {sc.runtime()->is_verbose()};
 

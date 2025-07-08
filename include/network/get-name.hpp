@@ -17,13 +17,12 @@
 #define NETWORK_GET_NAME_HPP
 
 #include "network/bytestring.hpp"       // ByteString
-#include "network/namehandler.hpp"      // NameHandler
 #include "network/socketcore.hpp"       // SocketCore
+#include "network/symbol.hpp"           // Symbol
 
 namespace Network
 {
-    extern auto get_name(const SocketCore& sc,
-                         const NameHandler& nh) -> ByteString;
+    extern auto get_name(const SocketCore& sc, Symbol symbol) -> ByteString;
 }
 
 #endif
