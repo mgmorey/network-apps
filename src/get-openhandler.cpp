@@ -23,15 +23,12 @@
 #include <sys/socket.h>     // ::bind(), ::connect()
 #endif
 
-#include <array>        // std::arrray
-#include <cstddef>      // std::size_t
-
 auto Network::get_openhandler(Symbol symbol) -> OpenHandler
 {
-    static const std::array<OpenHandler, 2> handlers {
-        OpenHandler {::connect, "::connect", Symbol::connect},
-        OpenHandler {::bind, "::bind", Symbol::bind},
-    };
-
-    return handlers.at(static_cast<std::size_t>(symbol == Symbol::bind));
+    switch (symbol) {
+    case Symbol::bind:
+        return {::bind, "::bind", Symbol::bind};
+    default:
+        return {::connect, "::connect", Symbol::connect};
+    }
 }
