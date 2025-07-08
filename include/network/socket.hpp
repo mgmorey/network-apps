@@ -20,6 +20,7 @@
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/charspan.hpp"                 // CharSpan
 #include "network/oserror.hpp"                  // OsError
+#include "network/symbol.hpp"                   // Symbol
 
 #include <ostream>      // std::ostream
 #include <string_view>  // std::string_view
@@ -40,8 +41,8 @@ namespace Network
 
         [[nodiscard]] virtual auto accept() const -> AcceptData = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const -> OsError = 0;
-        [[nodiscard]] virtual auto name(bool t_is_sock) const -> ByteSpan = 0;
-        [[nodiscard]] virtual auto open(ByteSpan t_bs, bool t_is_bind) ->
+        [[nodiscard]] virtual auto name(Symbol t_symbol) const -> ByteSpan = 0;
+        [[nodiscard]] virtual auto open(ByteSpan t_bs, Symbol t_symbol) ->
             OsError = 0;
         [[nodiscard]] virtual auto read(CharSpan t_cs) const -> ssize_t = 0;
         [[nodiscard]] virtual auto shutdown(int t_how) const -> OsError = 0;
@@ -50,22 +51,22 @@ namespace Network
 
         [[nodiscard]] auto bind(ByteSpan t_bs) -> OsError
         {
-            return open(t_bs, true);
+            return open(t_bs, Symbol::bind);
         }
 
         [[nodiscard]] auto connect(ByteSpan t_bs) -> OsError
         {
-            return open(t_bs, false);
+            return open(t_bs, Symbol::connect);
         }
 
         [[nodiscard]] auto peername() const -> ByteSpan
         {
-            return name(false);
+            return name(Symbol::getpeername);
         }
 
         [[nodiscard]] auto sockname() const -> ByteSpan
         {
-            return name(true);
+            return name(Symbol::getsockname);
         }
     };
 

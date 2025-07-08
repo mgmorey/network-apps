@@ -29,6 +29,7 @@
 #include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/shutdown.hpp"                 // shutdown()
 #include "network/socketdata.hpp"               // SocketData
+#include "network/symbol.hpp"                   // Symbol
 #include "network/write.hpp"                    // write()
 
 Network::InetSocket::InetSocket(const SocketData& t_sd) : m_sd(t_sd)
@@ -55,28 +56,42 @@ auto Network::InetSocket::listen(int t_backlog) const -> OsError
     return Network::listen(m_sd.core(), t_backlog);
 }
 
-auto Network::InetSocket::name(bool t_is_sock) const -> ByteSpan
+auto Network::InetSocket::name(Symbol t_symbol) const -> ByteSpan
 {
-    const auto nh {get_namehandler(t_is_sock)};
-    auto& nm {m_sd.cache(nh.symbol())};
+    auto& nm {m_sd.cache(t_symbol)};
 
     if (nm.empty()) {
-        nm = Network::get_name(m_sd.core(), nh);
+        switch (t_symbol) {
+        case Symbol::getpeername:
+        case Symbol::getsockname: {
+            const auto nh {get_namehandler(t_symbol == Symbol::getsockname)};
+            nm = Network::get_name(m_sd.core(), nh);
+            break;
+        }
+        default:
+        }
     }
 
     return nm;
 }
 
-auto Network::InetSocket::open(ByteSpan t_bs, bool t_is_bind) -> OsError
+auto Network::InetSocket::open(ByteSpan t_bs, Symbol t_symbol) -> OsError
 {
-    const auto oh {get_openhandler(t_is_bind)};
+    switch (t_symbol) {
+    case Symbol::bind:
+    case Symbol::connect: {
+        const auto oh {get_openhandler(t_symbol == Symbol::bind)};
 
-    if (const auto error {Network::open(m_sd.core(), t_bs, oh)}) {
-        return error;
+        if (const auto error {Network::open(m_sd.core(), t_bs, oh)}) {
+            return error;
+        }
+
+        m_sd.cache(t_symbol).assign(t_bs.begin(), t_bs.end());
+        break;
+    }
+    default:
     }
 
-    auto& nm {m_sd.cache(oh.symbol())};
-    nm.assign(t_bs.begin(), t_bs.end());
     return {};
 }
 

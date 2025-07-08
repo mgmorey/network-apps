@@ -24,6 +24,7 @@
 #include "network/pathnameview.hpp"     // PathnameView
 #include "network/socketdata.hpp"       // SocketData
 #include "network/socketstate.hpp"      // SocketState
+#include "network/symbol.hpp"           // Symbol
 
 namespace Network
 {
@@ -37,7 +38,7 @@ namespace Network
         auto operator=(const UnixSocket&) noexcept -> UnixSocket& = delete;
         auto operator=(UnixSocket&&) noexcept -> UnixSocket& = delete;
 
-        [[nodiscard]] auto open(ByteSpan t_bs, bool t_is_bind) -> OsError final;
+        [[nodiscard]] auto open(ByteSpan t_bs, Symbol t_symbol) -> OsError final;
 
     protected:
         [[nodiscard]] auto remove(const PathnameView& t_path) const -> bool;

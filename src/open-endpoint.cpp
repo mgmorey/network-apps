@@ -22,11 +22,12 @@
 #include "network/socketresultvector.hpp"       // SocketResultVector
 #include "network/sockettemplate.hpp"           // SocketTemplate
 #include "network/sockettemplatevector.hpp"     // SocketTemplateVector
+#include "network/symbol.hpp"                   // Symbol
 
 #include <algorithm>    // std::ranges::transform()
 #include <iterator>     // std::back_inserter()
 
-auto Network::open(const OpenParameters& op, bool is_bind) -> SocketResultVector
+auto Network::open(const OpenParameters& op, Symbol symbol) -> SocketResultVector
 {
     SocketTemplateVector stv;
 
@@ -42,7 +43,7 @@ auto Network::open(const OpenParameters& op, bool is_bind) -> SocketResultVector
             const auto& bs {st.address()};
             const auto& ps {*result};
 
-            if (const auto error {ps->open(bs, is_bind)}) {
+            if (const auto error {ps->open(bs, symbol)}) {
                 return std::unexpected {error};
             }
         }

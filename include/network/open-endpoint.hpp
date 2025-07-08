@@ -18,11 +18,12 @@
 
 #include "network/openparameters.hpp"           // OpenParameters
 #include "network/socketresultvector.hpp"       // SocketResultVector
+#include "network/symbol.hpp"                   // Symbol
 
 namespace Network
 {
     extern auto open(const OpenParameters& op,
-                     bool is_bind) -> SocketResultVector;
+                     Symbol symbol) -> SocketResultVector;
 }
 
 #endif

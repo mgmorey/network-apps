@@ -20,6 +20,7 @@
 #include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/socketresultvector.hpp"       // SocketResultVector
+#include "network/symbol.hpp"                   // Symbol
 
 auto Network::bind(const EndpointView& endpoint,
                    const SocketHints& hints,
@@ -29,7 +30,7 @@ auto Network::bind(const EndpointView& endpoint,
             .m_endpoint = endpoint,
             .m_hints = hints,
             .m_sr = sr
-        }, true);
+        }, Symbol::bind);
 }
 
 auto Network::bind(const EndpointView& endpoint,

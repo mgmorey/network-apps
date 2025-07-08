@@ -17,6 +17,7 @@
 #include "network/bytespan.hpp"         // ByteSpan
 #include "network/oserror.hpp"          // OsError
 #include "network/socketdata.hpp"       // SocketData
+#include "network/symbol.hpp"           // Symbol
 #include "network/to-path.hpp"          // to_path()
 
 #include <filesystem>   // std::filesystem
@@ -31,13 +32,22 @@ Network::UnixSocket::~UnixSocket() noexcept
     state(SocketState::closing);
 }
 
-auto Network::UnixSocket::open(ByteSpan t_bs, bool t_is_bind) -> OsError
+auto Network::UnixSocket::open(ByteSpan t_bs, Symbol t_symbol) -> OsError
 {
-    if (auto error {InetSocket::open(t_bs, t_is_bind)}) {
+    if (auto error {InetSocket::open(t_bs, t_symbol)}) {
         return error;
     }
 
-    state(t_is_bind ? SocketState::bound : SocketState::connected);
+    switch (t_symbol) {
+    case Symbol::bind:
+        state(SocketState::bound);
+        break;
+    case Symbol::connect:
+        state(SocketState::connected);
+        break;
+    default:
+    }
+
     return {};
 }
 
