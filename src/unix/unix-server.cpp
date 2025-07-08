@@ -20,8 +20,8 @@
 #include "network/network.hpp"          // Address, Error, Socket,
                                         // SocketData, Symbol,
                                         // TextBuffer, create_socket,
-                                        // socket_error,
-                                        // to_bytestring(), to_path()
+                                        // handle_type, socket_error,
+                                        // to_bytestring()
 #include "network/parse.hpp"            // parse()
 #include "unix/connection.hpp"          // BUFFER_SIZE, SOCKET_HINTS,
                                         // SOCKET_NAME
@@ -42,9 +42,9 @@ namespace
     using Network::Symbol;
     using Network::TextBuffer;
     using Network::create_socket;
+    using Network::handle_type;
     using Network::socket_error;
     using Network::to_bytestring;
-    using Network::to_path;
 
     using Number = long long;
 
@@ -56,20 +56,22 @@ namespace
     auto accept(const Socket& s)
     {
         const auto ad {s.accept()};
+        const handle_type handle {ad.handle()};
+        const Address host {ad.accept()};
+        auto ps {create_socket(SocketData {ad})};
 
         if (ad.runtime()->is_verbose()) {
-            const Address peer {ad.accept()};
             // clang-format off
             std::cout << "Socket "
-                      << std::right << std::setw(handle_width) << ad.handle()
+                      << std::right << std::setw(handle_width) << handle
                       << " connected to "
-                      << peer
+                      << host
                       << std::endl;
             // clang-format on
         }
 
-        auto ps {create_socket(SocketData {ad})};
-        assert(to_path(ps->name(Symbol::accept)) == to_path(ad.accept()));
+        const Address peer {ps->name(Symbol::accept)};
+        assert(host.text() == peer.text());
         return ps;
     }
 
