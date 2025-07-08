@@ -31,7 +31,6 @@
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
-#include <utility>      // std::move()
 
 namespace
 {

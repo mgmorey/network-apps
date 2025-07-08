@@ -31,7 +31,7 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
-#include <string>       // std::string, std::to_string()
+#include <string>       // std::string
 
 namespace
 {
