@@ -26,17 +26,12 @@
 #include <array>        // std::arrray
 #include <cstddef>      // std::size_t
 
-auto Network::get_openhandler(bool is_bind) -> OpenHandler
+auto Network::get_openhandler(Symbol symbol) -> OpenHandler
 {
     static const std::array<OpenHandler, 2> handlers {
         OpenHandler {::connect, "::connect", Symbol::connect},
         OpenHandler {::bind, "::bind", Symbol::bind},
     };
 
-    return handlers.at(static_cast<std::size_t>(is_bind));
-}
-
-auto Network::get_openhandler(Symbol symbol) -> OpenHandler
-{
-    return get_openhandler(symbol == Symbol::bind);
+    return handlers.at(static_cast<std::size_t>(symbol == Symbol::bind));
 }

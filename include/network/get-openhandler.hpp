@@ -21,7 +21,6 @@
 
 namespace Network
 {
-    extern auto get_openhandler(bool is_bind) -> OpenHandler;
     extern auto get_openhandler(Symbol symbol) -> OpenHandler;
 }
 
