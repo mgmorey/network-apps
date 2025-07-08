@@ -40,8 +40,7 @@ auto Network::get_nameresult(const SocketCore& sc,
     auto [sa, sa_length] {buffer.span()};
     const auto handle {sc.handle()};
     const auto is_verbose {sc.runtime()->is_verbose()};
-    const auto is_sock {symbol == Symbol::getsockname};
-    const auto nh {get_namehandler(is_sock)};
+    const auto nh {get_namehandler(symbol)};
 
     if (is_verbose) {
         // clang-format off
