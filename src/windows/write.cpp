@@ -50,7 +50,7 @@ auto Network::write(const SocketCore& sc, std::string_view sv) -> ssize_t
     }
 
     reset_api_error();
-    const auto result {::send(handle, sv.core(), static_cast<int>(sv.size()), 0)};
+    const auto result {::send(handle, sv.data(), static_cast<int>(sv.size()), 0)};
 
     if (result == socket_error) {
         const auto api_error {get_api_error()};
