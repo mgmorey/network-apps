@@ -16,14 +16,12 @@
 #ifndef NETWORK_HANDLER_HPP
 #define NETWORK_HANDLER_HPP
 
-#include <string_view>  // std::string_view
-
 namespace Network
 {
     template <typename Function>
     struct Handler
     {
-        using String = std::string_view;
+        using String = const char*;
 
         Handler(Function t_function, String t_string) :
             m_function(t_function), m_string(t_string)
