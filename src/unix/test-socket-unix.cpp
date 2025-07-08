@@ -84,8 +84,7 @@ namespace
 
     auto is_verbose {false};  // NOLINT
 
-    auto operator==(ByteSpan addr,
-                    std::string_view path) -> bool
+    auto operator==(ByteSpan addr, std::string_view path) -> bool
     {
         const auto addr_path {to_path(addr)};
         return addr_path == path;
