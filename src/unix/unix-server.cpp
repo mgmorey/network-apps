@@ -34,7 +34,6 @@
 
 namespace
 {
-    using Network::AcceptData;
     using Network::Address;
     using Network::Error;
     using Network::Socket;
