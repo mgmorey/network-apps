@@ -16,8 +16,11 @@
 // This UNIX domain sequenced-packet socket example is adapted from the
 // example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
+#include "network/assert.hpp"           // assert()
 #include "network/argumentspan.hpp"     // ArgumentSpan
-#include "network/network.hpp"          // Error, Socket,
+#include "network/network.hpp"          // Address, Error, Socket,
+                                        // Symbol, TextBuffer,
+                                        // create_socket,
                                         // socket_error,
                                         // to_bytestring()
 #include "network/parse.hpp"            // parse()
@@ -26,18 +29,24 @@
 
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
+#include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string, std::to_string()
 
 namespace
 {
+    using Network::Address;
     using Network::ArgumentSpan;
+    using Network::create_socket;
     using Network::Error;
     using Network::Socket;
     using Network::TextBuffer;
-    using Network::create_socket;
+    using Network::Symbol;
+    using Network::handle_type;
     using Network::socket_error;
     using Network::to_bytestring;
+
+    constexpr auto handle_width {6};
 
     auto is_verbose {false};  // NOLINT
 
@@ -50,6 +59,20 @@ namespace
             std::exit(EXIT_FAILURE);
         }
 
+        const Address host {ps->name(Symbol::connect)};
+        const Address peer {ps->name(Symbol::getpeername)};
+
+        if (is_verbose) {
+            // clang-format off
+            std::cout << "Socket "
+                      << std::right << std::setw(handle_width) << *ps
+                      << " connected to "
+                      << host
+                      << std::endl;
+            // clang-format on
+        }
+
+        assert(host.text() == peer.text());
         return ps;
     }
 
