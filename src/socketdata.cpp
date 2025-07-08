@@ -20,10 +20,10 @@
 #include "network/handle-type.hpp"      // handle_type
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
-Network::SocketData::SocketData(handle_type handle,
-                                family_type family,
-                                const SharedRuntime& t_runtime) :
-    m_core(handle, family, t_runtime)
+Network::SocketData::SocketData(handle_type t_handle,
+                                family_type t_family,
+                                const SharedRuntime& t_sr) :
+    m_core(t_handle, t_family, t_sr)
 {
 }
 

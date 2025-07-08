@@ -32,9 +32,9 @@ namespace Network
     public:
         using Cache = std::map<Symbol, ByteString>;
 
-        SocketData(handle_type handle,
-                   family_type family,
-                   const SharedRuntime& t_runtime);
+        SocketData(handle_type t_handle,
+                   family_type t_family,
+                   const SharedRuntime& t_sr);
         explicit SocketData(const AcceptData& t_data);
 
         SocketData() = delete;
