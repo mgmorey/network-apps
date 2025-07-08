@@ -18,17 +18,17 @@
 
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Address, Error, Socket,
-                                        // SocketData, TextBuffer,
-                                        // create_socket,
+                                        // SocketData, Symbol,
+                                        // TextBuffer, create_socket,
                                         // socket_error,
-                                        // to_bytestring()
+                                        // to_bytestring(), to_path()
 #include "network/parse.hpp"            // parse()
 #include "unix/connection.hpp"          // BUFFER_SIZE, SOCKET_HINTS,
                                         // SOCKET_NAME
 
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
-#include <iomanip>      // std::right, std::setwa()
+#include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
 #include <utility>      // std::move()
