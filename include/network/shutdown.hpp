@@ -17,7 +17,7 @@
 #define NETWORK_SHUTDOWN_HPP
 
 #include "network/oserror.hpp"                  // OsError
-#include "network/socketdata.hpp"               // SocketCore
+#include "network/socketcore.hpp"               // SocketCore
 
 namespace Network
 {
