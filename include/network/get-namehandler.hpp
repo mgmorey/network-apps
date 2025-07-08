@@ -17,10 +17,13 @@
 #define NETWORK_GET_NAMEHANDLER_HPP
 
 #include "network/namehandler.hpp"      // NameHandler
+#include "network/symbol.hpp"           // Symbol
 
 namespace Network
 {
     extern auto get_namehandler(bool is_sock) -> NameHandler;
+    extern auto get_namehandler(Symbol symbol) -> NameHandler;
+
 }
 
 #endif

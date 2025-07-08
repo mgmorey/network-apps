@@ -35,3 +35,8 @@ auto Network::get_namehandler(bool is_sock) -> NameHandler
 
     return handlers.at(static_cast<std::size_t>(is_sock));
 }
+
+auto Network::get_namehandler(Symbol symbol) -> NameHandler
+{
+    return get_namehandler(symbol == Symbol::getsockname);
+}
