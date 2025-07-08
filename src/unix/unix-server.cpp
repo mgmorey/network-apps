@@ -53,21 +53,20 @@ namespace
 
     auto accept_verbose(const Socket& s)
     {
-        const AcceptData ad {s.accept()};
-        const SocketData sd {ad};
+        const auto ad {s.accept()};
 
         if (is_verbose) {
             const Address peer {ad.accept()};
             // clang-format off
             std::cout << "Socket "
-                      << std::right << std::setw(handle_width) << sd.handle()
+                      << std::right << std::setw(handle_width) << ad.handle()
                       << " connected to "
                       << peer
                       << std::endl;
             // clang-format on
         }
 
-        return create_socket(sd);
+        return create_socket(SocketData {ad});
     }
 
     auto bind()

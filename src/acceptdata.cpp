@@ -33,3 +33,18 @@ auto Network::AcceptData::core() const noexcept -> const SocketCore&
 {
     return m_core;
 }
+
+auto Network::AcceptData::family() const noexcept -> family_type
+{
+    return m_core.family();
+}
+
+auto Network::AcceptData::handle() const noexcept -> handle_type
+{
+    return m_core.handle();
+}
+
+auto Network::AcceptData::runtime() const noexcept -> SharedRuntime
+{
+    return m_core.runtime();
+}
