@@ -26,17 +26,12 @@
 #include <array>        // std::arrray
 #include <cstddef>      // std::size_t
 
-auto Network::get_namehandler(bool is_sock) -> NameHandler
+auto Network::get_namehandler(Symbol symbol) -> NameHandler
 {
     static const std::array<NameHandler, 2> handlers {
         NameHandler {::getpeername, "::getpeername", Symbol::getpeername},
         NameHandler {::getsockname, "::getsockname", Symbol::getsockname},
     };
 
-    return handlers.at(static_cast<std::size_t>(is_sock));
-}
-
-auto Network::get_namehandler(Symbol symbol) -> NameHandler
-{
-    return get_namehandler(symbol == Symbol::getsockname);
+    return handlers.at(static_cast<std::size_t>(symbol == Symbol::getsockname));
 }
