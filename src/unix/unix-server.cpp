@@ -101,11 +101,13 @@ namespace
         }
 
         if (is_verbose) {
+            // clang-format off
             std::cout << "Socket "
                       << std::right << std::setw(handle_width) << s
                       << " listening with backlog "
                       << backlog_size
                       << std::endl;
+            // clang-format on
         }
     }
 

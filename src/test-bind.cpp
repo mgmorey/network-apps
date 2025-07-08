@@ -90,11 +90,13 @@ namespace
         auto test(const Socket& t_sock) -> void
         {
             const Address self {t_sock.sockname()};
+            // clang-format off
             m_os << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
                  << " bound to "
                  << self
                  << std::endl;
+            // clang-format on
         }
 
     private:

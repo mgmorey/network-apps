@@ -125,6 +125,7 @@ namespace
         {
             const Address peer {t_sock.peername()};
             const Address self {t_sock.sockname()};
+            // clang-format off
             m_os << "Socket "
                  << std::right << std::setw(handle_width) << t_sock
                  << " connected "
@@ -144,6 +145,7 @@ namespace
                  << std::right << std::setw(indent_width) << "to "
                  << peer
                  << std::endl;
+            // clang-format on
         }
 
     private:
