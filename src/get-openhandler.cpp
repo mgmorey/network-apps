@@ -35,3 +35,8 @@ auto Network::get_openhandler(bool is_bind) -> OpenHandler
 
     return handlers.at(static_cast<std::size_t>(is_bind));
 }
+
+auto Network::get_openhandler(Symbol symbol) -> OpenHandler
+{
+    return get_openhandler(symbol == Symbol::bind);
+}
