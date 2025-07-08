@@ -41,7 +41,6 @@ namespace Network
         auto operator=(const InetSocket&) noexcept -> InetSocket& = delete;
         auto operator=(InetSocket&&) noexcept -> InetSocket& = delete;
 
-        explicit operator bool() const noexcept final;
         explicit operator handle_type() const final;
 
         [[nodiscard]] auto accept() const -> AcceptData final;

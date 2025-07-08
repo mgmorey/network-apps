@@ -22,7 +22,6 @@
 #include "network/get-name.hpp"                 // get_name()
 #include "network/get-namehandler.hpp"          // get_namehandler()
 #include "network/get-openhandler.hpp"          // get_openhandler()
-#include "network/handle-null.hpp"              // handle_null
 #include "network/listen.hpp"                   // listen()
 #include "network/open-handle.hpp"              // open()
 #include "network/oserror.hpp"                  // OsError
@@ -39,11 +38,6 @@ Network::InetSocket::InetSocket(const SocketData& t_sd) : m_sd(t_sd)
 Network::InetSocket::~InetSocket() noexcept
 {
     static_cast<void>(Network::close(m_sd.core()));
-}
-
-Network::InetSocket::operator bool() const noexcept
-{
-    return m_sd.handle() != handle_null;
 }
 
 Network::InetSocket::operator handle_type() const

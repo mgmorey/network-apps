@@ -124,7 +124,7 @@ namespace
             const InetSocket sock {sd};
             std::ostringstream oss;
             oss << sock;
-            assert(static_cast<bool>(sock));
+            assert(static_cast<handle_type>(sock) != handle_null);
             assert(std::cmp_equal(static_cast<handle_type>(sock), handle));
             assert(oss.str() == std::to_string(static_cast<handle_type>(sock)));
         }
