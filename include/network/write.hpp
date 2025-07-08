@@ -16,7 +16,7 @@
 #ifndef NETWORK_WRITE_HPP
 #define NETWORK_WRITE_HPP
 
-#include "network/socketdata.hpp"       // SocketData
+#include "network/socketcore.hpp"       // SocketCore
 
 #include <sys/types.h>      // ssize_t
 
@@ -24,7 +24,7 @@
 
 namespace Network
 {
-    extern auto write(const SocketData& sd, std::string_view sv) -> ssize_t;
+    extern auto write(const SocketCore& sc, std::string_view sv) -> ssize_t;
 }
 
 #endif

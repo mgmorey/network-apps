@@ -17,11 +17,11 @@
 #define NETWORK_SHUTDOWN_HPP
 
 #include "network/oserror.hpp"                  // OsError
-#include "network/socketdata.hpp"               // SocketData
+#include "network/socketdata.hpp"               // SocketCore
 
 namespace Network
 {
-    extern auto shutdown(const SocketData& sd, int how) -> OsError;
+    extern auto shutdown(const SocketCore& sc, int how) -> OsError;
 }
 
 #endif

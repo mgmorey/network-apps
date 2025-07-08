@@ -208,7 +208,7 @@ namespace
         const handle_type handle {::socket(family, SOCK_STREAM, 0)};
         const SocketData sd {handle, family, sr};
         test(handle, family, sr, "");
-        Network::close(sd);
+        Network::close(sd.core());
     }
 
     auto test_socket_family_invalid() -> void

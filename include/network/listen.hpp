@@ -17,11 +17,11 @@
 #define NETWORK_LISTEN_HPP
 
 #include "network/oserror.hpp"          // OsError
-#include "network/socketdata.hpp"       // SocketData
+#include "network/socketcore.hpp"       // SocketCore
 
 namespace Network
 {
-    extern auto listen(const SocketData& sd, int backlog) -> OsError;
+    extern auto listen(const SocketCore& sc, int backlog) -> OsError;
 }
 
 #endif

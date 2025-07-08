@@ -24,7 +24,7 @@
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/sa-length-limits.hpp"         // sa_length_min
 #include "network/socket-error.hpp"             // socket_error
-#include "network/socketdata.hpp"               // SocketData
+#include "network/socketcore.hpp"               // SocketCore
 #include "network/to-os-error.hpp"              // to_os_error()
 #include "network/to-string-span-byte.hpp"      // to_string()
 
@@ -32,19 +32,19 @@
 #include <sstream>      // std::ostringstream
 #include <utility>      // std::cmp_equal()
 
-auto Network::open(const SocketData& sd,
+auto Network::open(const SocketCore& sc,
                    ByteSpan bs,
                    const OpenHandler& oh) -> OsError
 {
     const auto [sa, sa_length] {get_sa_span(bs)};
-    const auto handle {sd.handle()};
+    const auto handle {sc.handle()};
 
     if (std::cmp_equal(sa_length, sa_length_min)) {
         throw AddressError("Address payload length is zero: " +
                            to_string(bs));
     }
 
-    if (sd.runtime()->is_verbose()) {
+    if (sc.runtime()->is_verbose()) {
         // clang-format off
         std::cout << "Calling "
                   << oh.string()

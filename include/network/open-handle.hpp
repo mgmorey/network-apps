@@ -19,11 +19,11 @@
 #include "network/bytespan.hpp"         // ByteSpan
 #include "network/openhandler.hpp"      // OpenHandler
 #include "network/oserror.hpp"          // OsError
-#include "network/socketdata.hpp"       // SocketData
+#include "network/socketcore.hpp"       // SocketCore
 
 namespace Network
 {
-    extern auto open(const SocketData& sd,
+    extern auto open(const SocketCore& sc,
                      ByteSpan bs,
                      const OpenHandler& oh) -> OsError;
 }

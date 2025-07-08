@@ -18,12 +18,12 @@
 #include "network/error.hpp"            // Error
 #include "network/get-nameresult.hpp"   // get_nameresult()
 #include "network/namehandler.hpp"      // NameHandler
-#include "network/socketdata.hpp"       // SocketData
+#include "network/socketcore.hpp"       // SocketCore
 
-auto Network::get_name(const SocketData& sd,
+auto Network::get_name(const SocketCore& sc,
                        const NameHandler& nh) -> ByteString
 {
-    auto result {get_nameresult(sd, nh)};
+    auto result {get_nameresult(sc, nh)};
 
     if (!result) {
         throw Error(result.error().string());

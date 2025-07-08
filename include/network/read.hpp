@@ -17,13 +17,13 @@
 #define NETWORK_READ_HPP
 
 #include "network/charspan.hpp"         // CharSpan
-#include "network/socketdata.hpp"       // SocketData
+#include "network/socketcore.hpp"       // SocketCore
 
 #include <sys/types.h>      // ssize_t
 
 namespace Network
 {
-    extern auto read(const SocketData& sd, CharSpan cs) -> ssize_t;
+    extern auto read(const SocketCore& sc, CharSpan cs) -> ssize_t;
 }
 
 #endif

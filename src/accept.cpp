@@ -21,7 +21,7 @@
 #include "network/get-api-error.hpp"            // get_api_error()
 #include "network/handle-null.hpp"              // handle_null
 #include "network/reset-api-error.hpp"          // reset_api_error()
-#include "network/socketdata.hpp"               // SocketData
+#include "network/socketcore.hpp"               // SocketCore
 #include "network/to-os-error.hpp"              // to_os_error()
 #include "network/to-string-span-byte.hpp"      // to_string()
 
@@ -35,13 +35,13 @@
 #include <span>         // std::span
 #include <sstream>      // std::ostringstream
 
-auto Network::accept(const SocketData& sd) -> AcceptData
+auto Network::accept(const SocketCore& sc) -> AcceptData
 {
     BinaryBuffer buffer;
     const std::span bs {buffer};
     auto [sa, sa_length] {buffer.span()};
-    const auto handle_1 {sd.handle()};
-    const auto is_verbose {sd.runtime()->is_verbose()};
+    const auto handle_1 {sc.handle()};
+    const auto is_verbose {sc.runtime()->is_verbose()};
 
     if (is_verbose) {
         // clang-format off
@@ -93,5 +93,5 @@ auto Network::accept(const SocketData& sd) -> AcceptData
         // clang-format on
     }
 
-    return {*buffer, sd.core(), handle_2};
+    return {*buffer, sc, handle_2};
 }

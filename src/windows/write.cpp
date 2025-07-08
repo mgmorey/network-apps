@@ -22,7 +22,7 @@
 #include "network/quote.hpp"            // quote()
 #include "network/reset-api-error.hpp"  // reset_api_error()
 #include "network/socket-error.hpp"     // socket_error
-#include "network/socketdata.hpp"       // SocketData
+#include "network/socketcore.hpp"       // SocketCore
 #include "network/to-os-error.hpp"      // to_os_error()
 
 #include <sys/types.h>      // ssize_t
@@ -32,11 +32,11 @@
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
-auto Network::write(const SocketData& sd, std::string_view sv) -> ssize_t
+auto Network::write(const SocketCore& sc, std::string_view sv) -> ssize_t
 {
-    const auto handle {sd.handle()};
+    const auto handle {sc.handle()};
 
-    if (sd.runtime()->is_verbose()) {
+    if (sc.runtime()->is_verbose()) {
         // clang-format off
         std::cout << "Calling ::send("
                   << handle
@@ -50,7 +50,7 @@ auto Network::write(const SocketData& sd, std::string_view sv) -> ssize_t
     }
 
     reset_api_error();
-    const auto result {::send(handle, sv.data(), static_cast<int>(sv.size()), 0)};
+    const auto result {::send(handle, sv.core(), static_cast<int>(sv.size()), 0)};
 
     if (result == socket_error) {
         const auto api_error {get_api_error()};

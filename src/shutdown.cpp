@@ -19,7 +19,7 @@
 #include "network/oserror.hpp"          // OsError
 #include "network/reset-api-error.hpp"  // reset_api_error()
 #include "network/socket-error.hpp"     // socket_error
-#include "network/socketdata.hpp"       // SocketData
+#include "network/socketcore.hpp"       // SocketCore
 #include "network/to-os-error.hpp"      // to_os_error()
 
 #ifdef WIN32
@@ -31,11 +31,11 @@
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 
-auto Network::shutdown(const SocketData& sd, int how) -> OsError
+auto Network::shutdown(const SocketCore& sc, int how) -> OsError
 {
-    const auto handle {sd.handle()};
+    const auto handle {sc.handle()};
 
-    if (sd.runtime()->is_verbose()) {
+    if (sc.runtime()->is_verbose()) {
         // clang-format off
         std::cout << "Calling ::shutdown("
                   << handle

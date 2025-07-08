@@ -17,11 +17,11 @@
 #define NETWORK_CLOSE_HPP
 
 #include "network/oserror.hpp"          // OsError
-#include "network/socketdata.hpp"       // SocketData
+#include "network/socketcore.hpp"       // SocketCore
 
 namespace Network
 {
-    extern auto close(const SocketData& sd) -> OsError;
+    extern auto close(const SocketCore& sc) -> OsError;
 }
 
 #endif

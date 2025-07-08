@@ -18,11 +18,11 @@
 
 #include "network/bytestring.hpp"       // ByteString
 #include "network/namehandler.hpp"      // NameHandler
-#include "network/socketdata.hpp"       // SocketData
+#include "network/socketcore.hpp"       // SocketCore
 
 namespace Network
 {
-    extern auto get_name(const SocketData& sd,
+    extern auto get_name(const SocketCore& sc,
                          const NameHandler& nh) -> ByteString;
 }
 

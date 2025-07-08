@@ -17,11 +17,11 @@
 #define NETWORK_ACCEPT_HPP
 
 #include "network/acceptdata.hpp"       // AcceptData
-#include "network/socketdata.hpp"       // SocketData
+#include "network/socketcore.hpp"       // SocketCore
 
 namespace Network
 {
-    extern auto accept(const SocketData& sd) -> AcceptData;
+    extern auto accept(const SocketCore& sc) -> AcceptData;
 }
 
 #endif
