@@ -54,7 +54,7 @@ namespace
     {
         const auto ad {s.accept()};
 
-        if (is_verbose) {
+        if (ad.runtime()->is_verbose()) {
             const Address peer {ad.accept()};
             // clang-format off
             std::cout << "Socket "
