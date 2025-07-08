@@ -18,13 +18,14 @@
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/format-os-error.hpp"          // format_os_error()
 #include "network/get-api-error.hpp"            // get_api_error()
+#include "network/get-openhandler.hpp"          // get_openhandler()
 #include "network/get-sa-span.hpp"              // get_sa_span()
-#include "network/openhandler.hpp"              // OpenHandler
 #include "network/oserror.hpp"                  // OsError
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/sa-length-limits.hpp"         // sa_length_min
 #include "network/socket-error.hpp"             // socket_error
 #include "network/socketcore.hpp"               // SocketCore
+#include "network/symbol.hpp"                   // Symbol
 #include "network/to-os-error.hpp"              // to_os_error()
 #include "network/to-string-span-byte.hpp"      // to_string()
 
@@ -32,12 +33,12 @@
 #include <sstream>      // std::ostringstream
 #include <utility>      // std::cmp_equal()
 
-auto Network::open(const SocketCore& sc,
-                   ByteSpan bs,
-                   const OpenHandler& oh) -> OsError
+auto Network::open(const SocketCore& sc, ByteSpan bs, Symbol symbol) -> OsError
 {
     const auto [sa, sa_length] {get_sa_span(bs)};
     const auto handle {sc.handle()};
+    const auto is_bind {symbol == Symbol::bind};
+    const auto oh {get_openhandler(is_bind)};
 
     if (std::cmp_equal(sa_length, sa_length_min)) {
         throw AddressError("Address payload length is zero: " +

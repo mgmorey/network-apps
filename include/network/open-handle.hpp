@@ -17,15 +17,15 @@
 #define NETWORK_OPEN_HANDLE_HPP
 
 #include "network/bytespan.hpp"         // ByteSpan
-#include "network/openhandler.hpp"      // OpenHandler
 #include "network/oserror.hpp"          // OsError
 #include "network/socketcore.hpp"       // SocketCore
+#include "network/symbol.hpp"           // Symbol
 
 namespace Network
 {
     extern auto open(const SocketCore& sc,
                      ByteSpan bs,
-                     const OpenHandler& oh) -> OsError;
+                     Symbol symbol) -> OsError;
 }
 
 #endif

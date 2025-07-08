@@ -20,7 +20,6 @@
 #include "network/charspan.hpp"                 // CharSpan
 #include "network/close.hpp"                    // close()
 #include "network/get-name.hpp"                 // get_name()
-#include "network/get-openhandler.hpp"          // get_openhandler()
 #include "network/listen.hpp"                   // listen()
 #include "network/open-handle.hpp"              // open()
 #include "network/oserror.hpp"                  // OsError
@@ -62,10 +61,9 @@ auto Network::InetSocket::name(Symbol t_symbol) const -> ByteSpan
     if (nm.empty()) {
         switch (t_symbol) {
         case Symbol::getpeername:
-        case Symbol::getsockname: {
+        case Symbol::getsockname:
             nm = Network::get_name(m_sd.core(), t_symbol);
             break;
-        }
         default:
         }
     }
@@ -77,16 +75,13 @@ auto Network::InetSocket::open(ByteSpan t_bs, Symbol t_symbol) -> OsError
 {
     switch (t_symbol) {
     case Symbol::bind:
-    case Symbol::connect: {
-        const auto oh {get_openhandler(t_symbol == Symbol::bind)};
-
-        if (const auto error {Network::open(m_sd.core(), t_bs, oh)}) {
+    case Symbol::connect:
+        if (const auto error {Network::open(m_sd.core(), t_bs, t_symbol)}) {
             return error;
         }
 
         m_sd.cache(t_symbol).assign(t_bs.begin(), t_bs.end());
         break;
-    }
     default:
     }
 
