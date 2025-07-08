@@ -37,8 +37,7 @@ auto Network::open(const SocketCore& sc, ByteSpan bs, Symbol symbol) -> OsError
 {
     const auto [sa, sa_length] {get_sa_span(bs)};
     const auto handle {sc.handle()};
-    const auto is_bind {symbol == Symbol::bind};
-    const auto oh {get_openhandler(is_bind)};
+    const auto oh {get_openhandler(symbol)};
 
     if (std::cmp_equal(sa_length, sa_length_min)) {
         throw AddressError("Address payload length is zero: " +
