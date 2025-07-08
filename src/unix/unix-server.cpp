@@ -16,6 +16,7 @@
 // This UNIX domain sequenced-packet socket example is adapted from the
 // example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
+#include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Address, Error, Socket,
                                         // SocketData, TextBuffer,
                                         // create_socket,
@@ -38,10 +39,12 @@ namespace
     using Network::Error;
     using Network::Socket;
     using Network::SocketData;
+    using Network::Symbol;
     using Network::TextBuffer;
     using Network::create_socket;
     using Network::socket_error;
     using Network::to_bytestring;
+    using Network::to_path;
 
     using Number = long long;
 
@@ -50,7 +53,7 @@ namespace
 
     auto is_verbose {false};  // NOLINT
 
-    auto accept_verbose(const Socket& s)
+    auto accept(const Socket& s)
     {
         const auto ad {s.accept()};
 
@@ -65,7 +68,9 @@ namespace
             // clang-format on
         }
 
-        return create_socket(SocketData {ad});
+        auto ps {create_socket(SocketData {ad})};
+        assert(to_path(ps->name(Symbol::accept)) == to_path(ad.accept()));
+        return ps;
     }
 
     auto bind()
@@ -169,7 +174,7 @@ auto main(int argc, char* argv[]) -> int
         // This is the main loop for handling connections.
         while (!shutdown_pending) {
             // Wait for incoming connection.
-            const auto data_socket {accept_verbose(*connection_socket)};
+            const auto data_socket {accept(*connection_socket)};
             std::string read_str;
             Number sum {};
 
