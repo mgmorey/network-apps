@@ -65,10 +65,12 @@ auto Network::InetSocket::name(Symbol t_symbol) const -> ByteSpan
 {
     auto& nm {m_sd.cache(t_symbol)};
 
-    if (nm.empty()) {
-        if (const auto namesymbol {to_namesymbol(t_symbol)}) {
-            nm = Network::get_name(m_sd.core(), *namesymbol);
-        }
+    if (!nm.empty()) {
+        return nm;
+    }
+
+    if (const auto namesymbol {to_namesymbol(t_symbol)}) {
+        nm = Network::get_name(m_sd.core(), *namesymbol);
     }
 
     return nm;
