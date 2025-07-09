@@ -27,7 +27,7 @@
 
 auto Network::create_socket(const SocketData& sd) -> UniqueSocket
 {
-    switch (sd.family()) {  // NOLINT
+    switch (sd.core().family()) {  // NOLINT
     case AF_UNIX:
         return std::make_unique<UnixSocket>(sd);
     default:

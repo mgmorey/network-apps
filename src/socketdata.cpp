@@ -16,9 +16,6 @@
 #include "network/socketdata.hpp"       // SocketData
 #include "network/acceptdata.hpp"       // SocketData
 #include "network/bytestring.hpp"       // ByteString
-#include "network/family-type.hpp"      // family_type
-#include "network/handle-type.hpp"      // handle_type
-#include "network/sharedruntime.hpp"    // SharedRuntime
 
 Network::SocketData::SocketData(handle_type t_handle,
                                 family_type t_family,
@@ -41,19 +38,4 @@ auto Network::SocketData::cache(Symbol t_symbol) const noexcept -> ByteString&
 auto Network::SocketData::core() const noexcept -> const SocketCore&
 {
     return m_core;
-}
-
-auto Network::SocketData::family() const noexcept -> family_type
-{
-    return m_core.family();
-}
-
-auto Network::SocketData::handle() const noexcept -> handle_type
-{
-    return m_core.handle();
-}
-
-auto Network::SocketData::runtime() const noexcept -> SharedRuntime
-{
-    return m_core.runtime();
 }

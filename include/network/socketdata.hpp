@@ -46,9 +46,6 @@ namespace Network
 
         [[nodiscard]] auto cache(Symbol t_symbol) const noexcept -> ByteString&;
         [[nodiscard]] auto core() const noexcept -> const SocketCore&;
-        [[nodiscard]] auto family() const noexcept -> family_type;
-        [[nodiscard]] auto handle() const noexcept -> handle_type;
-        [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     private:
         mutable Cache m_cache;

@@ -97,10 +97,10 @@ namespace
 
         try {
             const auto sd {SocketData(handle, family, sr)};
-            assert(sd.family() == family);
-            assert(sd.handle() == handle);
-            assert(sd.runtime() != nullptr);
-            assert(sd.runtime()->is_verbose() == is_verbose);
+            assert(sd.core().family() == family);
+            assert(sd.core().handle() == handle);
+            assert(sd.core().runtime() != nullptr);
+            assert(sd.core().runtime()->is_verbose() == is_verbose);
         }
         catch (const Error& error) {
             print(error);

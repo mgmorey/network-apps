@@ -48,7 +48,7 @@ Network::InetSocket::~InetSocket() noexcept
 
 Network::InetSocket::operator handle_type() const
 {
-    return m_sd.handle();
+    return m_sd.core().handle();
 }
 
 auto Network::InetSocket::accept() const -> AcceptData
@@ -103,7 +103,7 @@ auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
 
 auto Network::InetSocket::runtime() const noexcept -> SharedRuntime
 {
-    return m_sd.runtime();
+    return m_sd.core().runtime();
 }
 
 auto Network::InetSocket::to_namesymbol(Symbol symbol) -> std::optional<NameSymbol>
