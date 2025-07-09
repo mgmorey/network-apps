@@ -77,6 +77,7 @@ namespace
     using Network::sa_size;
     using Network::sin_family_type;
 #ifndef WIN32
+    using Network::string_null;
     using Network::sun_length_max;
     using Network::sun_length_min;
     using Network::sun_path_size;
@@ -227,6 +228,13 @@ namespace
         ByteString addr {bs.begin(), bs.end()};
         assert(ByteString {address} == addr);
         previous_address = addr;
+    }
+
+    auto test_empty() -> void
+    {
+        Address address {ByteString {}};
+        assert(address.empty());
+        assert(address.text() == string_null);
     }
 
     auto test_sa(const sockaddr& sa, std::size_t sa_len,
@@ -467,6 +475,7 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *rt << std::endl;
         }
 
+        test_empty();
         test_sa_invalid_length();
         test_sin6_invalid_family();
         test_sin_invalid_family();
