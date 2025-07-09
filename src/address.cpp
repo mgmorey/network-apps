@@ -107,8 +107,3 @@ auto Network::Address::text() const -> std::string
         throw FamilyError(sa_family());
     }
 }
-
-auto Network::Address::value() const -> const address_type&
-{
-    return m_addr;
-}
