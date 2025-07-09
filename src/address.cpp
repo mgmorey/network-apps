@@ -20,6 +20,7 @@
 #include "network/os-features.hpp"              // HAVE_SOCKADDR_SA_LEN
 #include "network/port-type.hpp"                // port_type
 #include "network/quote.hpp"                    // quote()
+#include "network/string-null.hpp"              // string_null
 
 #ifdef HAVE_SOCKADDR_SA_LEN
 #include "network/socket-length-type.hpp"       // socket_length_type
@@ -73,6 +74,10 @@ auto Network::Address::length() const -> socket_length_type
 
 auto Network::Address::port() const -> port_type
 {
+    if (m_addr.empty()) {
+        return 0;
+    }
+
     switch (sa_family()) {
     case AF_INET:
         return sin_port();
@@ -85,6 +90,10 @@ auto Network::Address::port() const -> port_type
 
 auto Network::Address::text() const -> std::string
 {
+    if (m_addr.empty()) {
+        return string_null;
+    }
+
     switch (sa_family()) {
     case AF_INET:
         return sin_text();
