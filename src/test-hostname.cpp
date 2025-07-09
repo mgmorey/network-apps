@@ -43,11 +43,11 @@ namespace
     using Network::run;
 
 #if defined(OS_CYGWIN_NT)
-    constexpr auto expected_error_gethostname_re {""};
+    constexpr auto expected_gethostname_re {""};
 #elif defined(OS_DARWIN)
-    constexpr auto expected_error_gethostname_re {""};
+    constexpr auto expected_gethostname_re {""};
 #else
-    constexpr auto expected_error_gethostname_re {
+    constexpr auto expected_gethostname_re {
         R"(Call to ::gethostname\(.+\) failed with error \d+: .+)"
     };
 #endif
@@ -80,10 +80,10 @@ namespace
         }
     }
 
-    auto print(const OsError& result) -> void
+    auto print(const OsError& error) -> void
     {
         if (is_verbose) {
-            std::cout << result.string()
+            std::cout << error.string()
                       << std::endl;
         }
     }
@@ -98,7 +98,7 @@ namespace
             actual_str = error.string();
         }
 
-        const std::regex expected_regex {expected_error_gethostname_re};
+        const std::regex expected_regex {expected_gethostname_re};
         assert(std::regex_match(actual_str, expected_regex));
     }
 
