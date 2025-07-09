@@ -17,9 +17,7 @@
 #define NETWORK_ACCEPTDATA_HPP
 
 #include "network/bytestring.hpp"       // ByteString
-#include "network/family-type.hpp"      // family_type
 #include "network/handle-type.hpp"      // handle_type
-#include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/socketcore.hpp"       // SocketCore
 
 namespace Network
@@ -39,9 +37,6 @@ namespace Network
 
         [[nodiscard]] auto accept() const noexcept -> const ByteString&;
         [[nodiscard]] auto core() const noexcept -> const SocketCore&;
-        [[nodiscard]] auto family() const noexcept -> family_type;
-        [[nodiscard]] auto handle() const noexcept -> handle_type;
-        [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     private:
         ByteString m_accept;
