@@ -27,6 +27,12 @@
 #include "unix/connection.hpp"          // BUFFER_SIZE, SOCKET_HINTS,
                                         // SOCKET_NAME
 
+#ifdef WIN32
+#include <winsock2.h>       // SD_SEND
+#else
+#include <sys/socket.h>     // SHUT_WR
+#endif
+
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iomanip>      // std::right, std::setw()
@@ -47,6 +53,11 @@ namespace
     using Network::to_bytestring;
 
     constexpr auto handle_width {6};
+#ifdef WIN32
+    constexpr auto shutdown_flags {SD_SEND};
+#else
+    constexpr auto shutdown_flags {SHUT_WR};
+#endif
 
     auto is_verbose {false};  // NOLINT
 
@@ -110,7 +121,7 @@ namespace
 
     auto shutdown(const Socket& s)
     {
-        if (auto error = s.shutdown(SHUT_WR)) {
+        if (auto error = s.shutdown(shutdown_flags)) {
             std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
