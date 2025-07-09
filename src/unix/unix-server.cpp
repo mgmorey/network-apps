@@ -54,13 +54,12 @@ namespace
 
     auto accept(const Socket& s)
     {
-        const auto ad {s.accept()};
-        const Address host {ad.accept()};
-        auto ps {create_socket(SocketData {ad})};
-        const Address peer {ps->name(Symbol::getpeername)};
-        const Address self {ps->name(Symbol::getsockname)};
+        auto ps {create_socket(SocketData {s.accept()})};
+        const Address host {ps->name(Symbol::accept)};
+        const Address peer {ps->peername()};
+        const Address self {ps->sockname()};
 
-        if (ad.runtime()->is_verbose()) {
+        if (is_verbose) {
             // clang-format off
             std::cout << "Socket "
                       << std::right << std::setw(handle_width) << *ps
