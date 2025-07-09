@@ -56,6 +56,7 @@ namespace
     using Network::Socket;
     using Network::SocketHints;
     using Network::SocketResult;
+    using Network::Symbol;
     using Network::UniqueSocket;
     using Network::connect;
     using Network::get_hostname;
@@ -123,6 +124,7 @@ namespace
 
         auto test(const Socket& t_sock) -> void
         {
+            const Address host {t_sock.name(Symbol::connect)};
             const Address peer {t_sock.peername()};
             const Address self {t_sock.sockname()};
             // clang-format off
@@ -146,6 +148,7 @@ namespace
                  << peer
                  << std::endl;
             // clang-format on
+            assert(host.text() == peer.text());
         }
 
     private:
