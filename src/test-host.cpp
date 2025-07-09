@@ -75,7 +75,7 @@ namespace
     using ErrorCodeSet = std::set<os_error_type>;
     using StringList = std::list<std::string>;
 
-    constexpr auto expected_error_getnameinfo_re {
+    constexpr auto expected_getnameinfo_re {
         R"(Call to ::getnameinfo\(.+\) returned -?\d+ \(.+\))"
     };
 
@@ -206,10 +206,10 @@ namespace
         return operands;
     }
 
-    auto print(const OsError& result) -> void
+    auto print(const OsError& error) -> void
     {
         if (is_verbose) {
-            std::cout << result.string()
+            std::cout << error.string()
                       << std::endl;
         }
     }
@@ -225,14 +225,14 @@ namespace
     {
         os_error_type actual_code {0};
         std::vector<SocketHost> hosts;
-
         auto it {std::back_inserter(hosts)};
-        if (const auto result {insert(it, host, {}, hints, is_verbose)}) {
+
+        if (const auto error {insert(it, host, {}, hints, is_verbose)}) {
             if (is_verbose || expected_codes == ErrorCodeSet {0}) {
-                print(result);
+                print(error);
             }
 
-            actual_code = result.number();
+            actual_code = error.number();
         }
         else {
             std::sort(hosts.begin(), hosts.end());  // NOLINT
@@ -249,15 +249,15 @@ namespace
         std::string service_str;
         std::string actual_str;
 
-        if (const auto result {get_endpointresult(hostname_str,
+        if (const auto error {get_endpointresult(hostname_str,
                                                   service_str,
                                                   addr, -1,
                                                   sr)}) {
-            print(result);
-            actual_str = result.string();
+            print(error);
+            actual_str = error.string();
         }
 
-        const std::regex expected_regex {expected_error_getnameinfo_re};
+        const std::regex expected_regex {expected_getnameinfo_re};
         assert(std::regex_match(actual_str, expected_regex));
     }
 
