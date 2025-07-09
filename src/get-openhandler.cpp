@@ -30,5 +30,7 @@ auto Network::get_openhandler(OpenSymbol symbol) -> OpenHandler
         return {::bind, "::bind"};
     case OpenSymbol::connect:
         return {::connect, "::connect"};
+    default:
+        return {nullptr, nullptr};
     }
 }
