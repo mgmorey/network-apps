@@ -54,8 +54,13 @@ namespace
     using Network::shutdown;
 
     constexpr auto handle_high {1000000000};
+#ifdef WIN32
+    constexpr auto expected_failed_listen_code {WSAENOTSOCK};
+    constexpr auto expected_failed_shutdown_code {WSAENOTSOCK};
+#else
     constexpr auto expected_failed_listen_code {EBADF};
     constexpr auto expected_failed_shutdown_code {EBADF};
+#endif
     constexpr auto expected_runtime_pointer_re {
         R"(Null runtime pointer)"
     };
