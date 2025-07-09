@@ -30,5 +30,7 @@ auto Network::get_namehandler(NameSymbol symbol) -> NameHandler
         return {::getsockname, "::getsockname"};
     case NameSymbol::getpeername:
         return {::getpeername, "::getpeername"};
+    default:
+        return {nullptr, nullptr};
     }
 }
