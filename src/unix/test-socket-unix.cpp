@@ -55,6 +55,7 @@ namespace
     using Network::Socket;
     using Network::SocketHints;
     using Network::SocketPair;
+    using Network::UniqueSocket;
     using Network::UnixSocketHints;
     using Network::create_socket;
     using Network::family_type;
@@ -68,6 +69,9 @@ namespace
 
     using ErrorCodeSet = std::set<os_error_type>;
 
+    constexpr auto expected_accept_re {
+        R"(Call to ::accept\(.+\) failed with error \d+: .+)"
+    };
     constexpr auto expected_path_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
     };
@@ -88,6 +92,12 @@ namespace
     {
         const auto addr_path {to_path(addr)};
         return addr_path == path;
+    }
+
+    auto create_unix_socket() -> UniqueSocket
+    {
+        const SocketHints hints {AF_UNIX, SOCK_STREAM, 0};
+        return create_socket(hints, is_verbose);
     }
 
     auto get_codes_no_such_file_or_directory() -> const ErrorCodeSet&
@@ -176,10 +186,10 @@ namespace
                   << std::endl;
     }
 
-    auto test_path(Socket& sock,
-                   std::string_view path,
-                   const ErrorCodeSet& expected_codes,
-                   const std::string& expected_re) -> void
+    auto test(Socket& sock,
+              std::string_view path,
+              const ErrorCodeSet& expected_codes,
+              const std::string& expected_re) -> void
     {
         std::string actual_str;
 
@@ -209,47 +219,8 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_path(std::string_view path,
-                   const ErrorCodeSet& expected_codes,
-                   const std::string& expected_re) -> void
-    {
-        const auto sock {create_socket(socket_hints, is_verbose)};
-        test_path(*sock, path, expected_codes, expected_re);
-    }
-
-    auto test_path_valid(const auto& path) -> void
-    {
-        const auto sock {create_socket(socket_hints, is_verbose)};
-        test_path(*sock, path, {0}, {});
-    }
-
-    auto test_paths_invalid() -> void
-    {
-        test_path({}, {0}, expected_payload_length_re);
-#if defined(OS_DARWIN) || defined(OS_CYGWIN_NT)
-        test_path("", get_codes_no_such_file_or_directory(), {});
-#endif
-#ifndef OS_CYGWIN_NT
-        test_path("/foo/bar", get_codes_no_such_file_or_directory(), {});
-        test_path("/var/foo", get_codes_permission_denied(), {});
-#endif
-        const auto path_max {get_pathname(path_length_max + 1)};
-        test_path(path_max, {}, expected_path_length_re);
-    }
-
-    auto test_paths_valid() -> void
-    {
-#if ! (defined(OS_DARWIN) || defined(OS_CYGWIN_NT))
-        test_path("", {0}, {});
-#endif
-
-        for (auto paths {get_pathnames()}; !paths.empty(); paths.pop()) {
-            test_path_valid(paths.top());
-        }
-    }
-
-    auto test_unix_socket(const SocketHints& hints,
-                          const std::string& expected_re) -> void
+    auto test(const SocketHints& hints,
+              const std::string& expected_re) -> void
     {
         std::string actual_str;
 
@@ -270,22 +241,78 @@ namespace
         }
     }
 
-    auto test_unix_socket_invalid_protocol() -> void
+    auto test(std::string_view path,
+              const ErrorCodeSet& expected_codes,
+              const std::string& expected_re) -> void
+    {
+        const auto sock {create_socket(socket_hints, is_verbose)};
+        test(*sock, path, expected_codes, expected_re);
+    }
+
+    auto test_path_valid(const auto& path) -> void
+    {
+        const auto sock {create_socket(socket_hints, is_verbose)};
+        test(*sock, path, {0}, {});
+    }
+
+    auto test_paths_invalid() -> void
+    {
+        test({}, {0}, expected_payload_length_re);
+#if defined(OS_DARWIN) || defined(OS_CYGWIN_NT)
+        test("", get_codes_no_such_file_or_directory(), {});
+#endif
+#ifndef OS_CYGWIN_NT
+        test("/foo/bar", get_codes_no_such_file_or_directory(), {});
+        test("/var/foo", get_codes_permission_denied(), {});
+#endif
+        const auto path_max {get_pathname(path_length_max + 1)};
+        test(path_max, {}, expected_path_length_re);
+    }
+
+    auto test_paths_valid() -> void
+    {
+#if ! (defined(OS_DARWIN) || defined(OS_CYGWIN_NT))
+        test("", {0}, {});
+#endif
+
+        for (auto paths {get_pathnames()}; !paths.empty(); paths.pop()) {
+            test_path_valid(paths.top());
+        }
+    }
+
+    auto test_unix_accept() -> void
+    {
+        std::string actual_str;
+
+        try {
+            const auto sock {create_unix_socket()};
+            static_cast<void>(sock->accept());
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_str = error.what();
+        }
+
+        const std::regex expected_regex {expected_accept_re};
+        assert(std::regex_match(actual_str, expected_regex));
+    }
+
+    auto test_unix_invalid_protocol() -> void
     {
         const SocketHints hints {AF_UNIX, SOCK_STREAM, -1};
-        test_unix_socket(hints, expected_socket_re);
+        test(hints, expected_socket_re);
     }
 
-    auto test_unix_socket_invalid_socktype() -> void
+    auto test_unix_invalid_socktype() -> void
     {
         const SocketHints hints {AF_UNIX, 0, 0};
-        test_unix_socket(hints, expected_socket_re);
+        test(hints, expected_socket_re);
     }
 
-    auto test_unix_socket_valid() -> void
+    auto test_unix_valid() -> void
     {
         const SocketHints hints {AF_UNIX, SOCK_STREAM, 0};
-        test_unix_socket(hints, "");
+        test(hints, "");
     }
 }
 
@@ -300,10 +327,11 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_paths_invalid();
-        test_unix_socket_invalid_socktype();
-        test_unix_socket_invalid_protocol();
         test_paths_valid();
-        test_unix_socket_valid();
+        test_unix_invalid_socktype();
+        test_unix_invalid_protocol();
+        test_unix_accept();
+        test_unix_valid();
     }
     catch (const Error& error) {
         std::cerr << error.what()
