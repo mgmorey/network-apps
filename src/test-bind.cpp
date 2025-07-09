@@ -51,6 +51,7 @@ namespace
     using Network::Socket;
     using Network::SocketHints;
     using Network::SocketResult;
+    using Network::Symbol;
     using Network::UniqueSocket;
     using Network::bind;
     using Network::os_error_type;
@@ -89,6 +90,7 @@ namespace
 
         auto test(const Socket& t_sock) -> void
         {
+            const Address host {t_sock.name(Symbol::bind)};
             const Address self {t_sock.sockname()};
             // clang-format off
             m_os << "Socket "
@@ -97,6 +99,7 @@ namespace
                  << self
                  << std::endl;
             // clang-format on
+            assert(host.text() == self.text());
         }
 
     private:
