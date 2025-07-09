@@ -17,7 +17,6 @@
 // example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
 #include "network/assert.hpp"           // assert()
-#include "network/argumentspan.hpp"     // ArgumentSpan
 #include "network/network.hpp"          // Address, Error, Socket,
                                         // Symbol, TextBuffer,
                                         // create_socket,
@@ -42,7 +41,6 @@
 namespace
 {
     using Network::Address;
-    using Network::ArgumentSpan;
     using Network::create_socket;
     using Network::Error;
     using Network::Socket;
