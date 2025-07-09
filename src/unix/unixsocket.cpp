@@ -45,7 +45,6 @@ auto Network::UnixSocket::open(ByteSpan t_bs, OpenSymbol t_symbol) -> OsError
     case OpenSymbol::connect:
         state(SocketState::connected);
         break;
-    default:
     }
 
     return {};
