@@ -56,14 +56,26 @@ namespace
     using Network::run;
     using Network::to_handle;
 
-    constexpr auto expected_invalid_re {
-        R"(Null socket descriptor)"
+    constexpr auto expected_accept_re {
+        R"(Call to ::accept\(.+\) failed with error \d+: .+)"
+    };
+    constexpr auto expected_peername_re {
+        R"(Call to ::getpeername\(.+\) failed with error \d+: .+)"
     };
     constexpr auto expected_socket_re {
         R"(Call to ::socket\(.+\) failed with error \d+: .+)"
     };
+    constexpr auto expected_socket_null_re {
+        R"(Null socket descriptor)"
+    };
 
     auto is_verbose {false}; // NOLINT
+
+    auto create_inet_socket() -> UniqueSocket
+    {
+        const SocketHints hints {AF_INET, SOCK_STREAM, 0};
+        return create_socket(hints, is_verbose);
+    }
 
     auto parse_arguments(int argc, char** argv) -> void
     {
@@ -197,12 +209,41 @@ namespace
         test(0, "");
     }
 
-    auto test_inet_socket_invalid(const SharedRuntime& sr) -> void
+    auto test_inet_accept() -> void
     {
-        test(handle_null, AF_UNSPEC, sr, expected_invalid_re);
+        std::string actual_str;
+
+        try {
+            const auto sock {create_inet_socket()};
+            static_cast<void>(sock->accept());
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_str = error.what();
+        }
+
+        const std::regex expected_regex {expected_accept_re};
+        assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_inet_socket_valid(const SharedRuntime& sr) -> void
+    auto test_inet_peername() -> void
+    {
+        std::string actual_str;
+
+        try {
+            const auto sock {create_inet_socket()};
+            static_cast<void>(sock->peername());
+        }
+        catch (const Error& error) {
+            print(error);
+            actual_str = error.what();
+        }
+
+        const std::regex expected_regex {expected_peername_re};
+        assert(std::regex_match(actual_str, expected_regex));
+    }
+
+    auto test_inet_socket(const SharedRuntime& sr) -> void
     {
         const family_type family {AF_INET};
         const handle_type handle {::socket(family, SOCK_STREAM, 0)};
@@ -219,7 +260,7 @@ namespace
 
     auto test_socket_handle_invalid() -> void
     {
-        test(handle_null, AF_UNSPEC, expected_invalid_re);
+        test(handle_null, AF_UNSPEC, expected_socket_null_re);
     }
 
     auto test_socket_protocol_invalid() -> void
@@ -253,8 +294,9 @@ auto main(int argc, char* argv[]) -> int
 
         test_handle_null();
         test_handle_zero();
-        test_inet_socket_invalid(rt);
-        test_inet_socket_valid(rt);
+        test_inet_accept();
+        test_inet_peername();
+        test_inet_socket(rt);
         test_socket_family_invalid();
         test_socket_handle_invalid();
         test_socket_protocol_invalid();
