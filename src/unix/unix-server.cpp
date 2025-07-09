@@ -20,7 +20,7 @@
 #include "network/network.hpp"          // Address, Error, Socket,
                                         // SocketData, Symbol,
                                         // TextBuffer, create_socket,
-                                        // handle_type, socket_error,
+                                        // socket_error,
                                         // to_bytestring()
 #include "network/parse.hpp"            // parse()
 #include "unix/connection.hpp"          // BUFFER_SIZE, SOCKET_HINTS,
@@ -41,7 +41,6 @@ namespace
     using Network::Symbol;
     using Network::TextBuffer;
     using Network::create_socket;
-    using Network::handle_type;
     using Network::socket_error;
     using Network::to_bytestring;
 
@@ -49,27 +48,31 @@ namespace
 
     constexpr auto backlog_size {20};
     constexpr auto handle_width {6};
+    constexpr auto indent_width {handle_width + 18};
 
     auto is_verbose {false};  // NOLINT
 
     auto accept(const Socket& s)
     {
         const auto ad {s.accept()};
-        const handle_type handle {ad.handle()};
         const Address host {ad.accept()};
         auto ps {create_socket(SocketData {ad})};
+        const Address peer {ps->name(Symbol::getpeername)};
+        const Address self {ps->name(Symbol::getsockname)};
 
         if (ad.runtime()->is_verbose()) {
             // clang-format off
             std::cout << "Socket "
-                      << std::right << std::setw(handle_width) << handle
-                      << " connected to "
-                      << host
+                      << std::right << std::setw(handle_width) << *ps
+                      << " connected "
+                      << self
+                      << std::endl
+                      << std::right << std::setw(indent_width) << "to "
+                      << peer
                       << std::endl;
             // clang-format on
         }
 
-        const Address peer {ps->name(Symbol::accept)};
         assert(host.text() == peer.text());
         return ps;
     }
