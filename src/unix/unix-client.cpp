@@ -108,6 +108,14 @@ namespace
         return buffer;
     }
 
+    auto shutdown(const Socket& s)
+    {
+        if (auto error = s.shutdown(SHUT_WR)) {
+            std::cerr << error.string() << std::endl;
+            std::exit(EXIT_FAILURE);
+        }
+    }
+
     auto write(const std::string& str, const Socket& s)
     {
         const auto error {s.write(str)};
@@ -136,6 +144,7 @@ auto main(int argc, char* argv[]) -> int
 
             if (write_str == "DOWN") {
                 shutdown_pending = true;
+                shutdown(*data_socket);
                 break;
             }
         }
