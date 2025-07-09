@@ -53,6 +53,7 @@ namespace
     using Network::to_bytestring;
 
     constexpr auto handle_width {6};
+    constexpr auto indent_width {handle_width + 18};
 #ifdef WIN32
     constexpr auto shutdown_flags {SD_SEND};
 #else
@@ -72,13 +73,17 @@ namespace
 
         const Address host {ps->name(Symbol::connect)};
         const Address peer {ps->name(Symbol::getpeername)};
+        const Address self {ps->name(Symbol::getsockname)};
 
         if (is_verbose) {
             // clang-format off
             std::cout << "Socket "
                       << std::right << std::setw(handle_width) << *ps
-                      << " connected to "
-                      << host
+                      << " connected "
+                      << self
+                      << std::endl
+                      << std::right << std::setw(indent_width) << "to "
+                      << peer
                       << std::endl;
             // clang-format on
         }
