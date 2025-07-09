@@ -76,8 +76,8 @@ namespace
     using Network::sa_family_type;
     using Network::sa_size;
     using Network::sin_family_type;
-#ifndef WIN32
     using Network::string_null;
+#ifndef WIN32
     using Network::sun_length_max;
     using Network::sun_length_min;
     using Network::sun_path_size;
