@@ -57,11 +57,9 @@ namespace Network
 
     protected:
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
-
-    private:
-        static auto to_symbol(NameSymbol symbol) -> Symbol;
         static auto to_symbol(OpenSymbol symbol) -> Symbol;
 
+    private:
         const SocketData m_sd;
     };
 }

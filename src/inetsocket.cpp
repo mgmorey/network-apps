@@ -106,16 +106,6 @@ auto Network::InetSocket::runtime() const noexcept -> SharedRuntime
     return m_sd.runtime();
 }
 
-auto Network::InetSocket::to_symbol(NameSymbol symbol) -> Symbol
-{
-    switch (symbol) {
-    case NameSymbol::getsockname:
-        return Symbol::getsockname;
-    case NameSymbol::getpeername:
-        return Symbol::getpeername;
-    }
-}
-
 auto Network::InetSocket::to_symbol(OpenSymbol symbol) -> Symbol
 {
     switch (symbol) {
