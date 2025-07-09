@@ -32,13 +32,6 @@ Network::SocketHost::SocketHost(const addrinfo& t_ai) :
 {
 }
 
-auto Network::SocketHost::operator=(const addrinfo& t_ai) -> SocketHost&
-{
-    m_addr = to_bytestring(t_ai);
-    m_name = to_canonical_name(t_ai);
-    return *this;
-}
-
 auto Network::SocketHost::operator<(const SocketHost& t_host) const noexcept ->
     bool
 {

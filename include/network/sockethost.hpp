@@ -40,7 +40,6 @@ namespace Network
         auto operator=(const SocketHost&) -> SocketHost& = default;
         auto operator=(SocketHost&&) -> SocketHost& = default;
 
-        auto operator=(const addrinfo& t_ai) -> SocketHost&;
         auto operator<(const SocketHost& t_host) const noexcept -> bool;
         [[nodiscard]] auto address() const noexcept -> ByteSpan;
         [[nodiscard]] auto canonical_name() const noexcept ->
