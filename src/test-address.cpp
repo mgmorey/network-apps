@@ -234,6 +234,7 @@ namespace
     {
         Address address {ByteString {}};
         assert(address.empty());
+        assert(address.port() == 0);
         assert(address.text() == string_null);
     }
 
