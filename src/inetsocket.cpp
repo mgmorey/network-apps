@@ -21,7 +21,9 @@
 #include "network/close.hpp"                    // close()
 #include "network/get-name.hpp"                 // get_name()
 #include "network/listen.hpp"                   // listen()
+#include "network/namesymbol.hpp"               // NameSymbol
 #include "network/open-handle.hpp"              // open()
+#include "network/opensymbol.hpp"               // OpenSymbol
 #include "network/oserror.hpp"                  // OsError
 #include "network/read.hpp"                     // read()
 #include "network/sharedruntime.hpp"            // SharedRuntime
@@ -61,8 +63,10 @@ auto Network::InetSocket::name(Symbol t_symbol) const -> ByteSpan
     if (nm.empty()) {
         switch (t_symbol) {
         case Symbol::getpeername:
+            nm = Network::get_name(m_sd.core(), NameSymbol::getpeername);
+            break;
         case Symbol::getsockname:
-            nm = Network::get_name(m_sd.core(), t_symbol);
+            nm = Network::get_name(m_sd.core(), NameSymbol::getsockname);
             break;
         default:
         }
@@ -71,19 +75,13 @@ auto Network::InetSocket::name(Symbol t_symbol) const -> ByteSpan
     return nm;
 }
 
-auto Network::InetSocket::open(ByteSpan t_bs, Symbol t_symbol) -> OsError
+auto Network::InetSocket::open(ByteSpan t_bs, OpenSymbol t_symbol) -> OsError
 {
-    switch (t_symbol) {
-    case Symbol::bind:
-    case Symbol::connect:
-        if (const auto error {Network::open(m_sd.core(), t_bs, t_symbol)}) {
-            return error;
-        }
-
-        m_sd.cache(t_symbol).assign(t_bs.begin(), t_bs.end());
-        break;
-    default:
+    if (const auto error {Network::open(m_sd.core(), t_bs, t_symbol)}) {
+        return error;
     }
+
+    m_sd.cache(to_symbol(t_symbol)).assign(t_bs.begin(), t_bs.end());
 
     return {};
 }
@@ -106,4 +104,24 @@ auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
 auto Network::InetSocket::runtime() const noexcept -> SharedRuntime
 {
     return m_sd.runtime();
+}
+
+auto Network::InetSocket::to_symbol(NameSymbol symbol) -> Symbol
+{
+    switch (symbol) {
+    case NameSymbol::getsockname:
+        return Symbol::getsockname;
+    case NameSymbol::getpeername:
+        return Symbol::getpeername;
+    }
+}
+
+auto Network::InetSocket::to_symbol(OpenSymbol symbol) -> Symbol
+{
+    switch (symbol) {
+    case OpenSymbol::bind:
+        return Symbol::bind;
+    case OpenSymbol::connect:
+        return Symbol::connect;
+    }
 }

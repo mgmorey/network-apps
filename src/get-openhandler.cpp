@@ -15,7 +15,7 @@
 
 #include "network/get-openhandler.hpp"  // get_openhandler()
 #include "network/openhandler.hpp"      // OpenHandler
-#include "network/symbol.hpp"           // Symbol
+#include "network/opensymbol.hpp"       // OpenSymbol
 
 #ifdef WIN32
 #include <winsock2.h>       // ::bind(), ::connect()
@@ -23,12 +23,12 @@
 #include <sys/socket.h>     // ::bind(), ::connect()
 #endif
 
-auto Network::get_openhandler(Symbol symbol) -> OpenHandler
+auto Network::get_openhandler(OpenSymbol symbol) -> OpenHandler
 {
     switch (symbol) {
-    case Symbol::bind:
+    case OpenSymbol::bind:
         return {::bind, "::bind"};
-    default:
+    case OpenSymbol::connect:
         return {::connect, "::connect"};
     }
 }

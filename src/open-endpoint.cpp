@@ -18,16 +18,17 @@
 #include "network/error.hpp"                    // Error()
 #include "network/insert-endpoint.hpp"          // insert()
 #include "network/openparameters.hpp"           // OpenParameters
+#include "network/opensymbol.hpp"               // OpenSymbol
 #include "network/socketresult.hpp"             // SocketResult
 #include "network/socketresultvector.hpp"       // SocketResultVector
 #include "network/sockettemplate.hpp"           // SocketTemplate
 #include "network/sockettemplatevector.hpp"     // SocketTemplateVector
-#include "network/symbol.hpp"                   // Symbol
 
 #include <algorithm>    // std::ranges::transform()
 #include <iterator>     // std::back_inserter()
 
-auto Network::open(const OpenParameters& op, Symbol symbol) -> SocketResultVector
+auto Network::open(const OpenParameters& op,
+                   OpenSymbol symbol) -> SocketResultVector
 {
     SocketTemplateVector stv;
 

@@ -19,6 +19,8 @@
 #include "network/acceptdata.hpp"               // AcceptData
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/charspan.hpp"                 // CharSpan
+#include "network/namesymbol.hpp"               // NameSymbol
+#include "network/opensymbol.hpp"               // OpenSymbol
 #include "network/oserror.hpp"                  // OsError
 #include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/socket.hpp"                   // Socket
@@ -47,7 +49,7 @@ namespace Network
         [[nodiscard]] auto accept() const -> AcceptData final;
         [[nodiscard]] auto listen(int t_backlog) const -> OsError final;
         [[nodiscard]] auto name(Symbol t_symbol) const -> ByteSpan final;
-        [[nodiscard]] auto open(ByteSpan t_bs, Symbol t_symbol) ->
+        [[nodiscard]] auto open(ByteSpan t_bs, OpenSymbol t_symbol) ->
             OsError override;
         [[nodiscard]] auto read(CharSpan t_cs) const -> ssize_t final;
         [[nodiscard]] auto shutdown(int t_how) const -> OsError final;
@@ -57,6 +59,9 @@ namespace Network
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
 
     private:
+        static auto to_symbol(NameSymbol symbol) -> Symbol;
+        static auto to_symbol(OpenSymbol symbol) -> Symbol;
+
         const SocketData m_sd;
     };
 }

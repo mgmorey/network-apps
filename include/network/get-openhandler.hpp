@@ -17,11 +17,11 @@
 #define NETWORK_GET_OPENHANDLER_HPP
 
 #include "network/openhandler.hpp"      // OpenHandler
-#include "network/symbol.hpp"           // Symbol
+#include "network/opensymbol.hpp"       // Symbol
 
 namespace Network
 {
-    extern auto get_openhandler(Symbol symbol) -> OpenHandler;
+    extern auto get_openhandler(OpenSymbol symbol) -> OpenHandler;
 }
 
 #endif

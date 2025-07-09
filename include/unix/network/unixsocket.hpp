@@ -20,11 +20,11 @@
 
 #include "network/bytespan.hpp"         // ByteSpan
 #include "network/inetsocket.hpp"       // InetSocket
+#include "network/opensymbol.hpp"       // OpenSymbol
 #include "network/pathname.hpp"         // Pathname
 #include "network/pathnameview.hpp"     // PathnameView
 #include "network/socketdata.hpp"       // SocketData
 #include "network/socketstate.hpp"      // SocketState
-#include "network/symbol.hpp"           // Symbol
 
 namespace Network
 {
@@ -38,7 +38,8 @@ namespace Network
         auto operator=(const UnixSocket&) noexcept -> UnixSocket& = delete;
         auto operator=(UnixSocket&&) noexcept -> UnixSocket& = delete;
 
-        [[nodiscard]] auto open(ByteSpan t_bs, Symbol t_symbol) -> OsError final;
+        [[nodiscard]] auto open(ByteSpan t_bs, OpenSymbol t_symbol) ->
+            OsError final;
 
     protected:
         [[nodiscard]] auto remove(const PathnameView& t_path) const -> bool;

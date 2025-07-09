@@ -15,7 +15,7 @@
 
 #include "network/get-namehandler.hpp"  // get_namehandler()
 #include "network/namehandler.hpp"      // NameHandler
-#include "network/symbol.hpp"           // Symbol
+#include "network/namesymbol.hpp"       // NameSymbol
 
 #ifdef WIN32
 #include <winsock2.h>       // ::getpeername(), ::getsockname()
@@ -23,12 +23,12 @@
 #include <sys/socket.h>     // ::getpeername(), ::getsockname()
 #endif
 
-auto Network::get_namehandler(Symbol symbol) -> NameHandler
+auto Network::get_namehandler(NameSymbol symbol) -> NameHandler
 {
     switch (symbol) {
-    case Symbol::getsockname:
+    case NameSymbol::getsockname:
         return {::getsockname, "::getsockname"};
-    default:
+    case NameSymbol::getpeername:
         return {::getpeername, "::getpeername"};
     }
 }

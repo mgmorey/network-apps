@@ -13,16 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_NAMEHANDLER_HPP
-#define NETWORK_GET_NAMEHANDLER_HPP
+#ifndef NETWORK_NAMESYMBOL_HPP
+#define NETWORK_NAMESYMBOL_HPP
 
-#include "network/namehandler.hpp"      // NameHandler
-#include "network/namesymbol.hpp"       // NameSymbol
+#include <cstdint>      // std::uint8_t
 
 namespace Network
 {
-    extern auto get_namehandler(NameSymbol symbol) -> NameHandler;
-
+    enum class NameSymbol : std::uint8_t {
+        getsockname,
+        getpeername,
+    };
 }
 
 #endif

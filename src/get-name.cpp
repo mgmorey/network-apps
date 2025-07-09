@@ -17,9 +17,10 @@
 #include "network/bytestring.hpp"       // ByteString
 #include "network/error.hpp"            // Error
 #include "network/get-nameresult.hpp"   // get_nameresult()
+#include "network/namesymbol.hpp"       // NameSymbol
 #include "network/socketcore.hpp"       // SocketCore
 
-auto Network::get_name(const SocketCore& sc, Symbol symbol) -> ByteString
+auto Network::get_name(const SocketCore& sc, NameSymbol symbol) -> ByteString
 {
     auto result {get_nameresult(sc, symbol)};
 

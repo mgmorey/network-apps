@@ -19,6 +19,7 @@
 #include "network/acceptdata.hpp"               // AcceptData
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/charspan.hpp"                 // CharSpan
+#include "network/opensymbol.hpp"               // OpenSymbol
 #include "network/oserror.hpp"                  // OsError
 #include "network/symbol.hpp"                   // Symbol
 
@@ -41,8 +42,9 @@ namespace Network
 
         [[nodiscard]] virtual auto accept() const -> AcceptData = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const -> OsError = 0;
-        [[nodiscard]] virtual auto name(Symbol t_symbol) const -> ByteSpan = 0;
-        [[nodiscard]] virtual auto open(ByteSpan t_bs, Symbol t_symbol) ->
+        [[nodiscard]] virtual auto name(Symbol t_symbol) const ->
+            ByteSpan = 0;
+        [[nodiscard]] virtual auto open(ByteSpan t_bs, OpenSymbol t_symbol) ->
             OsError = 0;
         [[nodiscard]] virtual auto read(CharSpan t_cs) const -> ssize_t = 0;
         [[nodiscard]] virtual auto shutdown(int t_how) const -> OsError = 0;
@@ -51,12 +53,12 @@ namespace Network
 
         [[nodiscard]] auto bind(ByteSpan t_bs) -> OsError
         {
-            return open(t_bs, Symbol::bind);
+            return open(t_bs, OpenSymbol::bind);
         }
 
         [[nodiscard]] auto connect(ByteSpan t_bs) -> OsError
         {
-            return open(t_bs, Symbol::connect);
+            return open(t_bs, OpenSymbol::connect);
         }
 
         [[nodiscard]] auto peername() const -> ByteSpan

@@ -17,13 +17,13 @@
 #define NETWORK_OPEN_ENDPOINT_HPP
 
 #include "network/openparameters.hpp"           // OpenParameters
+#include "network/opensymbol.hpp"               // Symbol
 #include "network/socketresultvector.hpp"       // SocketResultVector
-#include "network/symbol.hpp"                   // Symbol
 
 namespace Network
 {
     extern auto open(const OpenParameters& op,
-                     Symbol symbol) -> SocketResultVector;
+                     OpenSymbol symbol) -> SocketResultVector;
 }
 
 #endif

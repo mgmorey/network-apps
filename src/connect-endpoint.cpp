@@ -16,11 +16,11 @@
 #include "network/connect-endpoint.hpp"         // connect()
 #include "network/endpointview.hpp"             // EndpointView
 #include "network/open-endpoint.hpp"            // open()
+#include "network/opensymbol.hpp"               // OpenSymbol
 #include "network/run.hpp"                      // run()
 #include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/socketresultvector.hpp"       // SocketResultVector
-#include "network/symbol.hpp"                   // Symbol
 
 auto Network::connect(const EndpointView& endpoint,
                       const SocketHints& hints,
@@ -30,7 +30,7 @@ auto Network::connect(const EndpointView& endpoint,
             .m_endpoint = endpoint,
             .m_hints = hints,
             .m_sr = sr
-        }, Symbol::connect);
+        }, OpenSymbol::connect);
 }
 
 auto Network::connect(const EndpointView& endpoint,
