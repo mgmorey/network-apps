@@ -145,27 +145,27 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Connect Unix domain socket to pathname.
-        auto data_socket {connect()};
+        auto s {connect()};
         auto shutdown_pending {false};
 
         // Send arguments to server.
         for (const auto& arg : args) {
             const std::string write_str {arg};
-            write(write_str, *data_socket);
+            write(write_str, *s);
 
             if (write_str == "DOWN") {
                 shutdown_pending = true;
-                shutdown(*data_socket);
+                shutdown(*s);
                 break;
             }
         }
 
         if (!shutdown_pending) {
             // Request result.
-            write("END", *data_socket);
+            write("END", *s);
 
             // Receive result.
-            const auto read_str {read(*data_socket)};
+            const auto read_str {read(*s)};
             std::cout << "Result: " << read_str << std::endl;
         }
     }
