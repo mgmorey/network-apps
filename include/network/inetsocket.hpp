@@ -29,6 +29,7 @@
 
 #include <sys/types.h>      // ssize_t
 
+#include <optional>     // std::optional
 #include <string_view>  // std::string_view
 
 namespace Network
@@ -57,6 +58,7 @@ namespace Network
 
     protected:
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
+        static auto to_namesymbol(Symbol symbol) -> std::optional<NameSymbol>;
         static auto to_symbol(OpenSymbol symbol) -> Symbol;
 
     private:

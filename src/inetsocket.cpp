@@ -32,6 +32,11 @@
 #include "network/symbol.hpp"                   // Symbol
 #include "network/write.hpp"                    // write()
 
+#include <sys/types.h>      // ssize_t
+
+#include <optional>     // std::optional
+#include <string_view>  // std::string_view
+
 Network::InetSocket::InetSocket(const SocketData& t_sd) : m_sd(t_sd)
 {
 }
@@ -61,14 +66,8 @@ auto Network::InetSocket::name(Symbol t_symbol) const -> ByteSpan
     auto& nm {m_sd.cache(t_symbol)};
 
     if (nm.empty()) {
-        switch (t_symbol) {
-        case Symbol::getpeername:
-            nm = Network::get_name(m_sd.core(), NameSymbol::getpeername);
-            break;
-        case Symbol::getsockname:
-            nm = Network::get_name(m_sd.core(), NameSymbol::getsockname);
-            break;
-        default:
+        if (const auto namesymbol {to_namesymbol(t_symbol)}) {
+            nm = Network::get_name(m_sd.core(), *namesymbol);
         }
     }
 
@@ -103,6 +102,18 @@ auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
 auto Network::InetSocket::runtime() const noexcept -> SharedRuntime
 {
     return m_sd.runtime();
+}
+
+auto Network::InetSocket::to_namesymbol(Symbol symbol) -> std::optional<NameSymbol>
+{
+    switch (symbol) {
+    case Symbol::getpeername:
+        return NameSymbol::getpeername;
+    case Symbol::getsockname:
+        return NameSymbol::getsockname;
+    default:
+        return {};
+    }
 }
 
 auto Network::InetSocket::to_symbol(OpenSymbol symbol) -> Symbol
