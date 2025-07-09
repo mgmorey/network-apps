@@ -69,8 +69,8 @@ auto Network::InetSocket::name(Symbol t_symbol) const -> ByteSpan
         return nm;
     }
 
-    if (const auto namesymbol {to_namesymbol(t_symbol)}) {
-        nm = Network::get_name(m_sd.core(), *namesymbol);
+    if (const auto symbol {to_namesymbol(t_symbol)}) {
+        nm = Network::get_name(m_sd.core(), *symbol);
     }
 
     return nm;
@@ -82,7 +82,10 @@ auto Network::InetSocket::open(ByteSpan t_bs, OpenSymbol t_symbol) -> OsError
         return error;
     }
 
-    m_sd.cache(to_symbol(t_symbol)).assign(t_bs.begin(), t_bs.end());
+    if (const auto symbol {to_symbol(t_symbol)}) {
+        m_sd.cache(*symbol).assign(t_bs.begin(), t_bs.end());
+    }
+
     return {};
 }
 
@@ -118,12 +121,14 @@ auto Network::InetSocket::to_namesymbol(Symbol symbol) -> std::optional<NameSymb
     }
 }
 
-auto Network::InetSocket::to_symbol(OpenSymbol symbol) -> Symbol
+auto Network::InetSocket::to_symbol(OpenSymbol symbol) -> std::optional<Symbol>
 {
     switch (symbol) {
     case OpenSymbol::bind:
         return Symbol::bind;
     case OpenSymbol::connect:
         return Symbol::connect;
+    default:
+        return {};
     }
 }

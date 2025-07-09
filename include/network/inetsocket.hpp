@@ -59,7 +59,7 @@ namespace Network
     protected:
         [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
         static auto to_namesymbol(Symbol symbol) -> std::optional<NameSymbol>;
-        static auto to_symbol(OpenSymbol symbol) -> Symbol;
+        static auto to_symbol(OpenSymbol symbol) -> std::optional<Symbol>;
 
     private:
         const SocketData m_sd;
