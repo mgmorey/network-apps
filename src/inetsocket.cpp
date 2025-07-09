@@ -82,7 +82,6 @@ auto Network::InetSocket::open(ByteSpan t_bs, OpenSymbol t_symbol) -> OsError
     }
 
     m_sd.cache(to_symbol(t_symbol)).assign(t_bs.begin(), t_bs.end());
-
     return {};
 }
 
