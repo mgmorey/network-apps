@@ -14,10 +14,12 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Error, SocketData, close(),
-                                        // family_null, family_type,
-                                        // handle_null, handle_type,
-                                        // os_error_type, run()
+#include "network/network.hpp"          // Error, OsError, SocketCore,
+                                        // close(), family_null,
+                                        // family_type, handle_null,
+                                        // handle_type, listen(),
+                                        // os_error_type, run(),
+                                        // shutdown()
 #include "network/parse.hpp"            // parse()
 
 #ifdef WIN32
@@ -28,6 +30,7 @@
                         // ::socket()
 #endif
 
+#include <cerrno>       // EBADF
 #include <cstdlib>      // EXIT_FAILURE, std::exit(),
                         // std::size_t
 #include <iostream>     // std::cerr, std::cout, std::endl
@@ -37,16 +40,22 @@
 namespace
 {
     using Network::Error;
+    using Network::OsError;
     using Network::SharedRuntime;
-    using Network::SocketData;
+    using Network::SocketCore;
     using Network::family_null;
     using Network::family_type;
     using Network::handle_null;
     using Network::handle_type;
     using Network::os_error_type;
+    using Network::listen;
     using Network::parse;
     using Network::run;
+    using Network::shutdown;
 
+    constexpr auto handle_high {1000000000};
+    constexpr auto expected_failed_listen_code {EBADF};
+    constexpr auto expected_failed_shutdown_code {EBADF};
     constexpr auto expected_runtime_pointer_re {
         R"(Null runtime pointer)"
     };
@@ -88,32 +97,66 @@ namespace
         }
     }
 
+    auto print(const OsError& error) -> void
+    {
+        if (is_verbose) {
+            std::cout << error.string()
+                      << std::endl;
+        }
+    }
+
     auto test(handle_type handle,
               family_type family,
               const SharedRuntime& sr,
-              const std::string& expected_error_re) -> void
+              const std::string& expected_re) -> void
     {
         std::string actual_str;
 
         try {
-            const auto sd {SocketData(handle, family, sr)};
-            assert(sd.core().family() == family);
-            assert(sd.core().handle() == handle);
-            assert(sd.core().runtime() != nullptr);
-            assert(sd.core().runtime()->is_verbose() == is_verbose);
+            const auto sc {SocketCore(handle, family, sr)};
+            assert(sc.family() == family);
+            assert(sc.handle() == handle);
+            assert(sc.runtime() != nullptr);
+            assert(sc.runtime()->is_verbose() == is_verbose);
         }
         catch (const Error& error) {
             print(error);
             actual_str = error.what();
         }
 
-        if (expected_error_re.empty()) {
+        if (expected_re.empty()) {
             assert(actual_str.empty());
         }
         else {
-            const std::regex expected_error_regex {expected_error_re};
-            assert(std::regex_match(actual_str, expected_error_regex));
+            const std::regex expected_regex {expected_re};
+            assert(std::regex_match(actual_str, expected_regex));
         }
+    }
+
+    auto test_failed_listen(const SharedRuntime& sr) -> void
+    {
+        os_error_type actual_code {0};
+        const SocketCore sc {handle_high, AF_INET, sr};
+
+        if (const auto error {listen(sc, 0)}) {
+            print(error);
+            actual_code = error.number();
+        }
+
+        assert(actual_code == expected_failed_listen_code);
+    }
+
+    auto test_failed_shutdown(const SharedRuntime& sr) -> void
+    {
+        os_error_type actual_code {0};
+        const SocketCore sc {handle_high, AF_INET, sr};
+
+        if (const auto error {shutdown(sc, 0)}) {
+            print(error);
+            actual_code = error.number();
+        }
+
+        assert(actual_code == expected_failed_shutdown_code);
     }
 
     auto test_null_runtime_pointer() -> void
@@ -153,6 +196,8 @@ auto main(int argc, char* argv[]) -> int
             std::cout << *rt << std::endl;
         }
 
+        test_failed_listen(rt);
+        test_failed_shutdown(rt);
         test_null_runtime_pointer();
         test_null_socket_descriptor(rt);
         test_null_socket_domain_family(rt);
