@@ -322,7 +322,7 @@ endif
 
 # Define targets
 
-$(compile_flags): GNUmakefile gmake/flags/*.mk
+$(compile_flags): GNUmakefile gmake/flags/*.mk gmake/flags/build/*.mk
 	printf '%s\n' $(sort $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH)) >$@
 
 $(coverage_html): $(coverage_json)
