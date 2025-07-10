@@ -24,6 +24,13 @@ namespace Network
 {
     struct OpenInputs
     {
+        OpenInputs(const EndpointView& t_endpoint,
+                   const SocketHints& t_hints,
+                   const SharedRuntime& t_sr) :
+                m_endpoint(t_endpoint), m_hints(t_hints), m_sr(t_sr)
+        {
+        }
+
         const EndpointView& m_endpoint;
         const SocketHints& m_hints;
         const SharedRuntime& m_sr;

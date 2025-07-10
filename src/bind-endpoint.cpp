@@ -16,6 +16,7 @@
 #include "network/bind-endpoint.hpp"            // bind()
 #include "network/endpointview.hpp"             // EndpointView
 #include "network/open-endpoint.hpp"            // open()
+#include "network/openinputs.hpp"               // OpenInputs
 #include "network/opensymbol.hpp"               // OpenSymbol
 #include "network/run.hpp"                      // run()
 #include "network/sharedruntime.hpp"            // SharedRuntime
@@ -26,11 +27,8 @@ auto Network::bind(const EndpointView& endpoint,
                    const SocketHints& hints,
                    const SharedRuntime& sr) -> SocketResultVector
 {
-    return open({
-            .m_endpoint = endpoint,
-            .m_hints = hints,
-            .m_sr = sr
-        }, OpenSymbol::bind);
+    OpenInputs oi {endpoint, hints, sr};
+    return open(oi, OpenSymbol::bind);
 }
 
 auto Network::bind(const EndpointView& endpoint,
