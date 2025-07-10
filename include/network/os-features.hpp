@@ -16,7 +16,7 @@
 #ifndef NETWORK_OS_FEATURES_HPP
 #define NETWORK_OS_FEATURES_HPP
 
-#if defined(__APPLE__) || defined(OS_FREEBSD)
+#if defined(__APPLE__) || (defined(__unix__) && !defined(__linux__))
 #define HAVE_SOCKADDR_SA_LEN
 #endif
 

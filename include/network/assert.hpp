@@ -44,7 +44,7 @@
      static_cast<void>(0))
 #endif // __DARWIN_UNIX03
 #endif // __GNUC__
-#elif defined(OS_FREEBSD)
+#elif defined(__unix__) && !defined(__linux__)
 #undef assert
 // NOLINTNEXTLINE
 #define assert(e) ((e) ? static_cast<void>(0) :                         \
@@ -52,7 +52,7 @@
                             __FILE__,                                   \
                             __LINE__,                                   \
                             #e))
-#elif defined(OS_LINUX)
+#elif defined(__linux__)
 #undef assert
 /* When possible, define assert so that it does not add extra
    parentheses around EXPR.  Otherwise, those added parentheses would

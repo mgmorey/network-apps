@@ -77,9 +77,8 @@ $(filter-out -I$(SDKROOT)/usr/include,$(CPPFLAGS))
 # CPPFLAGS
 
 # Add OS macro flags and feature flags to CPPFLAGS
-cpp_symbols = OS_$(os_macro_kernel)		\
-$(if $(is_darwin_source),_DARWIN_C_SOURCE,)	\
-$(if $(is_gnu_source),_GNU_SOURCE,)
+cpp_symbols = $(if $(is_darwin_source),_DARWIN_C_SOURCE,) $(if	\
+$(is_gnu_source),_GNU_SOURCE,)
 
 CPPFLAGS += $(addprefix -I,$(include_dirs:/.=))
 CPPFLAGS += $(addprefix -D,$(cpp_symbols))
