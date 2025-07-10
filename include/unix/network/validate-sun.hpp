@@ -16,7 +16,7 @@
 #ifndef UNIX_NETWORK_VALIDATE_SUN_HPP
 #define UNIX_NETWORK_VALIDATE_SUN_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include "network/length-type.hpp"              // length_type
 

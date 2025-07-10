@@ -16,7 +16,7 @@
 #ifndef NETWORK_STREAM_ADDRINFO_HPP
 #define NETWORK_STREAM_ADDRINFO_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <ws2tcpip.h>       // addrinfo
 #else
 #include <netdb.h>          // addrinfo

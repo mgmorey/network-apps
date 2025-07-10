@@ -19,7 +19,7 @@
 #include "network/argumentspan.hpp"     // ArgumentSpan
 #include "network/logicerror.hpp"       // LogicError
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <getopt.h>         // getopt(), optarg, opterr, optind,
                             // optopt
 #else

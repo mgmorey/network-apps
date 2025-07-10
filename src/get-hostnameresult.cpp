@@ -27,7 +27,7 @@
 #include "network/to-name-length.hpp"           // to_name_length()
 #include "network/to-os-error.hpp"              // to_os_error()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>   // ::gethostname()
 #else
 #include <unistd.h>     // ::gethostname()

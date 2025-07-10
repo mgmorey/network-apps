@@ -16,7 +16,7 @@
 #ifndef NETWORK_SOCKET_ERROR_HPP
 #define NETWORK_SOCKET_ERROR_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // SOCKET_ERROR
 #else
 #ifndef SOCKET_ERROR

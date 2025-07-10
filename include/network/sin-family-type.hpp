@@ -16,13 +16,13 @@
 #ifndef NETWORK_SIN_FAMILY_TYPE_HPP
 #define NETWORK_SIN_FAMILY_TYPE_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 #include <sys/socket.h>     // sa_family_t
 #endif
 
 namespace Network
 {
-#ifdef WIN32
+#ifdef _WIN32
     using sin_family_type = short;
 #else
     using sin_family_type = sa_family_t;

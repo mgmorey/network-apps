@@ -20,7 +20,7 @@
 #include "network/sockethints.hpp"      // SocketHints
 #include "network/sockethost.hpp"       // SocketHost
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <ws2tcpip.h>       // addrinfo
 #else
 #include <netdb.h>          // addrinfo

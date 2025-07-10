@@ -16,7 +16,7 @@
 #ifndef UNIX_NETWORK_CLOSE_FUNCTION_NAME_HPP
 #define UNIX_NETWORK_CLOSE_FUNCTION_NAME_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 
 namespace Network
 {

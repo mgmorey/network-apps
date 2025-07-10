@@ -48,7 +48,7 @@ namespace
     using Network::name_length_type;
     using Network::os_error_type;
     using Network::parse;
-#ifndef WIN32
+#ifndef _WIN32
     using Network::path_length_max;
     using Network::path_length_min;
 #endif
@@ -60,23 +60,23 @@ namespace
     using Network::os_error_type;
     using Network::sa_length_max;
     using Network::sa_length_min;
-#ifndef WIN32
+#ifndef _WIN32
     using Network::sun_length_max;
     using Network::sun_length_min;
 #endif
     using Network::to_handle;
     using Network::to_name_length;
     using Network::to_os_error;
-#ifndef WIN32
+#ifndef _WIN32
     using Network::to_path_length;
 #endif
     using Network::to_sa_length;
     using Network::to_size;
-#ifndef WIN32
+#ifndef _WIN32
     using Network::to_sun_length;
 #endif
 
-#ifndef WIN32
+#ifndef _WIN32
     constexpr auto expected_handle_re {
         ""
     };
@@ -91,7 +91,7 @@ namespace
     constexpr auto expected_os_error_re {
         R"(Value (\d+|-\d+) is out of range \[-?\d+, \d+\] of os_error_type)"
     };
-#ifndef WIN32
+#ifndef _WIN32
     constexpr auto expected_path_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
     };
@@ -102,7 +102,7 @@ namespace
     constexpr auto expected_std_size_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of std::size_t)"
     };
-#ifndef WIN32
+#ifndef _WIN32
     constexpr auto expected_sun_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sun_length_type)"
     };
@@ -215,7 +215,7 @@ namespace
         test_os_error(max + 1, expected_os_error_re);
     }
 
-#ifndef WIN32
+#ifndef _WIN32
 
     auto test_path_length(auto value, const char* expected_re) -> void
     {
@@ -284,7 +284,7 @@ namespace
         test_std_size(-1, expected_std_size_re);
     }
 
-#ifndef WIN32
+#ifndef _WIN32
 
     auto test_sun_length(auto value, const char* expected_re) -> void
     {
@@ -368,12 +368,12 @@ auto main(int argc, char* argv[]) -> int
         test_handle();
         test_name_length();
         test_os_error();
-#ifndef WIN32
+#ifndef _WIN32
         test_path_length();
 #endif
         test_sa_length();
         test_std_size();
-#ifndef WIN32
+#ifndef _WIN32
         test_sun_length();
 #endif
         test_throw_error();

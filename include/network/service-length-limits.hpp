@@ -16,7 +16,7 @@
 #ifndef NETWORK_SERVICE_LENGTH_LIMITS_HPP
 #define NETWORK_SERVICE_LENGTH_LIMITS_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <ws2tcpip.h>   // NI_MAXSERV
 #else
 #include <netdb.h>      // NI_MAXSERV

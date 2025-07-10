@@ -20,7 +20,7 @@
 #include "network/os-features.hpp"      // HAVE_SOCKADDR_SA_LEN
 #include "network/socketfamily.hpp"     // SocketFamily
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX
 #else
 #include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX

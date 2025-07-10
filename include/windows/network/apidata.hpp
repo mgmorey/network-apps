@@ -16,7 +16,7 @@
 #ifndef WINDOWS_NETWORK_APIDATA_HPP
 #define WINDOWS_NETWORK_APIDATA_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 
 #include <winsock2.h>       // WSADATA
 

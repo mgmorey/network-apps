@@ -22,7 +22,7 @@
 #include "network/socketapi.hpp"        // SocketApi()
 #include "network/stop.hpp"             // stop()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // WSAEFAULT, WSAEPROCLIM,
                             // WSANOTINITIALISED, WSASYSNOTREADY,
                             // WSAVERNOTSUPPORTED
@@ -47,7 +47,7 @@ namespace
     using Network::quote;
     using Network::parse;
 
-#ifdef WIN32
+#ifdef _WIN32
     constexpr auto expected_code_stopped {WSANOTINITIALISED};
     constexpr auto expected_runtime_platform_re
     {
@@ -76,7 +76,7 @@ namespace
     auto get_expected(Version version) -> std::string_view
     {
         constexpr std::array<std::string_view, 3> errors {
-#ifdef WIN32
+#ifdef _WIN32
             "The Windows Sockets version requested is not supported.",
 #else
             "",

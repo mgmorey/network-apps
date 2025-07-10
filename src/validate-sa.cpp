@@ -23,7 +23,7 @@
 #include "network/valueerror.hpp"       // ValueError
 #endif
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, sockaddr
 #else
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, sockaddr
@@ -50,7 +50,7 @@ auto Network::validate(const sockaddr* sa,
     switch (sa->sa_family) {
     case AF_INET:
     case AF_INET6:
-#ifndef WIN32
+#ifndef _WIN32
     case AF_UNIX:
 #endif
         break;

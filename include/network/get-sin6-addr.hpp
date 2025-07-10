@@ -18,7 +18,7 @@
 
 #include "network/bytespan.hpp"         // ByteSpan
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <ws2tcpip.h>       // in6_addr
 #else
 #include <netinet/in.h>     // in6_addr

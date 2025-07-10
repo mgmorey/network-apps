@@ -28,7 +28,7 @@
 #include "network/os-features.hpp"      // HAVE_SOCKADDR_SA_LEN
 #include "network/parse.hpp"            // parse()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
                             // IPPROTO_TCP, SOCK_STREAM, sockaddr,
                             // sockaddr_in, sockaddr_in6,
@@ -63,13 +63,13 @@ namespace
     using Network::SocketHints;
     using Network::SocketHost;
     using Network::SocketLimits;
-#ifndef WIN32
+#ifndef _WIN32
     using Network::af_unix;
 #endif
     using Network::af_unspec;
     using Network::insert;
     using Network::parse;
-#ifndef WIN32
+#ifndef _WIN32
     using Network::path_length_max;
 #endif
     using Network::run;
@@ -77,7 +77,7 @@ namespace
     using Network::sa_size;
     using Network::sin_family_type;
     using Network::string_null;
-#ifndef WIN32
+#ifndef _WIN32
     using Network::sun_length_max;
     using Network::sun_length_min;
     using Network::sun_path_size;
@@ -131,7 +131,7 @@ namespace
         return sin6;
     }
 
-#ifndef WIN32
+#ifndef _WIN32
 
     auto create_sun(sa_family_type family = af_unix,
                     [[maybe_unused]] std::size_t sun_len = sun_size,
@@ -363,7 +363,7 @@ namespace
         test_sin6(sin6, {});
     }
 
-#ifndef WIN32
+#ifndef _WIN32
 
     auto test_path(const std::string& path,
                    const std::string& expected_re) -> void
@@ -480,7 +480,7 @@ auto main(int argc, char* argv[]) -> int
         test_sa_invalid_length();
         test_sin6_invalid_family();
         test_sin_invalid_family();
-#ifndef WIN32
+#ifndef _WIN32
         test_path_invalid_length();
         test_sun_invalid_family();
         test_sun_valid_path_large();

@@ -18,7 +18,7 @@
 
 #include "network/length-type.hpp"              // length_type
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // sockaddr
 #else
 #include <sys/socket.h>     // sockaddr

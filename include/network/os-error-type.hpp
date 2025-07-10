@@ -16,14 +16,14 @@
 #ifndef NETWORK_OS_ERROR_TYPE_HPP
 #define NETWORK_OS_ERROR_TYPE_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>        // DWORD
 #endif
 
 namespace Network
 {
-#ifdef WIN32
+#ifdef _WIN32
     using os_error_type = DWORD;
 #else
     using os_error_type = int;

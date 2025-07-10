@@ -16,7 +16,7 @@
 #ifndef UNIX_NETWORK_APIDATA_HPP
 #define UNIX_NETWORK_APIDATA_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include "network/version.hpp"          // Version
 

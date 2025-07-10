@@ -16,7 +16,7 @@
 #ifndef NETWORK_SIN_SIZES_HPP
 #define NETWORK_SIN_SIZES_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // sockaddr_in
 #else
 #include <netinet/in.h>     // sockaddr_in

@@ -17,7 +17,7 @@
 #include "network/bytespan.hpp"         // ByteSpan
 #include "network/get-sin-pointer.hpp"  // get_sin_pointer()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // in_addr
 #else
 #include <netinet/in.h>     // in_addr

@@ -16,7 +16,7 @@
 #ifndef NETWORK_SOCKET_IP_PROTOCOL_ENUM_HPP
 #define NETWORK_SOCKET_IP_PROTOCOL_ENUM_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // IPPROTO_IP, IPPROTO_RAW, IPPROTO_TCP,
                             // IPPROTO_UDP
 #else

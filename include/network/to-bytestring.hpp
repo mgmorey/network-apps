@@ -16,7 +16,7 @@
 #ifndef NETWORK_TO_BYTESTRING_HPP
 #define NETWORK_TO_BYTESTRING_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 #include "network/to-bytestring-path.hpp"       // to_bytestring()
 #endif
 #include "network/to-bytestring-void.hpp"       // to_bytestring()

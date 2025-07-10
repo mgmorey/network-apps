@@ -16,7 +16,7 @@
 #ifndef NETWORK_TO_PATH_LENGTH_HPP
 #define NETWORK_TO_PATH_LENGTH_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include "network/length-type.hpp"              // length_type
 #include "network/path-length-limits.hpp"       // path_length_max,

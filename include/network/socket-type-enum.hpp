@@ -16,7 +16,7 @@
 #ifndef NETWORK_SOCKET_TYPE_ENUM_HPP
 #define NETWORK_SOCKET_TYPE_ENUM_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // SOCK_DGRAM, SOCK_STREAM
 #else
 #include <sys/socket.h>     // SOCK_DGRAM, SOCK_STREAM

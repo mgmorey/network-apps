@@ -19,11 +19,11 @@
 #include "network/get-sa-family.hpp"            // get_sa_family()
 #include "network/get-sin-pointer.hpp"          // get_sin_pointer()
 #include "network/get-sin6-pointer.hpp"         // get_sin6_pointer()
-#ifndef WIN32
+#ifndef _WIN32
 #include "network/get-sun-pointer.hpp"          // get_sun_pointer()
 #endif
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX
 #else
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX
@@ -38,7 +38,7 @@ auto Network::validate(ByteSpan bs) -> ByteSpan
     case AF_INET6:
         static_cast<void>(get_sin6_pointer(bs));
         break;
-#ifndef WIN32
+#ifndef _WIN32
     case AF_UNIX:
         static_cast<void>(get_sun_pointer(bs));
         break;

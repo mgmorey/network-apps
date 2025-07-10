@@ -16,7 +16,7 @@
 #ifndef NETWORK_TO_STRING_IN_ADDR_HPP
 #define NETWORK_TO_STRING_IN_ADDR_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // in_addr
 #else
 #include <netinet/in.h>     // in_addr

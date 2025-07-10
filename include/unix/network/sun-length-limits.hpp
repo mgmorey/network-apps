@@ -16,7 +16,7 @@
 #ifndef UNIX_NETWORK_SUN_LENGTH_LIMITS_HPP
 #define UNIX_NETWORK_SUN_LENGTH_LIMITS_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include "network/sun-offsets.hpp"              // sun_path_offset
 #include "network/sun-sizes.hpp"                // sun_size

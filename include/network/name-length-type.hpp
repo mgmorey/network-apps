@@ -20,7 +20,7 @@
 
 namespace Network
 {
-#ifdef WIN32
+#ifdef _WIN32
     using name_length_type = int;
 #else
     using name_length_type = std::size_t;

@@ -19,7 +19,7 @@
 #include "network/namehandler.hpp"      // NameHandler
 #include "network/namesymbol.hpp"       // NameSymbol
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // ::getpeername(), ::getsockname()
 #else
 #include <sys/socket.h>     // ::getpeername(), ::getsockname()

@@ -16,7 +16,7 @@
 #ifndef NETWORK_SOCKET_FAMILY_ENUM_HPP
 #define NETWORK_SOCKET_FAMILY_ENUM_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #else
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
@@ -28,7 +28,7 @@ namespace Network
 {
     using socket_family_enum = enum : std::uint8_t {
         af_unspec = AF_UNSPEC,
-#ifndef WIN32
+#ifndef _WIN32
         af_unix = AF_UNIX,
 #endif
         af_inet = AF_INET,

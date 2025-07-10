@@ -16,7 +16,7 @@
 #ifndef UNIX_NETWORK_GET_SUN_POINTER_HPP
 #define UNIX_NETWORK_GET_SUN_POINTER_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include "network/bytespan.hpp"         // ByteSpan
 

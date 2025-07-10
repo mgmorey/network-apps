@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include "network/get-sun-pointer.hpp"  // get_sun_pointer()
 #include "network/bytespan.hpp"         // ByteSpan

@@ -18,7 +18,7 @@
 #include "network/sa-length-limits.hpp"         // sa_length_max
 #include "network/to-size.hpp"                  // to_size()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // sockaddr
 #else
 #include <sys/socket.h>     // sockaddr

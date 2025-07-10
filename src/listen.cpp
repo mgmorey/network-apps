@@ -22,7 +22,7 @@
 #include "network/socketcore.hpp"       // SocketCore
 #include "network/to-os-error.hpp"      // to_os_error()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // ::listen()
 #else
 #include <sys/socket.h>     // ::listen()

@@ -26,7 +26,7 @@
 #include "unix/connection.hpp"          // BUFFER_SIZE, SOCKET_HINTS,
                                         // SOCKET_NAME
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // SD_SEND
 #else
 #include <sys/socket.h>     // SHUT_WR
@@ -52,7 +52,7 @@ namespace
 
     constexpr auto handle_width {6};
     constexpr auto indent_width {handle_width + 18};
-#ifdef WIN32
+#ifdef _WIN32
     constexpr auto shutdown_flags {SD_SEND};
 #else
     constexpr auto shutdown_flags {SHUT_WR};

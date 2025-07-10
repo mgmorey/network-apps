@@ -25,7 +25,7 @@
                                         // sun_length_max,
                                         // sun_length_min
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #else
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
@@ -40,7 +40,7 @@ Network::SocketLimits::SocketLimits(family_type t_family)
     switch (m_family) {
     case AF_INET:
     case AF_INET6:
-#ifndef WIN32
+#ifndef _WIN32
     case AF_UNIX:
 #endif
     case AF_UNSPEC:
@@ -63,7 +63,7 @@ auto Network::SocketLimits::max() const noexcept -> std::size_t
         return sin_length_max;
     case AF_INET6:
         return sin6_length_max;
-#ifndef WIN32
+#ifndef _WIN32
     case AF_UNIX:
         return sun_length_max;
 #endif
@@ -79,7 +79,7 @@ auto Network::SocketLimits::min() const noexcept -> std::size_t
         return sin_length_min;
     case AF_INET6:
         return sin6_length_min;
-#ifndef WIN32
+#ifndef _WIN32
     case AF_UNIX:
         return sun_length_min;
 #endif

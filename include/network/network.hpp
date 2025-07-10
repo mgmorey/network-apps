@@ -63,7 +63,7 @@
                                                 // sun_path_offset,
                                                 // sun_size
 #include "network/create-runtime.hpp"           // create_runtime()
-#ifndef WIN32
+#ifndef _WIN32
 #include "network/create-socketpair.hpp"        // create_socketpair()
 #include "network/create-socketpairresult.hpp"  // create_socketpairresult()
 #endif
@@ -81,7 +81,7 @@
 #include "network/get-hostnameresult.hpp"       // get_hostnameresult()
 #include "network/get-name.hpp"                 // get_name()
 #include "network/get-nameresult.hpp"           // get_nameresult()
-#ifndef WIN32
+#ifndef _WIN32
 #include "network/get-path-length.hpp"          // get_path_length()
 #endif
 #include "network/get-runtime.hpp"              // get_runtime()
@@ -90,7 +90,7 @@
 #include "network/get-sa-pointer.hpp"           // get_sa_pointer()
 #include "network/get-sin-pointer.hpp"          // get_sin_pointer()
 #include "network/get-sin6-pointer.hpp"         // get_sin6_pointer()
-#ifndef WIN32
+#ifndef _WIN32
 #include "network/get-sun-length.hpp"           // get_sun_length()
 #include "network/get-sun-pointer.hpp"          // get_sun_pointer()
 #endif
@@ -127,7 +127,7 @@
 #include "network/to-handle.hpp"                // to_handle()
 #include "network/to-name-length.hpp"           // to_name_length()
 #include "network/to-os-error.hpp"              // to_os_error()
-#ifndef WIN32
+#ifndef _WIN32
 #include "network/to-path-length.hpp"           // to_path_length()
 #include "network/to-path.hpp"                  // to_path()
 #endif
@@ -135,7 +135,7 @@
 #include "network/to-size.hpp"                  // to_size()
 #include "network/to-socket-length.hpp"         // to_socket_length()
 #include "network/to-string.hpp"                // to_string()
-#ifndef WIN32
+#ifndef _WIN32
 #include "network/to-sun-length.hpp"            // to_sun_length()
 #endif
 #include "network/types.hpp"                    // Buffer, ByteString,
@@ -164,11 +164,11 @@
 #include "network/uniquesocket.hpp"             // UniqueSocket
 #include "network/uniquify.hpp"                 // uniquify()
 #include "network/validate.hpp"                 // validate()
-#ifndef WIN32
+#ifndef _WIN32
 #include "network/unixsockethints.hpp"          // UnixSocketHints
 #endif
 #include "network/version.hpp"                  // Version
-#ifdef WIN32
+#ifdef _WIN32
 #include "network/windowsversion.hpp"           // WindowsVersion
 #endif
 #include "network/write.hpp"                    // write()

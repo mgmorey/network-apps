@@ -16,7 +16,7 @@
 #include "network/to-string-in6-addr.hpp"       // to_string()
 #include "network/textbuffer.hpp"               // TextBuffer
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // AF_INET6
 #include <ws2tcpip.h>       // INET6_ADDRSTRLEN, inet_ntop()
 #else

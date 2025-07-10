@@ -21,7 +21,7 @@
 #include "network/socket-protocol-type.hpp"     // socket_protocol_type
 #include "network/socket-type-type.hpp"         // socket_type_type
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <ws2tcpip.h>       // addrinfo
 #else
 #include <netdb.h>          // addrinfo

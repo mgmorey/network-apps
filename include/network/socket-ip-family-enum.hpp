@@ -16,7 +16,7 @@
 #ifndef NETWORK_SOCKET_IP_FAMILY_ENUM_HPP
 #define NETWORK_SOCKET_IP_FAMILY_ENUM_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNSPEC
 #else
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNSPEC

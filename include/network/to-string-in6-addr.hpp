@@ -16,7 +16,7 @@
 #ifndef NETWORK_TO_STRING_IN6_ADDR_HPP
 #define NETWORK_TO_STRING_IN6_ADDR_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <ws2tcpip.h>       // in6_addr
 #else
 #include <netinet/in.h>     // in6_addr

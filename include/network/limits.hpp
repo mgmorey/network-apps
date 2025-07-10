@@ -18,7 +18,7 @@
 
 #include "network/name-length-limits.hpp"       // name_length_max,
                                                 // name_length_min
-#ifndef WIN32
+#ifndef _WIN32
 #include "network/path-length-limits.hpp"       // path_length_max,
                                                 // path_length_min
 #endif
@@ -28,7 +28,7 @@
                                                 // sin_length_min
 #include "network/sin6-length-limits.hpp"       // sin6_length_max,
                                                 // sin6_length_min
-#ifndef WIN32
+#ifndef _WIN32
 #include "network/sun-length-limits.hpp"        // sun_length_max,
                                                 // sun_length_min
 #endif

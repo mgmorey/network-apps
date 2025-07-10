@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include "network/address.hpp"          // Address
 #include "network/to-path.hpp"          // to_path()

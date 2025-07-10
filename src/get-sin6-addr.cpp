@@ -17,7 +17,7 @@
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/get-sin6-pointer.hpp"         // get_sin6_pointer()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <ws2tcpip.h>       // in6_addr
 #else
 #include <netinet/in.h>     // in6_addr

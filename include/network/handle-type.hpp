@@ -16,7 +16,7 @@
 #ifndef NETWORK_HANDLE_TYPE_HPP
 #define NETWORK_HANDLE_TYPE_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // SOCKET
 #else
 #ifndef SOCKET

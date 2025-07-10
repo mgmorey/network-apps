@@ -20,7 +20,7 @@
                                         // get_hostnameresult(), run()
 #include "network/parse.hpp"            // parse()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // WSAEFAULT, WSAEPROCLIM,
                             // WSANOTINITIALISED, WSASYSNOTREADY,
                             // WSAVERNOTSUPPORTED

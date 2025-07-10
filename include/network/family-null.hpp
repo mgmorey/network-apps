@@ -18,7 +18,7 @@
 
 #include "network/family-type.hpp"      // family_type
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>           // AF_UNSPEC
 #else
 #include <sys/socket.h>         // AF_UNSPEC

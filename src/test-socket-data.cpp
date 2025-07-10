@@ -22,7 +22,7 @@
                                         // shutdown()
 #include "network/parse.hpp"            // parse()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>   // AF_INET, AF_UNSPEC, SOCK_STREAM, ::close(),
                         // ::socket()
 #else
@@ -54,7 +54,7 @@ namespace
     using Network::shutdown;
 
     constexpr auto handle_high {1000000000};
-#ifdef WIN32
+#ifdef _WIN32
     constexpr auto expected_failed_listen_code {WSAENOTSOCK};
     constexpr auto expected_failed_shutdown_code {WSAENOTSOCK};
 #else

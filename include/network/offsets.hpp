@@ -17,7 +17,7 @@
 #define NETWORK_OFFSETS_HPP
 
 #include "network/sa-offsets.hpp"       // sa_data_offset
-#ifndef WIN32
+#ifndef _WIN32
 #include "network/sun-offsets.hpp"      // sun_path_offset
 #endif
 

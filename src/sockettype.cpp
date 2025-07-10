@@ -15,7 +15,7 @@
 
 #include "network/sockettype.hpp"       // SocketType, operator<<()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>   // SOCK_DGRAM, SOCK_RAW, SOCK_RDM,
                         // SOCK_SEQPACKET, SOCK_STREAM
 #else

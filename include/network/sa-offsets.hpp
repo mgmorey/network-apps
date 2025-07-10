@@ -18,7 +18,7 @@
 
 #include "network/os-features.hpp"      // HAVE_SOCKADDR_SA_LEN
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // sa_data, sockaddr
 #else
 #include <sys/socket.h>     // sa_data, sockaddr

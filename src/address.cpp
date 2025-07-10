@@ -26,7 +26,7 @@
 #include "network/socket-length-type.hpp"       // socket_length_type
 #endif
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX
 #else
 #include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX
@@ -99,7 +99,7 @@ auto Network::Address::text() const -> std::string
         return sin_text();
     case AF_INET6:
         return sin6_text();
-#ifndef WIN32
+#ifndef _WIN32
     case AF_UNIX:
         return quote(sun_text());
 #endif

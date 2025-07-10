@@ -17,13 +17,13 @@
 #define NETWORK_VALIDATE_HPP
 
 #include "network/validate-bs.hpp"      // validate()
-#ifndef WIN32
+#ifndef _WIN32
 #include "network/validate-path.hpp"    // validate()
 #endif
 #include "network/validate-sa.hpp"      // validate()
 #include "network/validate-sin.hpp"     // validate()
 #include "network/validate-sin6.hpp"    // validate()
-#ifndef WIN32
+#ifndef _WIN32
 #include "network/validate-sun.hpp"     // validate()
 #endif
 

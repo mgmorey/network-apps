@@ -16,7 +16,7 @@
 #ifndef UNIX_NETWORK_UNIXSOCKETHINTS_HPP
 #define UNIX_NETWORK_UNIXSOCKETHINTS_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include "network/socket-family-enum.hpp"       // socket_family_enum
 #include "network/socket-flags-type.hpp"        // socket_flags_type

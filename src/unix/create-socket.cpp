@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include "network/create-socket.hpp"    // create_socket()
 #include "network/inetsocket.hpp"       // InetSocket

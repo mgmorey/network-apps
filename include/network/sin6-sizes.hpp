@@ -16,7 +16,7 @@
 #ifndef NETWORK_SIN6_SIZES_HPP
 #define NETWORK_SIN6_SIZES_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <ws2tcpip.h>       // sockaddr_in6
 #else
 #include <netinet/in.h>     // sockaddr_in6

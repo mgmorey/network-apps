@@ -16,7 +16,7 @@
 #ifndef UNIX_NETWORK_CREATE_SOCKETPAIR_HPP
 #define UNIX_NETWORK_CREATE_SOCKETPAIR_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/sockethints.hpp"      // SocketHints

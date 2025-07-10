@@ -15,7 +15,7 @@
 
 #include "network/socketflags.hpp"      // SocketFlags, operator<<()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
                         // AI_NUMERICHOST, AI_NUMERICSERV, AI_PASSIVE,
                         // AI_V4MAPPED

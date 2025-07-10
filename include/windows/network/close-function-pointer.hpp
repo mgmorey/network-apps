@@ -16,7 +16,7 @@
 #ifndef WINDOWS_NETWORK_CLOSE_FUNCTION_POINTER_HPP
 #define WINDOWS_NETWORK_CLOSE_FUNCTION_POINTER_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 
 #include "network/close-function-type.hpp"      // close_function_type
 

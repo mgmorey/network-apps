@@ -19,7 +19,7 @@
 #include "network/port-type.hpp"        // port_type
 #include "network/to-string-in-addr.hpp"// to_string()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // in_addr
 #else
 #include <netinet/in.h>     // in_addr

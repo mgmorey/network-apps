@@ -20,7 +20,7 @@
 #include "network/to-bytestring-void.hpp"       // to_bytestring()
 #include "network/to-sa-length.hpp"             // to_sa_length()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <ws2tcpip.h>       // addrinfo
 #else
 #include <netdb.h>          // addrinfo

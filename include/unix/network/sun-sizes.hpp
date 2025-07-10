@@ -16,7 +16,7 @@
 #ifndef UNIX_NETWORK_SUN_SIZES_HPP
 #define UNIX_NETWORK_SUN_SIZES_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include <sys/un.h>         // sockaddr_un
 

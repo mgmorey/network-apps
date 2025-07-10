@@ -16,7 +16,7 @@
 #ifndef WINDOWS_NETWORK_WINDOWSVERSION_HPP
 #define WINDOWS_NETWORK_WINDOWSVERSION_HPP
 
-#ifdef WIN32
+#ifdef _WIN32
 
 #include "network/version.hpp"  // Version
 

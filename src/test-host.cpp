@@ -29,7 +29,7 @@
                                         // to_bytestring(), uniquify()
 #include "network/parse.hpp"            // parse()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_UNSPEC, SOCK_STREAM, sockaddr_in
 #include <ws2tcpip.h>       // AI_CANONNAME
 #else
@@ -79,7 +79,7 @@ namespace
 
 #if defined(OS_CYGWIN_NT)
     constexpr auto expected_getnameinfo_re {""};
-#elif defined(OS_DARWIN)
+#elifdef OS_DARWIN
     constexpr auto expected_getnameinfo_re {""};
 #else
     constexpr auto expected_getnameinfo_re {
@@ -151,7 +151,7 @@ namespace
 
     auto get_codes_family() -> const ErrorCodeSet&
     {
-#if defined(WIN32)
+#ifdef _WIN32
         static const ErrorCodeSet codes = {WSAEAFNOSUPPORT};
 #else
         static const ErrorCodeSet codes = {EAI_FAMILY};
@@ -162,9 +162,9 @@ namespace
 #if !defined(OS_CYGWIN_NT) && !defined(OS_MINGW64_NT)
     auto get_codes_protocol() -> const ErrorCodeSet&
     {
-#if defined(WIN32)
+#ifdef _WIN32
         static const ErrorCodeSet codes = {0};
-#elif defined(OS_DARWIN)
+#elifdef OS_DARWIN
         static const ErrorCodeSet codes = {EAI_BADHINTS};
 #else
         static const ErrorCodeSet codes = {EAI_SOCKTYPE};
@@ -175,9 +175,9 @@ namespace
 
     auto get_codes_socktype() -> const ErrorCodeSet&
     {
-#if defined(WIN32)
+#ifdef _WIN32
         static const ErrorCodeSet codes = {WSAESOCKTNOSUPPORT};
-#elif defined(OS_DARWIN)
+#elifdef OS_DARWIN
         static const ErrorCodeSet codes = {EAI_BADHINTS};
 #else
         static const ErrorCodeSet codes = {EAI_SOCKTYPE};

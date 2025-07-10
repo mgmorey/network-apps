@@ -29,7 +29,7 @@
 #include "network/sockettype.hpp"               // SocketType
 #include "network/to-os-error.hpp"              // to_os_error()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // ::socket()
 #else
 #include <sys/socket.h>     // ::socket()

@@ -19,7 +19,7 @@
 #include "network/handle-type.hpp"      // handle_type
 #include "network/handler.hpp"          // Handler
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // sockaddr
 #include <ws2tcpip.h>       // socklen_t
 #else

@@ -18,7 +18,7 @@
 
 #include "network/bytespan.hpp"         // ByteSpan
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // sockaddr_in
 #else
 #include <netinet/in.h>     // sockaddr_in

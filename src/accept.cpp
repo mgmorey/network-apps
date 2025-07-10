@@ -25,7 +25,7 @@
 #include "network/to-os-error.hpp"              // to_os_error()
 #include "network/to-string-span-byte.hpp"      // to_string()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // ::accept()
 #else
 #include <sys/socket.h>     // ::accept()

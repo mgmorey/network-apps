@@ -16,13 +16,13 @@
 #ifndef NETWORK_SOCKET_LENGTH_TYPE_HPP
 #define NETWORK_SOCKET_LENGTH_TYPE_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 #include <sys/socket.h>     // socklen_t
 #endif
 
 namespace Network
 {
-#ifdef WIN32
+#ifdef _WIN32
     using socket_length_type = int;
 #else
     using socket_length_type = socklen_t;

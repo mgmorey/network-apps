@@ -16,7 +16,7 @@
 #ifndef UNIX_NETWORK_TO_SUN_LENGTH_HPP
 #define UNIX_NETWORK_TO_SUN_LENGTH_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include "network/length-type.hpp"              // length_type
 #include "network/sun-length-limits.hpp"        // sun_length_max,

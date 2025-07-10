@@ -23,7 +23,7 @@
 #include "network/to-sa-length.hpp"     // to_sa_length()
 #include "network/to-string-void.hpp"   // to_string()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <ws2tcpip.h>       // addrinfo
 #else
 #include <netdb.h>          // addrinfo

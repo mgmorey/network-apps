@@ -16,7 +16,7 @@
 #ifndef UNIX_NETWORK_SUN_OFFSETS_HPP
 #define UNIX_NETWORK_SUN_OFFSETS_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include "network/os-features.hpp"      // HAVE_SOCKADDR_SA_LEN
 

@@ -26,7 +26,7 @@
 #include "network/socket-length-type.hpp"       // socket_length_type
 #endif
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // in_addr
 #include <ws2tcpip.h>       // in6_addr
 #else
@@ -35,7 +35,7 @@
 
 #include <ostream>      // std::ostream
 #include <string>       // std::string
-#ifndef WIN32
+#ifndef _WIN32
 #include <string_view> // std::string_view
 #endif
 
@@ -81,7 +81,7 @@ namespace Network
         [[nodiscard]] auto sin6_addr() const -> in6_addr;
         [[nodiscard]] auto sin6_port() const -> port_type;
         [[nodiscard]] auto sin6_text() const -> std::string;
-#ifndef WIN32
+#ifndef _WIN32
         [[nodiscard]] auto sun_text() const -> std::string_view;
 #endif
 

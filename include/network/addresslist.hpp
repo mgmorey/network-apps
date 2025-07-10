@@ -22,7 +22,7 @@
 #include "network/serviceview.hpp"      // ServiceView
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <ws2tcpip.h>       // addrinfo
 #else
 #include <netdb.h>          // addrinfo

@@ -19,7 +19,7 @@
 #include "network/openhandler.hpp"      // OpenHandler
 #include "network/opensymbol.hpp"       // OpenSymbol
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // ::bind(), ::connect()
 #else
 #include <sys/socket.h>     // ::bind(), ::connect()

@@ -25,7 +25,7 @@
                                         // string_null
 #include "network/parse.hpp"            // parse()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, PF_INET, PF_INET6,
                             // IPPROTO_IP, IPPROTO_TCP, IPPROTO_UDP,
                             // SOCK_DGRAM, SOCK_STREAM, WSAEFAULT,
@@ -83,7 +83,7 @@ namespace
     public:
         static auto get_codes_unreachable() -> const ErrorCodeSet&
         {
-#if defined(WIN32)
+#ifdef _WIN32
             static const ErrorCodeSet codes {
                 WSAENETUNREACH
             };

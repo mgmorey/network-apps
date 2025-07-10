@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifdef WIN32
+#ifdef _WIN32
 
 #include "network/format-ai-error.hpp"  // format_ai_error()
 #include "network/format-os-error.hpp"  // format_os_error()

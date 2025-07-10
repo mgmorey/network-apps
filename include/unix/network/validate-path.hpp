@@ -16,7 +16,7 @@
 #ifndef UNIX_NETWORK_VALIDATE_PATH_HPP
 #define UNIX_NETWORK_VALIDATE_PATH_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include <string_view>      // std::string_view
 

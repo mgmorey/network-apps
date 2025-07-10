@@ -17,7 +17,7 @@
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/validate-sin6.hpp"            // validate()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <ws2tcpip.h>       // sockaddr_in6
 #else
 #include <netinet/in.h>     // sockaddr_in6

@@ -16,7 +16,7 @@
 #ifndef UNIX_NETWORK_TO_BYTESTRING_PATH_HPP
 #define UNIX_NETWORK_TO_BYTESTRING_PATH_HPP
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include "network/bytestring.hpp"       // ByteString
 

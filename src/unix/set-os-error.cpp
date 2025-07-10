@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef WIN32
+#ifndef _WIN32
 
 #include "network/set-os-error.hpp"     // set_os_error()
 #include "network/os-error-type.hpp"    // os_error_type

@@ -24,7 +24,7 @@
 #include "network/string-null.hpp"      // string_null
 #include "network/to-os-error.hpp"      // to_os_error()
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <ws2tcpip.h>       // addrinfo, ::freeaddrinfo(), ::getaddrinfo()
 #else
 #include <netdb.h>          // addrinfo, ::freeaddrinfo(), ::getaddrinfo()

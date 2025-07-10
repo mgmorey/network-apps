@@ -18,7 +18,7 @@
 #include "network/get-sin-pointer.hpp"  // get_sin_pointer()
 #include "network/port-type.hpp"        // port_type
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // ntohs()
 #else
 #include <netinet/in.h>     // ntohs()

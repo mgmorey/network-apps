@@ -22,7 +22,7 @@
 #include "network/valueerror.hpp"       // ValueError
 #endif
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>       // AF_INET, sockaddr_in
 #else
 #include <netinet/in.h>     // sockaddr_in
