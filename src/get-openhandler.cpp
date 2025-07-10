@@ -14,6 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-openhandler.hpp"  // get_openhandler()
+#include "network/error-strings.hpp"    // HANDLER_ERROR
+#include "network/logicerror.hpp"       // LogicError
 #include "network/openhandler.hpp"      // OpenHandler
 #include "network/opensymbol.hpp"       // OpenSymbol
 
@@ -31,6 +33,6 @@ auto Network::get_openhandler(OpenSymbol symbol) -> OpenHandler
     case OpenSymbol::connect:
         return {::connect, "::connect"};
     default:
-        return {nullptr, nullptr};
+        throw LogicError(HANDLER_ERROR);
     }
 }

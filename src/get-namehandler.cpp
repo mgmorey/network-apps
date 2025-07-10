@@ -14,6 +14,8 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-namehandler.hpp"  // get_namehandler()
+#include "network/error-strings.hpp"    // HANDLER_ERROR
+#include "network/logicerror.hpp"       // LogicError
 #include "network/namehandler.hpp"      // NameHandler
 #include "network/namesymbol.hpp"       // NameSymbol
 
@@ -31,6 +33,6 @@ auto Network::get_namehandler(NameSymbol symbol) -> NameHandler
     case NameSymbol::getpeername:
         return {::getpeername, "::getpeername"};
     default:
-        return {nullptr, nullptr};
+        throw LogicError(HANDLER_ERROR);
     }
 }

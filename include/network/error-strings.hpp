@@ -16,6 +16,7 @@
 #ifndef NETWORK_ERROR_STRINGS_HPP
 #define NETWORK_ERROR_STRINGS_HPP
 
-#define VISITOR_ERROR	"non-exhaustive visitor!"  // NOLINT
+#define HANDLER_ERROR	"No name/open handler for symbol"  // NOLINT
+#define VISITOR_ERROR	"Non-exhaustive visitor!"  // NOLINT
 
 #endif
