@@ -41,7 +41,7 @@ include gmake/flags/glibcxx-flags.mk
 endif
 
 # Set build flags for LTO
-ifneq "$(filter Minimal Release Small,$(BUILD_TYPE))" ""
+ifneq "$(filter Minimal Small,$(BUILD_TYPE))" ""
 include gmake/flags/lto-flags.mk
 endif
 
