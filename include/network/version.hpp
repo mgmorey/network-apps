@@ -48,7 +48,7 @@ namespace Network
 
         [[nodiscard]] constexpr auto minor() const noexcept -> field_type
         {
-            return m_major;
+            return m_minor;
         }
 
         constexpr auto operator<(const Version& t_other) const noexcept -> bool
@@ -92,8 +92,8 @@ namespace Network
     static_assert(Version(0).major() == 0);
     static_assert(Version(0, 0).major() == 0);
     static_assert(Version(0, 0).minor() == 0);
-    static_assert(Version(1, 1).major() == 1);
-    static_assert(Version(1, 1).minor() == 1);
+    static_assert(Version(0, 1).major() == 0);
+    static_assert(Version(0, 1).minor() == 1);
 }
 
 #endif
