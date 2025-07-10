@@ -31,9 +31,9 @@ namespace Network
         {
         }
 
-        const EndpointView& m_endpoint;
-        const SocketHints& m_hints;
-        const SharedRuntime& m_sr;
+        const EndpointView& m_endpoint;  // NOLINT
+        const SocketHints& m_hints;  // NOLINT
+        const SharedRuntime& m_sr;  // NOLINT
     };
 }
 
