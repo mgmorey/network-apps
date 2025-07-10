@@ -22,10 +22,11 @@
                                         // OptionalHints,
                                         // OptionalHostname, OsError,
                                         // SharedRuntime, SocketHints,
-                                        // SocketHost, get_hostname(),
-                                        // insert(), os_error_type,
-                                        // run(), to_bytestring(),
-                                        // uniquify()
+                                        // SocketHost, get_endpoint(),
+                                        // get_endpointresult(),
+                                        // get_hostname(), insert(),
+                                        // os_error_type, run(),
+                                        // to_bytestring(), uniquify()
 #include "network/parse.hpp"            // parse()
 
 #ifdef WIN32
@@ -63,6 +64,7 @@ namespace
     using Network::SharedRuntime;
     using Network::SocketHints;
     using Network::SocketHost;
+    using Network::get_endpoint;
     using Network::get_endpointresult;
     using Network::get_hostname;
     using Network::insert;
@@ -206,6 +208,15 @@ namespace
         return operands;
     }
 
+    auto print(const Error& error) -> void
+    {
+        if (is_verbose) {
+            std::cout << "Exception: "
+                      << error.what()
+                      << std::endl;
+        }
+    }
+
     auto print(const OsError& error) -> void
     {
         if (is_verbose) {
@@ -244,17 +255,30 @@ namespace
 
     auto test_get_endpoint_invalid_flag(const SharedRuntime& sr) -> void
     {
-        const ByteString addr {get_inet_address()};
-        std::string hostname_str {1};
-        std::string service_str;
         std::string actual_str;
+        const ByteString addr {get_inet_address()};
 
-        if (const auto error {get_endpointresult(hostname_str,
-                                                  service_str,
-                                                  addr, -1,
-                                                  sr)}) {
+        try {
+            static_cast<void>(get_endpoint(addr, -1, sr));
+        }
+        catch (const Error& error) {
             print(error);
-            actual_str = error.string();
+            actual_str = error.what();
+        }
+
+        const std::regex expected_regex {expected_getnameinfo_re};
+        assert(std::regex_match(actual_str, expected_regex));
+    }
+
+    auto test_get_endpointresult_invalid_flag(const SharedRuntime& sr) -> void
+    {
+        std::string actual_str;
+        const ByteString addr {get_inet_address()};
+        const auto result {get_endpointresult(addr, -1, sr)};
+
+        if (!result) {
+            print(result.error());
+            actual_str = result.error().string();
         }
 
         const std::regex expected_regex {expected_getnameinfo_re};
@@ -308,6 +332,7 @@ auto main(int argc, char* argv[]) -> int
         }
 
         test_get_endpoint_invalid_flag(rt);
+        test_get_endpointresult_invalid_flag(rt);
         test_invalid_family();
         test_invalid_socktype();
 #if !defined(OS_CYGWIN_NT) && !defined(OS_MINGW64_NT)
