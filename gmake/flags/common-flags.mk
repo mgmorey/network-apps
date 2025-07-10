@@ -104,9 +104,9 @@ CXXFLAGS += $(if $(filter gnu,$(as_family)),-pipe,)
 # Add language standard flag to CXXFLAGS
 CXXFLAGS += $(if $(standard),-std=$(standard),)
 
-# Add standard library selection flag to CXXFLAGS
-CXXFLAGS += $(if $(filter clang,$(cxx_family)),$(if	\
-$(USING_STDLIB),-stdlib=$(USING_STDLIB),),)
+# Add standard library specification flag to CXXFLAGS (for Clang compiler)
+CXXFLAGS += $(if $(filter clang,$(cxx_family)),$(if $(filter libc++	\
+libstdc++,$(USING_STDLIB)),-stdlib=$(USING_STDLIB),),)
 
 # Define variables for assembler listing option flags
 listing = $(@:$(object_suffix)=.lst)
@@ -161,11 +161,12 @@ $(USING_LINKER),-fuse-ld=$(USING_LINKER),),)
 
 # LDLIBS
 
-# Add standard library selection flag to LDLIBS
-LDLIBS += $(if $(filter clang,$(cxx_family)),$(if	\
-$(USING_STDLIB),$(subst lib,-l,$(USING_STDLIB)),),)
+# Add flag to link standard library to LDLIBS (for Clang compiler)
+LDLIBS += $(if $(filter clang,$(cxx_family)),$(if $(filter libc++	\
+libstdc++,$(USING_STDLIB)),$(patsubst lib%,-l%,$(USING_STDLIB)),),)
 
-LDLIBS += $(if $(filter MINGW64_NT,$(os_label_kernel)),-lws2_32,)
+# Add flag to link WinSock 2.0 library to LDLIBS (for Windows API)
+LDLIBS += $(if $(is_windows_api),-lws2_32,)
 
 # TIDY_FLAGS
 
