@@ -161,7 +161,7 @@ namespace
         return codes;
     }
 
-#if !defined(__CYGWIN__) && !defined(OS_MINGW64_NT)
+#if !defined(__CYGWIN__) && !defined(_WIN32)
     auto get_codes_protocol() -> const ErrorCodeSet&
     {
 #ifdef _WIN32
@@ -299,7 +299,7 @@ namespace
         test(localhost, hints, get_codes_family());
     }
 
-#if !defined(__CYGWIN__) && !defined(OS_MINGW64_NT)
+#if !defined(__CYGWIN__) && !defined(_WIN32)
     auto test_invalid_protocol() -> void
     {
         const SocketHints hints {AF_UNSPEC, SOCK_STREAM, -1, 0};
@@ -343,7 +343,7 @@ auto main(int argc, char* argv[]) -> int
         test_get_endpointresult_invalid_flag(rt);
         test_invalid_family();
         test_invalid_socktype();
-#if !defined(__CYGWIN__) && !defined(OS_MINGW64_NT)
+#if !defined(__CYGWIN__) && !defined(_WIN32)
         test_invalid_protocol();
 #endif
 
