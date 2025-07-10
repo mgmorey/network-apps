@@ -27,7 +27,7 @@ auto Network::connect(const EndpointView& endpoint,
                       const SocketHints& hints,
                       const SharedRuntime& sr) -> SocketResultVector
 {
-    OpenInputs oi {endpoint, hints, sr};
+    const OpenInputs oi {endpoint, hints, sr};
     return open(oi, OpenSymbol::connect);
 }
 
