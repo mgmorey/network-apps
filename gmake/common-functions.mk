@@ -160,10 +160,6 @@ $(if $(filter true,$(WITH_COVERAGE)),$(call install-objects,$1/object),)
 $(if $(filter true,$(WITH_COVERAGE)),$(call install-sources,$1/src),)
 endef
 
-# $(is-shared-library)
-is-shared-library = $(filter shared,$(WITH_LIBRARY))
-is-static-library = $(filter static,$(WITH_LIBRARY))
-
 # $(call join-flags,FLAG-OPTION,FLAG-ARG)
 join-flags = $(if $(strip $2),$(subst $(spc),$(com),$1 $(strip $2)),)
 
@@ -192,6 +188,12 @@ endef
 define to-upper
 $(shell printf '%s\n' $1 | tr '[:lower:]' '[:upper:]')
 endef
+
+# $(with-shared-library)
+with-shared-library = $(filter shared,$(WITH_LIBRARY))
+
+# $(with-static-library)
+with-static-library = $(filter static,$(WITH_LIBRARY))
 
 # Local Variables:
 # mode: makefile

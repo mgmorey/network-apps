@@ -161,8 +161,8 @@ test_programs = $(call get-programs-from-sources,$(test_sources))
 unix_programs = $(call get-programs-from-sources,$(unix_sources))
 
 library_aliases = $(addprefix $(output_prefix)$(library_stem),$(alias_suffixes))
-libraries = $(if $(is-shared-library),$(library_aliases)	\
-$(shared_library),) $(if $(is-static-library),$(static_library),)
+libraries = $(if $(with-shared-library),$(library_aliases)	\
+$(shared_library),) $(if $(with-static-library),$(static_library),)
 
 gcov_files = $(gcov_datafiles) $(gcov_notefiles)
 gcov_datafiles = $(objects:$(object_suffix)=.gcda)
@@ -349,7 +349,7 @@ $(programs): $(firstword $(libraries))
 $(logfiles): $(programs)
 	$(call run-programs,$(^F),$(program_args))
 
-sizes.txt: $(if $(is-shared-library),$(shared_library) $(objects)) $(programs)
+sizes.txt: $(if $(with-shared-library),$(shared_library) $(objects)) $(programs)
 	if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $(sort $^) >$@
 

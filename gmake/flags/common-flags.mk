@@ -93,7 +93,7 @@ CPPFLAGS += $(addprefix -D,$(cpp_symbols))
 CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
 
 # Add position-independent code flag to CXXFLAGS
-CXXFLAGS += $(if $(is-shared-library),-fPIC,)
+CXXFLAGS += $(if $(with-shared-library),-fPIC,)
 
 # Add automatic variable initialization flag to CXXFLAGS
 CXXFLAGS += -ftrivial-auto-var-init=zero
