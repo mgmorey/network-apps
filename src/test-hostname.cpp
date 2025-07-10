@@ -126,6 +126,7 @@ namespace
             print(error);
             actual_str = error.what();
         }
+
         assert(actual_str.empty());
     }
 }
