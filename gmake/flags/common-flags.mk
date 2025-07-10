@@ -104,6 +104,10 @@ CXXFLAGS += $(if $(filter gnu,$(as_family)),-pipe,)
 # Add language standard flag to CXXFLAGS
 CXXFLAGS += $(if $(standard),-std=$(standard),)
 
+# Add standard library selection flag to CXXFLAGS
+CXXFLAGS += $(if $(filter clang,$(cxx_family)),$(if	\
+$(USING_STDLIB),-stdlib=$(USING_STDLIB),),)
+
 # Define variables for assembler listing option flags
 listing = $(@:$(object_suffix)=.lst)
 asflags = $(if $(is_object),$(if $(filter true,$(WITH_LISTINGS)),$(if	\
@@ -156,6 +160,10 @@ LDFLAGS += $(if $(filter clang,$(cxx_family)),$(if	\
 $(USING_LINKER),-fuse-ld=$(USING_LINKER),),)
 
 # LDLIBS
+
+# Add standard library selection flag to LDLIBS
+LDLIBS += $(if $(filter clang,$(cxx_family)),$(if	\
+$(USING_STDLIB),$(subst lib,-l,$(USING_STDLIB)),),)
 
 LDLIBS += $(if $(filter MINGW64_NT,$(os_label_kernel)),-lws2_32,)
 

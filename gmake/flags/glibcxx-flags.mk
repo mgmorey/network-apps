@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+ifeq "$(filter libc++,$(USING_STDLIB))" ""
 ifeq "$(filter -D_FORTIFY_SOURCE=%,$(CPPFLAGS))" ""
 ifeq "$(filter -D_GLIBCXX_DEBUG,$(CPPFLAGS))" ""
 
@@ -25,5 +26,6 @@ CPPFLAGS += -D_GLIBCXX_DEBUG_BACKTRACE
 LDLIBS += -lstdc++exp
 endif
 
+endif
 endif
 endif
