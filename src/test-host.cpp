@@ -79,7 +79,7 @@ namespace
 
 #ifdef OS_CYGWIN_NT
     constexpr auto expected_getnameinfo_re {""};
-#elifdef OS_DARWIN
+#elifdef __APPLE__
     constexpr auto expected_getnameinfo_re {""};
 #elifdef _WIN32
     constexpr auto expected_getnameinfo_re {""};
@@ -166,7 +166,7 @@ namespace
     {
 #ifdef _WIN32
         static const ErrorCodeSet codes = {0};
-#elifdef OS_DARWIN
+#elifdef __APPLE__
         static const ErrorCodeSet codes = {EAI_BADHINTS};
 #else
         static const ErrorCodeSet codes = {EAI_SOCKTYPE};
@@ -179,7 +179,7 @@ namespace
     {
 #ifdef _WIN32
         static const ErrorCodeSet codes = {WSAESOCKTNOSUPPORT};
-#elifdef OS_DARWIN
+#elifdef __APPLE__
         static const ErrorCodeSet codes = {EAI_BADHINTS};
 #else
         static const ErrorCodeSet codes = {EAI_SOCKTYPE};

@@ -110,7 +110,7 @@ namespace
 
     auto get_codes_permission_denied() -> const ErrorCodeSet&
     {
-#ifdef OS_DARWIN
+#ifdef __APPLE__
         static const ErrorCodeSet codes {EACCES, EROFS};
 #else
 	static const ErrorCodeSet codes {EACCES};
@@ -258,7 +258,7 @@ namespace
     auto test_paths_invalid() -> void
     {
         test({}, {0}, expected_payload_length_re);
-#if defined(OS_DARWIN) || defined(OS_CYGWIN_NT)
+#if defined(__APPLE__) || defined(OS_CYGWIN_NT)
         test("", get_codes_no_such_file_or_directory(), {});
 #endif
 #ifndef OS_CYGWIN_NT
@@ -271,7 +271,7 @@ namespace
 
     auto test_paths_valid() -> void
     {
-#if ! (defined(OS_DARWIN) || defined(OS_CYGWIN_NT))
+#if ! (defined(__APPLE__) || defined(OS_CYGWIN_NT))
         test("", {0}, {});
 #endif
 
