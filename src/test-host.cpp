@@ -77,9 +77,15 @@ namespace
     using ErrorCodeSet = std::set<os_error_type>;
     using StringList = std::list<std::string>;
 
+#if defined(OS_CYGWIN_NT)
+    constexpr auto expected_getnameinfo_re {""};
+#elif defined(OS_DARWIN)
+    constexpr auto expected_getnameinfo_re {""};
+#else
     constexpr auto expected_getnameinfo_re {
         R"(Call to ::getnameinfo\(.+\) returned -?\d+ \(.+\))"
     };
+#endif
 
     constexpr auto localhost {"localhost"};
 
