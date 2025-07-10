@@ -16,18 +16,11 @@
 #ifndef NETWORK_OPENPARAMETERS_HPP
 #define NETWORK_OPENPARAMETERS_HPP
 
-#include "network/endpointview.hpp"     // Endpoint
-#include "network/sharedruntime.hpp"    // SharedRuntime
-#include "network/sockethints.hpp"      // SocketHints
+#include "network/openinputs.hpp"       // OpenInputs
 
 namespace Network
 {
-    struct OpenParameters
-    {
-        const EndpointView& m_endpoint;
-        const SocketHints& m_hints;
-        const SharedRuntime& m_sr;
-    };
+    using OpenParameters = OpenInputs;
 }
 
 #endif

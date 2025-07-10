@@ -13,23 +13,21 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_INSERT_ENDPOINT_HPP
-#define NETWORK_INSERT_ENDPOINT_HPP
+#ifndef NETWORK_OPENINPUTS_HPP
+#define NETWORK_OPENINPUTS_HPP
 
-#include "network/insert-hostname.hpp"  // insert()
-#include "network/openinputs.hpp"       // OpenInputs
-#include "network/oserror.hpp"          // OsError
+#include "network/endpointview.hpp"     // Endpoint
+#include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/sockethints.hpp"      // SocketHints
 
 namespace Network
 {
-    auto insert(auto it, const OpenInputs& oi) -> OsError
+    struct OpenInputs
     {
-        return insert(it,
-                      oi.m_endpoint.at(0),
-                      oi.m_endpoint.at(1),
-                      oi.m_hints,
-                      oi.m_sr);
-    }
+        const EndpointView& m_endpoint;
+        const SocketHints& m_hints;
+        const SharedRuntime& m_sr;
+    };
 }
 
 #endif
