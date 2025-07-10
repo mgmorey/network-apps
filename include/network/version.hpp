@@ -84,9 +84,16 @@ namespace Network
                            Version version) noexcept -> std::ostream&;
 
     static_assert(Version {} == Version {0, 0});
+    static_assert(Version {0} == Version {0, 0});
+    static_assert(Version {0, 0} == Version {0});
     static_assert(Version {0, 0} < Version {0, 1});
     static_assert(Version {0, 1} < Version {1, 0});
     static_assert(Version {1, 0} < Version {2, 0});
+    static_assert(Version(0).major() == 0);
+    static_assert(Version(0, 0).major() == 0);
+    static_assert(Version(0, 0).minor() == 0);
+    static_assert(Version(1, 1).major() == 1);
+    static_assert(Version(1, 1).minor() == 1);
 }
 
 #endif
