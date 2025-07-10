@@ -232,7 +232,7 @@ namespace
 
     auto test_empty() -> void
     {
-        Address address {ByteString {}};
+        const Address address {ByteString {}};
         assert(address.empty());
         assert(address.port() == 0);
         assert(address.text() == string_null);
