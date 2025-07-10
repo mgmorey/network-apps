@@ -42,7 +42,7 @@ namespace
     using Network::parse;
     using Network::run;
 
-#ifdef OS_CYGWIN_NT
+#ifdef __CYGWIN__
     constexpr auto expected_gethostname_re {""};
 #elifdef __APPLE__
     constexpr auto expected_gethostname_re {""};

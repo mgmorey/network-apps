@@ -77,7 +77,7 @@ namespace
     using ErrorCodeSet = std::set<os_error_type>;
     using StringList = std::list<std::string>;
 
-#ifdef OS_CYGWIN_NT
+#ifdef __CYGWIN__
     constexpr auto expected_getnameinfo_re {""};
 #elifdef __APPLE__
     constexpr auto expected_getnameinfo_re {""};
@@ -161,7 +161,7 @@ namespace
         return codes;
     }
 
-#if !defined(OS_CYGWIN_NT) && !defined(OS_MINGW64_NT)
+#if !defined(__CYGWIN__) && !defined(OS_MINGW64_NT)
     auto get_codes_protocol() -> const ErrorCodeSet&
     {
 #ifdef _WIN32
@@ -299,7 +299,7 @@ namespace
         test(localhost, hints, get_codes_family());
     }
 
-#if !defined(OS_CYGWIN_NT) && !defined(OS_MINGW64_NT)
+#if !defined(__CYGWIN__) && !defined(OS_MINGW64_NT)
     auto test_invalid_protocol() -> void
     {
         const SocketHints hints {AF_UNSPEC, SOCK_STREAM, -1, 0};
@@ -343,7 +343,7 @@ auto main(int argc, char* argv[]) -> int
         test_get_endpointresult_invalid_flag(rt);
         test_invalid_family();
         test_invalid_socktype();
-#if !defined(OS_CYGWIN_NT) && !defined(OS_MINGW64_NT)
+#if !defined(__CYGWIN__) && !defined(OS_MINGW64_NT)
         test_invalid_protocol();
 #endif
 

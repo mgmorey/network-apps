@@ -106,7 +106,7 @@ namespace
         return codes;
     }
 
-#ifndef OS_CYGWIN_NT
+#ifndef __CYGWIN__
 
     auto get_codes_permission_denied() -> const ErrorCodeSet&
     {
@@ -258,10 +258,10 @@ namespace
     auto test_paths_invalid() -> void
     {
         test({}, {0}, expected_payload_length_re);
-#if defined(__APPLE__) || defined(OS_CYGWIN_NT)
+#if defined(__APPLE__) || defined(__CYGWIN__)
         test("", get_codes_no_such_file_or_directory(), {});
 #endif
-#ifndef OS_CYGWIN_NT
+#ifndef __CYGWIN__
         test("/foo/bar", get_codes_no_such_file_or_directory(), {});
         test("/var/foo", get_codes_permission_denied(), {});
 #endif
@@ -271,7 +271,7 @@ namespace
 
     auto test_paths_valid() -> void
     {
-#if ! (defined(__APPLE__) || defined(OS_CYGWIN_NT))
+#if ! (defined(__APPLE__) || defined(__CYGWIN__))
         test("", {0}, {});
 #endif
 
