@@ -44,6 +44,7 @@ namespace
     using Network::Error;
     using Network::InetSocket;
     using Network::SharedRuntime;
+    using Network::Socket;
     using Network::SocketData;
     using Network::SocketHints;
     using Network::UniqueSocket;
@@ -103,6 +104,17 @@ namespace
         }
     }
 
+    auto test(const Socket& s) -> void
+    {
+        const handle_type handle {s};
+        assert(static_cast<handle_type>(s) != handle_null);
+        assert(std::cmp_equal(static_cast<handle_type>(s), handle));
+        const auto str {std::to_string(static_cast<handle_type>(s))};
+        std::ostringstream oss;
+        oss << s;
+        assert(oss.str() == str);
+    }
+
     auto test(handle_type handle, const std::string& expected_re) -> void
     {
         std::string actual_str;
@@ -133,12 +145,8 @@ namespace
 
         try {
             const SocketData sd {handle, family, sr};
-            const InetSocket sock {sd};
-            std::ostringstream oss;
-            oss << sock;
-            assert(static_cast<handle_type>(sock) != handle_null);
-            assert(std::cmp_equal(static_cast<handle_type>(sock), handle));
-            assert(oss.str() == std::to_string(static_cast<handle_type>(sock)));
+            const InetSocket s {sd};
+            test(s);
         }
         catch (const Error& error) {
             print(error);
