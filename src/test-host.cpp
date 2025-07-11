@@ -15,9 +15,9 @@
 
 #include "network/argumentspan.hpp"     // ArgumentSpan
 #include "network/assert.hpp"           // assert()
-#include "network/network.hpp"          // Address, ByteString,
-                                        // Endpoint, Error,
-                                        // HostnameView,
+#include "network/network.hpp"          // Address, ByteSpan,
+                                        // ByteString, Endpoint,
+                                        // Error, HostnameView,
                                         // IpSocketHints,
                                         // OptionalHints,
                                         // OptionalHostname, OsError,
