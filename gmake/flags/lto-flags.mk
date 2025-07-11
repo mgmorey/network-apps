@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-ifneq "$(call is_optimized,$(CXXFLAGS))" ""
+ifneq "$(call is-optimized,$(CXXFLAGS))" ""
 ifeq "$(with-shared-library)" ""
 CXXFLAGS += -flto
 LDFLAGS += -flto
