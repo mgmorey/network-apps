@@ -35,17 +35,15 @@ ifneq "$(filter Debug Default,$(BUILD_TYPE))" ""
 include gmake/flags/dwarf-flags.mk
 endif
 
-# Set build flags for Glib C++
-ifneq "$(filter Debug Default,$(BUILD_TYPE))" ""
-include gmake/flags/glibcxx-flags.mk
-endif
-
-# Set build flags for LTO
+# Set build flags for Link-Time Optimization
 ifneq "$(filter Minimal Small,$(BUILD_TYPE))" ""
 include gmake/flags/lto-flags.mk
 endif
 
-# Set build flags for sanitizers
+# Set build flags for compiler sanitizers
 ifneq "$(filter Default,$(BUILD_TYPE))" ""
 include gmake/flags/sanitize-flags.mk
 endif
+
+# Set build flags for C++ standard library
+include gmake/flags/stdlib-flags.mk

@@ -16,16 +16,27 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ifeq "$(filter libc++,$(USING_STDLIB))" ""
-ifeq "$(filter -D_FORTIFY_SOURCE=%,$(CPPFLAGS))" ""
+ifeq "$(call is-optimized,$(CXXFLAGS))" ""
+
 ifeq "$(filter -D_GLIBCXX_DEBUG,$(CPPFLAGS))" ""
-
 CPPFLAGS += -D_GLIBCXX_DEBUG
-
 ifeq "$(WITH_BACKTRACE)" "true"
 CPPFLAGS += -D_GLIBCXX_DEBUG_BACKTRACE
 LDLIBS += -lstdc++exp
 endif
+endif
+
+else
+
+ifeq "$(filter -D_FORTIFY_SOURCE=%,$(CPPFLAGS))" ""
+ifneq "$(filter 0 1 2 3,$(WITH_FORTIFY_SOURCE))" ""
+CPPFLAGS += -D_FORTIFY_SOURCE=$(WITH_FORTIFY_SOURCE)
+endif
+endif
 
 endif
 endif
-endif
+
+# Local Variables:
+# mode: makefile
+# End:
