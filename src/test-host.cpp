@@ -79,8 +79,6 @@ namespace
 
 #ifdef __CYGWIN__
     constexpr auto expected_getnameinfo_re {""};
-#elifdef __APPLE__
-    constexpr auto expected_getnameinfo_re {""};
 #elifdef _WIN32
     constexpr auto expected_getnameinfo_re {""};
 #else
