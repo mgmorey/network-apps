@@ -110,7 +110,7 @@ usage_error() {
 
 script=$(basename "$0")
 tmpfile=$(mktemp .$script-XXXXXX)
-trap "/bin/rm -f $tmpfile || true" EXIT INT QUIT TERM
+trap "/bin/rm -f $tmpfile" EXIT INT QUIT TERM
 /bin/ln $tmpfile .$script || exit 0
+trap "/bin/rm -f .$script $tmpfile" EXIT INT QUIT TERM
 run_programs "$@"
-/bin/rm -f .$script
