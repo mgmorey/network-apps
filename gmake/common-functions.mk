@@ -160,6 +160,9 @@ $(if $(filter true,$(WITH_COVERAGE)),$(call install-objects,$1/object),)
 $(if $(filter true,$(WITH_COVERAGE)),$(call install-sources,$1/src),)
 endef
 
+# $(call is-optimized,FLAGS)
+is-optimized = $(filter-out -O0 -Og,$(filter -O%,$($1)))
+
 # $(call join-flags,FLAG-OPTION,FLAG-ARG)
 join-flags = $(if $(strip $2),$(subst $(spc),$(com),$1 $(strip $2)),)
 
