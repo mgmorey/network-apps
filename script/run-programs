@@ -15,8 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-LOCKFILE=.run-programs
-
 run_program() {
     basename=$(basename "$1" .exe)
     dirname=$(dirname "$1")
@@ -44,14 +42,6 @@ run_program() {
 }
 
 run_programs() {
-    trap "/bin/rm -f $LOCKFILE" EXIT INT QUIT TERM
-
-    if [ -e $LOCKFILE ]; then
-	exit 0
-    fi
-
-    touch $LOCKFILE
-
     args=
     dir=
     errors=0
@@ -119,5 +109,7 @@ usage_error() {
 }
 
 script=$(basename "$0")
-
+tmpfile=$(mktemp .$script-XXXXXX)
+trap "/bin/rm -f .$script $tmpfile || true" EXIT INT QUIT TERM
+/bin/ln $tmpfile .$script || exit 0
 run_programs "$@"
