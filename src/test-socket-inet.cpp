@@ -15,12 +15,13 @@
 
 #include "network/assert.hpp"           // assert()
 #include "network/inetsocket.hpp"       // InetSocket
-#include "network/network.hpp"          // Error, SocketData,
-                                        // SocketHints, UniqueSocket,
-                                        // close(), create_socket(),
+#include "network/network.hpp"          // Error, InetSocket, Socket,
+                                        // SocketData, SocketHints,
+                                        // UniqueSocket, close(),
+                                        // create_socket(),
                                         // family_type, handle_null,
                                         // handle_type, os_error_type,
-                                        // run()
+                                        // run(), to_handle()
 #include "network/parse.hpp"            // parse()
 
 #ifdef _WIN32
@@ -48,6 +49,7 @@ namespace
     using Network::SocketData;
     using Network::SocketHints;
     using Network::UniqueSocket;
+    using Network::close;
     using Network::create_socket;
     using Network::family_type;
     using Network::handle_null;
@@ -257,7 +259,7 @@ namespace
         const handle_type handle {::socket(family, SOCK_STREAM, 0)};
         const SocketData sd {handle, family, sr};
         test(handle, family, sr, "");
-        Network::close(sd.core());
+        close(sd.core());
     }
 
     auto test_socket_family_invalid() -> void
