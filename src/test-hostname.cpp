@@ -43,7 +43,9 @@ namespace
     using Network::run;
 
 #if defined(__CYGWIN__) || defined(_WIN32)
-    constexpr auto expected_gethostname_re {""};
+    constexpr auto expected_gethostname_re {
+        R"()"
+    };
 #else
     constexpr auto expected_gethostname_re {
         R"(Call to ::gethostname\(.+\) failed with error \d+: .+)"

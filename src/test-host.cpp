@@ -78,7 +78,9 @@ namespace
     using StringList = std::list<std::string>;
 
 #if defined(__CYGWIN__) || defined(_WIN32)
-    constexpr auto expected_getnameinfo_re {""};
+    constexpr auto expected_getnameinfo_re {
+        R"()"
+    };
 #else
     constexpr auto expected_getnameinfo_re {
         R"(Call to ::getnameinfo\(.+\) returned -?\d+ \(.+\))"

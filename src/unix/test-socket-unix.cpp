@@ -232,13 +232,8 @@ namespace
             actual_str = error.what();
         }
 
-        if (expected_re.empty()) {
-            assert(actual_str.empty());
-        }
-        else {
-            const std::regex expected_regex {expected_re};
-            assert(std::regex_match(actual_str, expected_regex));
-        }
+        const std::regex expected_regex {expected_re};
+        assert(std::regex_match(actual_str, expected_regex));
     }
 
     auto test(std::string_view path,
