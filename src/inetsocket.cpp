@@ -109,7 +109,8 @@ auto Network::InetSocket::runtime() const noexcept -> SharedRuntime
     return m_sd.core().runtime();
 }
 
-auto Network::InetSocket::to_namesymbol(Symbol symbol) -> std::optional<NameSymbol>
+auto Network::InetSocket::to_namesymbol(Symbol symbol) noexcept ->
+    std::optional<NameSymbol>
 {
     switch (symbol) {
     case Symbol::getpeername:
@@ -121,7 +122,8 @@ auto Network::InetSocket::to_namesymbol(Symbol symbol) -> std::optional<NameSymb
     }
 }
 
-auto Network::InetSocket::to_symbol(OpenSymbol symbol) -> std::optional<Symbol>
+auto Network::InetSocket::to_symbol(OpenSymbol symbol) noexcept ->
+    std::optional<Symbol>
 {
     switch (symbol) {
     case OpenSymbol::bind:
