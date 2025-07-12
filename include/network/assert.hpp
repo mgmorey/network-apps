@@ -21,7 +21,7 @@
 #if defined(NDEBUG)
 #undef assert
 #define assert(e) (static_cast<void>(0))  // NOLINT
-#elif defined(__APPLE__)
+#elif defined(__APPLE__) && defined(__MACH__)
 #undef assert
 #ifndef __GNUC__
 #define assert(e)                                                       \

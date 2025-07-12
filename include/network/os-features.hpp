@@ -16,7 +16,9 @@
 #ifndef NETWORK_OS_FEATURES_HPP
 #define NETWORK_OS_FEATURES_HPP
 
-#if defined(__APPLE__) || (defined(__unix__) && !defined(__linux__))
+#if defined(__APPLE__) && defined(__MACH__)
+#define HAVE_SOCKADDR_SA_LEN
+#elif defined(__unix__) && !defined(__linux__) && !defined(__CYGWIN__)
 #define HAVE_SOCKADDR_SA_LEN
 #endif
 

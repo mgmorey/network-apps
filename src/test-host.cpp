@@ -164,7 +164,7 @@ namespace
     {
 #ifdef _WIN32
         static const ErrorCodeSet codes = {0};
-#elifdef __APPLE__
+#elif defined(__APPLE__) && defined(__MACH__)
         static const ErrorCodeSet codes = {EAI_BADHINTS};
 #else
         static const ErrorCodeSet codes = {EAI_SOCKTYPE};
@@ -177,7 +177,7 @@ namespace
     {
 #ifdef _WIN32
         static const ErrorCodeSet codes = {WSAESOCKTNOSUPPORT};
-#elifdef __APPLE__
+#elif defined(__APPLE__) && defined(__MACH__)
         static const ErrorCodeSet codes = {EAI_BADHINTS};
 #else
         static const ErrorCodeSet codes = {EAI_SOCKTYPE};
