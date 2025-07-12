@@ -42,7 +42,7 @@ namespace
     using Network::parse;
     using Network::run;
 
-#if defined(__CYGWIN__) || defined(_WIN32)
+#if defined(__CYGWIN__)
     constexpr auto expected_gethostname_re {
         R"()"
     };
