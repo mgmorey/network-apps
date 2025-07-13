@@ -174,8 +174,7 @@ endef
 # $(call run-program,PROGRAM-FILENAME,PROGRAM-ARGUMENTS)
 define run-program
 $(if $(filter .,$(output_dir)),,cd $(output_dir) && )\
-./$(1:$(binary_suffix)=) >$(1:$(binary_suffix)=$(log_suffix))
-$(if $(filter .,$(output_dir)),,cd $(output_dir) && )\
+./$(1:$(binary_suffix)=) >$(1:$(binary_suffix)=$(log_suffix)) && \
 ./$(1:$(binary_suffix)=) -v >$(1:$(binary_suffix)=$(log_suffix))
 endef
 

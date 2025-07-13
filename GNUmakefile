@@ -348,7 +348,7 @@ $(static_library): $(library_objects)
 $(programs): $(firstword $(libraries))
 
 $(unix_logfiles): $(unix_programs)
-	@$(call run-programs,$(^F),$(program_args))
+	$(call run-programs,$(^F),$(program_args))
 
 sizes.txt: $(if $(with-shared-library),$(shared_library) $(objects)) $(programs)
 	@if [ -e $@ ]; then mv -f $@ $@~; fi
@@ -394,7 +394,7 @@ $(output_prefix)%$(binary_suffix): $(object_prefix)%$(object_suffix)
 	$(call link-objects,$^,$@)
 
 test-%$(log_suffix): $(output_prefix)test-%$(binary_suffix)
-	@$(call run-program,$(^F))
+	$(call run-program,$(^F))
 
 # Include dependency files
 ifeq "$(filter distclean,$(MAKECMDGOALS))" ""
