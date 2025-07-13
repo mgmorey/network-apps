@@ -171,6 +171,14 @@ define link-objects
 $(strip $(LINK$(object_suffix)) -o $2 $1 $(LOADLIBES) $(LDLIBS))
 endef
 
+# $(call run-program,PROGRAM-FILENAME,PROGRAM-ARGUMENTS)
+define run-program
+$(if $(filter .,$(output_dir)),,cd $(output_dir) && )\
+./$(1:$(binary_suffix)=) >$(1:$(binary_suffix)=$(log_suffix))
+$(if $(filter .,$(output_dir)),,cd $(output_dir) && )\
+./$(1:$(binary_suffix)=) -v >$(1:$(binary_suffix)=$(log_suffix))
+endef
+
 # $(call run-programs,PROGRAM-FILENAME,PROGRAM-ARGUMENTS)
 run-programs = $(script_dir)/run-programs $2 $(1:$(binary_suffix)=)
 

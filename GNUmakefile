@@ -75,6 +75,7 @@ alias_suffixes = $(alias_suffix)
 binary_suffix = $(if $(is_windows_api),.exe,)
 depend_suffix = .dep
 include_suffix = .hpp
+log_suffix = .log
 object_suffix = .o
 shared_suffix = $(if $(is_windows_api),.dll,.so.$(VERSION))
 source_suffix = .cpp
@@ -86,7 +87,7 @@ compile_flags = compile_flags.txt
 coverage_alias = coverage.html
 coverage_html = $(coverage_dir)/coverage.html
 coverage_json = coverage.json
-cppcheck_log = cppcheck.log
+cppcheck_log = cppcheck$(log_suffix)
 
 library_common_sources = accept.cpp acceptdata.cpp address-sa.cpp	\
 address-sin.cpp address-sin6.cpp address.cpp addresserror.cpp		\
@@ -172,8 +173,8 @@ mapfiles = $(programs:$(binary_suffix)=.map) $(library_mapfile)
 stackdumps = $(programs:$(binary_suffix)=.stackdump)
 
 logfiles = $(test_logfiles) $(if $(is_posix),$(unix_logfiles),)
-test_logfiles = $(test_programs:$(binary_suffix)=.log)
-unix_logfiles = $(unix_programs:$(binary_suffix)=.log)
+test_logfiles = $(test_programs:$(binary_suffix)=$(log_suffix))
+unix_logfiles = $(unix_programs:$(binary_suffix)=$(log_suffix))
 
 artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(gcov_files) $(libraries) $(objects) $(package)	\
@@ -346,11 +347,11 @@ $(static_library): $(library_objects)
 
 $(programs): $(firstword $(libraries))
 
-$(logfiles): $(programs)
-	$(call run-programs,$(^F),$(program_args))
+$(unix_logfiles): $(unix_programs)
+	@$(call run-programs,$(^F),$(program_args))
 
 sizes.txt: $(if $(with-shared-library),$(shared_library) $(objects)) $(programs)
-	if [ -e $@ ]; then mv -f $@ $@~; fi
+	@if [ -e $@ ]; then mv -f $@ $@~; fi
 	size $(sort $^) >$@
 
 TAGS:
@@ -391,6 +392,9 @@ $(object_prefix)%$(object_suffix): %$(source_suffix)
 
 $(output_prefix)%$(binary_suffix): $(object_prefix)%$(object_suffix)
 	$(call link-objects,$^,$@)
+
+test-%$(log_suffix): $(output_prefix)test-%$(binary_suffix)
+	@$(call run-program,$(^F))
 
 # Include dependency files
 ifeq "$(filter distclean,$(MAKECMDGOALS))" ""
