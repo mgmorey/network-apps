@@ -16,16 +16,16 @@
 #ifndef NETWORK_INETSOCKET_HPP
 #define NETWORK_INETSOCKET_HPP
 
-#include "network/acceptdata.hpp"               // AcceptData
-#include "network/bytespan.hpp"                 // ByteSpan
-#include "network/charspan.hpp"                 // CharSpan
-#include "network/namesymbol.hpp"               // NameSymbol
-#include "network/opensymbol.hpp"               // OpenSymbol
-#include "network/oserror.hpp"                  // OsError
-#include "network/sharedruntime.hpp"            // SharedRuntime
-#include "network/socket.hpp"                   // Socket
-#include "network/socketdata.hpp"               // SocketData
-#include "network/symbol.hpp"                   // Symbol
+#include "network/acceptdata.hpp"       // AcceptData
+#include "network/bytespan.hpp"         // ByteSpan
+#include "network/charspan.hpp"         // CharSpan
+#include "network/namesymbol.hpp"       // NameSymbol
+#include "network/opensymbol.hpp"       // OpenSymbol
+#include "network/oserror.hpp"          // OsError
+#include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/socket.hpp"           // Socket
+#include "network/socketdata.hpp"       // SocketData
+#include "network/symbol.hpp"           // Symbol
 
 #include <sys/types.h>      // ssize_t
 
