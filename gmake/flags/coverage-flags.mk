@@ -16,6 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ifeq "$(WITH_COVERAGE)" "true"
+CPPFLAGS += -DCODE_COVERAGE_ENABLED
 CXXFLAGS += --coverage
 LDFLAGS += --coverage
 endif

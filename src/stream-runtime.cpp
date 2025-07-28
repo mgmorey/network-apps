@@ -34,5 +34,9 @@ auto Network::operator<<(std::ostream& os,
         os << ' ' << runtime.system_status();
     }
 
+#ifdef CODE_COVERAGE_ENABLED
+    os << " (with code coverage enabled)";
+#endif
+
     return os;
 }
