@@ -73,9 +73,9 @@ auto Network::SocketApi::start() -> void
 
     if (!is_running()) {
         std::ostringstream oss;
-        oss << description()
+        oss << m_as.description()
             << " status is \""
-            << system_status()
+            << m_as.system_status()
             << "\".";
         throw RuntimeError {oss.str()};
     }
