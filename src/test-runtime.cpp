@@ -110,7 +110,7 @@ namespace
         result += expected_runtime_platform_re;
         result += " ";
         result += expected_runtime_version_re;
-        result += "Running (\\(with code coverage enabled\\))?)";
+        result += "Running( \\(with code coverage enabled\\))?)";
         return result;
     }
 
