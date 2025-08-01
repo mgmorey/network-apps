@@ -39,6 +39,7 @@ os_macro_kernel = $(word 2,$(os_macros))
 # Define predicates for API and OS
 is_darwin_source = $(filter Darwin,$(os_label_kernel))
 is_gnu_source = $(filter CYGWIN_NT,$(os_label_kernel))
+is_macos = $(filter Darwin,$(os_label_kernel))
 is_posix = $(filter FreeBSD Linux,$(os_label_kernel))
 is_unix = $(filter Darwin FreeBSD,$(os_label_kernel))
 is_windows_api = $(filter MINGW64_NT,$(os_label_kernel))
@@ -88,7 +89,8 @@ CPPFLAGS += $(addprefix -D,$(cpp_symbols))
 # CXXFLAGS
 
 # Add warning flags to CXXFLAGS
-CXXFLAGS += -Wall -Werror -Wextra -Wshadow -Wsign-conversion
+warnings = all error extra $(if $(is_macos),,pedantic) shadow sign-conversion
+CXXFLAGS += $(addprefix -W,$(warnings))
 
 # Add position-independent code flag to CXXFLAGS
 CXXFLAGS += $(if $(with-shared-library),-fPIC,)
