@@ -69,7 +69,7 @@ namespace
 
     constexpr auto handle_width {6};
     constexpr auto indent_width {handle_width + 18};
-    constexpr auto remotehost {"example.com"};
+    constexpr auto remotehost {"google.com"};
     constexpr auto service {"http"};
     constexpr IpSocketHints socket_hints
     {
