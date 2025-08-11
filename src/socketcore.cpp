@@ -47,9 +47,8 @@ Network::SocketCore::SocketCore(handle_type t_handle,
     }
 }
 
-Network::SocketCore::SocketCore(const SocketCore& t_core,
-                                handle_type t_handle) :
-    SocketCore(t_handle, t_core.m_family, t_core.m_sr)
+Network::SocketCore::SocketCore(const SocketCore& t_sc, handle_type t_handle) :
+    SocketCore(t_handle, t_sc.m_family, t_sc.m_sr)
 {
 }
 

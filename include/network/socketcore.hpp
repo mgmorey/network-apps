@@ -30,7 +30,7 @@ namespace Network
         SocketCore(handle_type t_handle,
                    family_type t_family,
                    const SharedRuntime& t_sr);
-        SocketCore(const SocketCore& t_core,
+        SocketCore(const SocketCore& t_sc,
                    handle_type t_handle);
 
         SocketCore() = delete;
