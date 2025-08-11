@@ -24,8 +24,8 @@ namespace Network
 {
     struct AcceptData
     {
-        AcceptData(const ByteString& t_accept,
-                   const SocketCore& t_core,
+        AcceptData(const ByteString& t_bs,
+                   const SocketCore& t_sc,
                    handle_type t_handle);
 
         AcceptData() = delete;
@@ -39,8 +39,8 @@ namespace Network
         [[nodiscard]] auto core() const noexcept -> const SocketCore&;
 
     private:
-        ByteString m_accept;
-        SocketCore m_core;
+        ByteString m_bs;
+        SocketCore m_sc;
     };
 }
 
