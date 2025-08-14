@@ -15,7 +15,6 @@
 
 #include "network/socketdata.hpp"       // SocketData
 #include "network/acceptdata.hpp"       // SocketData
-#include "network/bytestring.hpp"       // ByteString
 
 Network::SocketData::SocketData(handle_type t_handle,
                                 family_type t_family,
@@ -34,7 +33,7 @@ auto Network::SocketData::core() const noexcept -> const SocketCore&
     return m_sc;
 }
 
-auto Network::SocketData::name(Symbol t_symbol) const noexcept -> ByteString&
+auto Network::SocketData::name(Symbol t_symbol) const noexcept -> Name&
 {
     return m_nc[t_symbol];
 }

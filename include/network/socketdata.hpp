@@ -30,7 +30,8 @@ namespace Network
     class SocketData
     {
     public:
-        using NameCache = std::map<Symbol, ByteString>;
+        using Name = ByteString;
+        using NameCache = std::map<Symbol, Name>;
 
         SocketData(handle_type t_handle,
                    family_type t_family,
@@ -45,7 +46,7 @@ namespace Network
         auto operator=(SocketData&&) noexcept -> SocketData& = default;
 
         [[nodiscard]] auto core() const noexcept -> const SocketCore&;
-        [[nodiscard]] auto name(Symbol t_symbol) const noexcept -> ByteString&;
+        [[nodiscard]] auto name(Symbol t_symbol) const noexcept -> Name&;
 
     private:
         SocketCore m_sc;
