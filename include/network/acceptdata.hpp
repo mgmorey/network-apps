@@ -24,7 +24,7 @@ namespace Network
 {
     struct AcceptData
     {
-        AcceptData(const ByteString& t_bs,
+        AcceptData(const ByteString& t_nm,
                    const SocketCore& t_sc,
                    handle_type t_handle);
 
@@ -35,12 +35,12 @@ namespace Network
         auto operator=(const AcceptData&) noexcept -> AcceptData& = default;
         auto operator=(AcceptData&&) noexcept -> AcceptData& = default;
 
-        [[nodiscard]] auto accept() const noexcept -> const ByteString&;
         [[nodiscard]] auto core() const noexcept -> const SocketCore&;
+        [[nodiscard]] auto name() const noexcept -> const ByteString&;
 
     private:
-        ByteString m_bs;
         SocketCore m_sc;
+        ByteString m_nm;
     };
 }
 

@@ -25,7 +25,7 @@ Network::SocketData::SocketData(handle_type t_handle,
 
 Network::SocketData::SocketData(const AcceptData& t_ad) : m_sc(t_ad.core())
 {
-    m_nc[Symbol::accept] = t_ad.accept();
+    m_nc[Symbol::accept] = t_ad.name();
 }
 
 auto Network::SocketData::core() const noexcept -> const SocketCore&

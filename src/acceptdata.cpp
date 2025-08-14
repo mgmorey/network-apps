@@ -17,19 +17,19 @@
 #include "network/bytestring.hpp"       // ByteString
 #include "network/handle-type.hpp"      // handle_type
 
-Network::AcceptData::AcceptData(const ByteString& t_bs,
+Network::AcceptData::AcceptData(const ByteString& t_nm,
                                 const SocketCore& t_sc,
                                 handle_type t_handle) :
-    m_bs(t_bs), m_sc(t_sc, t_handle)
+    m_sc(t_sc, t_handle), m_nm(t_nm)
 {
-}
-
-auto Network::AcceptData::accept() const noexcept -> const ByteString&
-{
-    return m_bs;
 }
 
 auto Network::AcceptData::core() const noexcept -> const SocketCore&
 {
     return m_sc;
+}
+
+auto Network::AcceptData::name() const noexcept -> const ByteString&
+{
+    return m_nm;
 }
