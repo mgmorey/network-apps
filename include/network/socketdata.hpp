@@ -49,7 +49,7 @@ namespace Network
 
     private:
         mutable Cache m_cache;
-        SocketCore m_core;
+        SocketCore m_sc;
     };
 }
 
