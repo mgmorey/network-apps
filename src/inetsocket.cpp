@@ -63,7 +63,7 @@ auto Network::InetSocket::listen(int t_backlog) const -> OsError
 
 auto Network::InetSocket::name(Symbol t_symbol) const -> ByteSpan
 {
-    auto& nm {m_sd.cache(t_symbol)};
+    auto& nm {m_sd.name(t_symbol)};
 
     if (!nm.empty()) {
         return nm;
@@ -83,7 +83,7 @@ auto Network::InetSocket::open(ByteSpan t_bs, OpenSymbol t_symbol) -> OsError
     }
 
     if (const auto symbol {to_symbol(t_symbol)}) {
-        m_sd.cache(*symbol).assign(t_bs.begin(), t_bs.end());
+        m_sd.name(*symbol).assign(t_bs.begin(), t_bs.end());
     }
 
     return {};

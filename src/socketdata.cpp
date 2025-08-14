@@ -26,15 +26,15 @@ Network::SocketData::SocketData(handle_type t_handle,
 
 Network::SocketData::SocketData(const AcceptData& t_ad) : m_sc(t_ad.core())
 {
-    m_cache[Symbol::accept] = t_ad.accept();
-}
-
-auto Network::SocketData::cache(Symbol t_symbol) const noexcept -> ByteString&
-{
-    return m_cache[t_symbol];
+    m_nc[Symbol::accept] = t_ad.accept();
 }
 
 auto Network::SocketData::core() const noexcept -> const SocketCore&
 {
     return m_sc;
+}
+
+auto Network::SocketData::name(Symbol t_symbol) const noexcept -> ByteString&
+{
+    return m_nc[t_symbol];
 }
