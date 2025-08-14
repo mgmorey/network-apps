@@ -24,9 +24,9 @@ Network::SocketData::SocketData(handle_type t_handle,
 {
 }
 
-Network::SocketData::SocketData(const AcceptData& t_data) : m_sc(t_data.core())
+Network::SocketData::SocketData(const AcceptData& t_ad) : m_sc(t_ad.core())
 {
-    m_cache[Symbol::accept] = t_data.accept();
+    m_cache[Symbol::accept] = t_ad.accept();
 }
 
 auto Network::SocketData::cache(Symbol t_symbol) const noexcept -> ByteString&

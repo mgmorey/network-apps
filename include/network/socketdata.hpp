@@ -35,7 +35,7 @@ namespace Network
         SocketData(handle_type t_handle,
                    family_type t_family,
                    const SharedRuntime& t_sr);
-        explicit SocketData(const AcceptData& t_data);
+        explicit SocketData(const AcceptData& t_ad);
 
         SocketData() = delete;
         SocketData(const SocketData&) noexcept = default;
