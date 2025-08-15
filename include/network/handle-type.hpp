@@ -18,15 +18,15 @@
 
 #ifdef _WIN32
 #include <winsock2.h>       // SOCKET
-#else
-#ifndef SOCKET
-#define SOCKET	int
-#endif
 #endif
 
 namespace Network
 {
+#ifdef _WIN32
     using handle_type = SOCKET;
+#else
+    using handle_type = int;
+#endif
 }
 
 #endif
