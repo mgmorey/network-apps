@@ -13,22 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_HANDLE_NULL_HPP
-#define NETWORK_HANDLE_NULL_HPP
+#ifndef UNIX_NETWORK_HANDLE_NULL_HPP
+#define UNIX_NETWORK_HANDLE_NULL_HPP
+
+#ifndef _WIN32
 
 #include "network/handle-type.hpp"      // handle_type
 
-#ifdef _WIN32
-#include <winsock2.h>       // INVALID_SOCKET
-#endif
-
 namespace Network
 {
-#ifdef _WIN32
-    constexpr handle_type handle_null {INVALID_SOCKET};
-#else
     constexpr handle_type handle_null {-1};
-#endif
 }
+
+#endif
 
 #endif
