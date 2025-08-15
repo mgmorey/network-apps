@@ -20,15 +20,15 @@
 
 #ifdef _WIN32
 #include <winsock2.h>       // INVALID_SOCKET
-#else
-#ifndef INVALID_SOCKET
-#define INVALID_SOCKET	(-1)	// NOLINT
-#endif
 #endif
 
 namespace Network
 {
+#ifdef _WIN32
     constexpr handle_type handle_null {INVALID_SOCKET};
+#else
+    constexpr handle_type handle_null {-1};
+#endif
 }
 
 #endif
