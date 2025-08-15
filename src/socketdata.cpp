@@ -14,7 +14,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/socketdata.hpp"       // SocketData
-#include "network/acceptdata.hpp"       // SocketData
+#include "network/acceptdata.hpp"       // AcceptData
+#include "network/family-type.hpp"      // family_type
+#include "network/handle-type.hpp"      // handle_type
+#include "network/sharedruntime.hpp"    // SharedRuntime
 
 Network::SocketData::SocketData(handle_type t_handle,
                                 family_type t_family,
