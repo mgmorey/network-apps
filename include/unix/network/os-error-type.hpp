@@ -13,21 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_OS_ERROR_TYPE_HPP
-#define NETWORK_OS_ERROR_TYPE_HPP
+#ifndef UNIX_NETWORK_OS_ERROR_TYPE_HPP
+#define UNIX_NETWORK_OS_ERROR_TYPE_HPP
 
-#ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>        // DWORD
-#endif
+#ifndef _WIN32
 
 namespace Network
 {
-#ifdef _WIN32
-    using os_error_type = DWORD;
-#else
     using os_error_type = int;
-#endif
 }
+
+#endif
 
 #endif
