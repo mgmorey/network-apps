@@ -26,8 +26,8 @@
 #include "network/socket-error.hpp"     // socket_error
 #include "network/to-os-error.hpp"      // to_os_error()
 
-#include <winsock2.h>       // WSAEINPROGRESS, WSAENETDOWN, WSANOTINITIALISED,
-                            // ::WSACleanup()
+#include <winsock2.h>       // WSAEINPROGRESS, WSAENETDOWN,
+                            // WSANOTINITIALISED, ::WSACleanup()
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
