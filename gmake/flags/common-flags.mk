@@ -119,7 +119,7 @@ CXXFLAGS += $(call join-flags,-Wa,$(asflags))
 
 # GCOVRFLAGS
 
-GCOVRFLAGS_HTML = --html-nested --html-theme=$(HTML_THEME)	\
+GCOVRFLAGS_HTML = --html-details --html-theme=$(HTML_THEME)	\
 --html-title='$(html_title)' $(foreach				\
 file,$^,--json-add-tracefile=$(file))
 
