@@ -18,20 +18,20 @@
 #include <ostream>      // std::ostream
 
 auto Network::operator<<(std::ostream& os,
-                         const Runtime& runtime) -> std::ostream&
+                         const Runtime& rt) noexcept -> std::ostream&
 {
-    if (runtime.description().empty()) {
+    if (rt.description().empty()) {
         return os;
     }
 
-    os << runtime.description();
+    os << rt.description();
 
-    if (runtime.version() != Version {0, 0}) {
-        os << " Version " << runtime.version();
+    if (rt.version() != Version {0, 0}) {
+        os << " Version " << rt.version();
     }
 
-    if (!runtime.system_status().empty()) {
-        os << ' ' << runtime.system_status();
+    if (!rt.system_status().empty()) {
+        os << ' ' << rt.system_status();
     }
 
 #ifdef CODE_COVERAGE_ENABLED

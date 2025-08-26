@@ -20,7 +20,8 @@
 
 #include <ostream>      // std::ostream
 
-auto Network::operator<<(std::ostream& os, const Socket& s) -> std::ostream&
+auto Network::operator<<(std::ostream& os,
+                         const Socket& s) noexcept -> std::ostream&
 {
     const handle_type handle {s};
 
