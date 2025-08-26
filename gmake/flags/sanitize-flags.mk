@@ -34,11 +34,14 @@ endif
 endif
 
 ifeq "$(filter -fsanitize=%,$(CXXFLAGS))" ""
-ifneq "$(findstring undefined,$(WITH_SANITIZE))" ""
-CXXFLAGS += -fno-sanitize-recover=null
-endif
 ifneq "$(findstring memory,$(WITH_SANITIZE))" ""
 CXXFLAGS += -fsanitize-memory-track-origins=1
+endif
+ifneq "$(findstring null,$(WITH_SANITIZE))" ""
+CXXFLAGS += -fno-sanitize-recover=null
+endif
+ifneq "$(findstring undefined,$(WITH_SANITIZE))" ""
+CXXFLAGS += -fno-sanitize-recover=null
 endif
 CXXFLAGS += -fsanitize=$(WITH_SANITIZE)
 endif
