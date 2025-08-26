@@ -25,7 +25,7 @@ namespace Network
         using field_type = unsigned;
 
         friend auto operator<<(std::ostream& os,
-                               Version version) noexcept -> std::ostream&;
+                               Version version) -> std::ostream&;
 
         explicit constexpr Version(field_type t_major,
                                    field_type t_minor = 0U) noexcept :
@@ -80,8 +80,7 @@ namespace Network
         field_type m_minor {0U};	// NOLINT
     };
 
-    extern auto operator<<(std::ostream& os,
-                           Version version) noexcept -> std::ostream&;
+    extern auto operator<<(std::ostream& os, Version version) -> std::ostream&;
 
     static_assert(Version {} == Version {0, 0});
     static_assert(Version {0} == Version {0, 0});

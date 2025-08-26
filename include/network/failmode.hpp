@@ -28,7 +28,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const FailMode& fm) noexcept -> std::ostream&;
+                           const FailMode& fm) -> std::ostream&;
 }
 
 #endif

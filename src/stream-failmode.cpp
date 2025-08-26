@@ -17,8 +17,7 @@
 
 #include <ostream>      // std::ostream
 
-auto Network::operator<<(std::ostream& os,
-                         const FailMode& fm) noexcept -> std::ostream&
+auto Network::operator<<(std::ostream& os, const FailMode& fm) -> std::ostream&
 {
     switch (fm) {
     case FailMode::return_zero:

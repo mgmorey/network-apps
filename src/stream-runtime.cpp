@@ -17,8 +17,7 @@
 
 #include <ostream>      // std::ostream
 
-auto Network::operator<<(std::ostream& os,
-                         const Runtime& rt) noexcept -> std::ostream&
+auto Network::operator<<(std::ostream& os, const Runtime& rt) -> std::ostream&
 {
     if (rt.description().empty()) {
         return os;

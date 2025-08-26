@@ -47,7 +47,7 @@ namespace Network
     };
 
     extern auto operator<<(std::ostream& os,
-                           const Runtime& rt) noexcept -> std::ostream&;
+                           const Runtime& rt) -> std::ostream&;
 }
 
 #endif

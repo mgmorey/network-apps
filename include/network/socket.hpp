@@ -72,8 +72,7 @@ namespace Network
         }
     };
 
-    extern auto operator<<(std::ostream& os,
-                           const Socket& s) noexcept -> std::ostream&;
+    extern auto operator<<(std::ostream& os, const Socket& s) -> std::ostream&;
 }
 
 #endif
