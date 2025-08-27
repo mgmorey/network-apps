@@ -19,6 +19,7 @@
 #include "network/acceptdata.hpp"               // AcceptData
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/charspan.hpp"                 // CharSpan
+#include "network/handle-type.hpp"              // handle_type
 #include "network/opensymbol.hpp"               // OpenSymbol
 #include "network/oserror.hpp"                  // OsError
 #include "network/symbol.hpp"                   // Symbol
