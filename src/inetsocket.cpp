@@ -20,6 +20,7 @@
 #include "network/charspan.hpp"         // CharSpan
 #include "network/close.hpp"            // close()
 #include "network/get-name.hpp"         // get_name()
+#include "network/handle-type.hpp"      // handle_type
 #include "network/listen.hpp"           // listen()
 #include "network/namesymbol.hpp"       // NameSymbol
 #include "network/open-handle.hpp"      // open()
