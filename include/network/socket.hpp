@@ -16,13 +16,13 @@
 #ifndef NETWORK_SOCKET_HPP
 #define NETWORK_SOCKET_HPP
 
-#include "network/acceptdata.hpp"               // AcceptData
-#include "network/bytespan.hpp"                 // ByteSpan
-#include "network/charspan.hpp"                 // CharSpan
-#include "network/handle-type.hpp"              // handle_type
-#include "network/opensymbol.hpp"               // OpenSymbol
-#include "network/oserror.hpp"                  // OsError
-#include "network/symbol.hpp"                   // Symbol
+#include "network/acceptdata.hpp"       // AcceptData
+#include "network/bytespan.hpp"         // ByteSpan
+#include "network/charspan.hpp"         // CharSpan
+#include "network/handle-type.hpp"      // handle_type
+#include "network/opensymbol.hpp"       // OpenSymbol
+#include "network/oserror.hpp"          // OsError
+#include "network/symbol.hpp"           // Symbol
 
 #include <ostream>      // std::ostream
 #include <string_view>  // std::string_view
