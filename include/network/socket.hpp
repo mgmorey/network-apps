@@ -39,7 +39,7 @@ namespace Network
         auto operator=(const Socket&) noexcept -> Socket& = delete;
         auto operator=(Socket&&) noexcept -> Socket& = delete;
 
-        explicit virtual operator handle_type() const = 0;
+        explicit virtual operator handle_type() const noexcept = 0;
 
         [[nodiscard]] virtual auto accept() const -> AcceptData = 0;
         [[nodiscard]] virtual auto listen(int t_backlog) const -> OsError = 0;

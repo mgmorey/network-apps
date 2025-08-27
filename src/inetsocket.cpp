@@ -47,7 +47,7 @@ Network::InetSocket::~InetSocket() noexcept
     static_cast<void>(Network::close(m_sd.core()));
 }
 
-Network::InetSocket::operator handle_type() const
+Network::InetSocket::operator handle_type() const noexcept
 {
     return m_sd.core().handle();
 }
