@@ -44,17 +44,17 @@ Network::InetSocket::InetSocket(const SocketData& t_sd) : m_sd(t_sd)
 
 Network::InetSocket::~InetSocket() noexcept
 {
-    static_cast<void>(Network::close(m_sd.core()));
+    static_cast<void>(Network::close(core()));
 }
 
 Network::InetSocket::operator handle_type() const noexcept
 {
-    return m_sd.core().handle();
+    return core().handle();
 }
 
 auto Network::InetSocket::accept() const -> AcceptData
 {
-    return Network::accept(m_sd.core());
+    return Network::accept(core());
 }
 
 auto Network::InetSocket::get_name(Symbol t_symbol) const -> ByteSpan
@@ -66,7 +66,7 @@ auto Network::InetSocket::get_name(Symbol t_symbol) const -> ByteSpan
     }
 
     if (const auto symbol {to_namesymbol(t_symbol)}) {
-        nm = Network::get_name(m_sd.core(), *symbol);
+        nm = Network::get_name(core(), *symbol);
     }
 
     return nm;
@@ -74,12 +74,12 @@ auto Network::InetSocket::get_name(Symbol t_symbol) const -> ByteSpan
 
 auto Network::InetSocket::listen(int t_backlog) const -> OsError
 {
-    return Network::listen(m_sd.core(), t_backlog);
+    return Network::listen(core(), t_backlog);
 }
 
 auto Network::InetSocket::open(ByteSpan t_bs, OpenSymbol t_symbol) -> OsError
 {
-    if (const auto error {Network::open(m_sd.core(), t_bs, t_symbol)}) {
+    if (const auto error {Network::open(core(), t_bs, t_symbol)}) {
         return error;
     }
 
@@ -92,17 +92,17 @@ auto Network::InetSocket::open(ByteSpan t_bs, OpenSymbol t_symbol) -> OsError
 
 auto Network::InetSocket::read(CharSpan t_cs) const -> ssize_t
 {
-    return Network::read(m_sd.core(), t_cs);
+    return Network::read(core(), t_cs);
 }
 
 auto Network::InetSocket::shutdown(int t_how) const -> OsError
 {
-    return Network::shutdown(m_sd.core(), t_how);
+    return Network::shutdown(core(), t_how);
 }
 
 auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
 {
-    return Network::write(m_sd.core(), t_sv);
+    return Network::write(core(), t_sv);
 }
 
 auto Network::InetSocket::core() const noexcept -> const SocketCore&
