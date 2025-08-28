@@ -58,7 +58,7 @@ namespace Network
         [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
 
     protected:
-        [[nodiscard]] auto core() const noexcept -> SocketCore;
+        [[nodiscard]] auto core() const noexcept -> const SocketCore&;
 
         static auto to_namesymbol(Symbol symbol) noexcept ->
             std::optional<NameSymbol>;

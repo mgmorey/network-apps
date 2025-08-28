@@ -105,7 +105,7 @@ auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
     return Network::write(m_sd.core(), t_sv);
 }
 
-auto Network::InetSocket::core() const noexcept -> SocketCore
+auto Network::InetSocket::core() const noexcept -> const SocketCore&
 {
     return m_sd.core();
 }
