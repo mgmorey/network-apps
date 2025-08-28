@@ -124,7 +124,7 @@ namespace
 
         auto test(const Socket& t_sock) -> void
         {
-            const Address host {t_sock.name(Symbol::connect)};
+            const Address host {t_sock.get_name(Symbol::connect)};
             const Address peer {t_sock.get_peername()};
             const Address self {t_sock.get_sockname()};
             // clang-format off

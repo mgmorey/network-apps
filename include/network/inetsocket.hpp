@@ -49,8 +49,8 @@ namespace Network
         explicit operator handle_type() const noexcept final;
 
         [[nodiscard]] auto accept() const -> AcceptData final;
+        [[nodiscard]] auto get_name(Symbol t_symbol) const -> ByteSpan final;
         [[nodiscard]] auto listen(int t_backlog) const -> OsError final;
-        [[nodiscard]] auto name(Symbol t_symbol) const -> ByteSpan final;
         [[nodiscard]] auto open(ByteSpan t_bs, OpenSymbol t_symbol) ->
             OsError override;
         [[nodiscard]] auto read(CharSpan t_cs) const -> ssize_t final;

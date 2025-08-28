@@ -69,7 +69,7 @@ namespace
             std::exit(EXIT_FAILURE);
         }
 
-        const Address host {ps->name(Symbol::connect)};
+        const Address host {ps->get_name(Symbol::connect)};
         const Address peer {ps->get_peername()};
         const Address self {ps->get_sockname()};
 

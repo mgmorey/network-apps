@@ -57,12 +57,7 @@ auto Network::InetSocket::accept() const -> AcceptData
     return Network::accept(m_sd.core());
 }
 
-auto Network::InetSocket::listen(int t_backlog) const -> OsError
-{
-    return Network::listen(m_sd.core(), t_backlog);
-}
-
-auto Network::InetSocket::name(Symbol t_symbol) const -> ByteSpan
+auto Network::InetSocket::get_name(Symbol t_symbol) const -> ByteSpan
 {
     auto& nm {m_sd.name(t_symbol)};
 
@@ -75,6 +70,11 @@ auto Network::InetSocket::name(Symbol t_symbol) const -> ByteSpan
     }
 
     return nm;
+}
+
+auto Network::InetSocket::listen(int t_backlog) const -> OsError
+{
+    return Network::listen(m_sd.core(), t_backlog);
 }
 
 auto Network::InetSocket::open(ByteSpan t_bs, OpenSymbol t_symbol) -> OsError

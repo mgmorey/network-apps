@@ -90,7 +90,7 @@ namespace
 
         auto test(const Socket& t_sock) -> void
         {
-            const Address host {t_sock.name(Symbol::bind)};
+            const Address host {t_sock.get_name(Symbol::bind)};
             const Address self {t_sock.get_sockname()};
             // clang-format off
             m_os << "Socket "

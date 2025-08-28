@@ -42,9 +42,9 @@ namespace Network
         explicit virtual operator handle_type() const noexcept = 0;
 
         [[nodiscard]] virtual auto accept() const -> AcceptData = 0;
-        [[nodiscard]] virtual auto listen(int t_backlog) const -> OsError = 0;
-        [[nodiscard]] virtual auto name(Symbol t_symbol) const ->
+        [[nodiscard]] virtual auto get_name(Symbol t_symbol) const ->
             ByteSpan = 0;
+        [[nodiscard]] virtual auto listen(int t_backlog) const -> OsError = 0;
         [[nodiscard]] virtual auto open(ByteSpan t_bs, OpenSymbol t_symbol) ->
             OsError = 0;
         [[nodiscard]] virtual auto read(CharSpan t_cs) const -> ssize_t = 0;
@@ -64,12 +64,12 @@ namespace Network
 
         [[nodiscard]] auto get_peername() const -> ByteSpan
         {
-            return name(Symbol::getpeername);
+            return get_name(Symbol::getpeername);
         }
 
         [[nodiscard]] auto get_sockname() const -> ByteSpan
         {
-            return name(Symbol::getsockname);
+            return get_name(Symbol::getsockname);
         }
     };
 
