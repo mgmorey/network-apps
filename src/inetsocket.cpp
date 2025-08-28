@@ -27,8 +27,8 @@
 #include "network/opensymbol.hpp"       // OpenSymbol
 #include "network/oserror.hpp"          // OsError
 #include "network/read.hpp"             // read()
-#include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/shutdown.hpp"         // shutdown()
+#include "network/socketcore.hpp"       // SocketCore
 #include "network/socketdata.hpp"       // SocketData
 #include "network/symbol.hpp"           // Symbol
 #include "network/write.hpp"            // write()
@@ -105,9 +105,9 @@ auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
     return Network::write(m_sd.core(), t_sv);
 }
 
-auto Network::InetSocket::runtime() const noexcept -> SharedRuntime
+auto Network::InetSocket::core() const noexcept -> SocketCore
 {
-    return m_sd.core().runtime();
+    return m_sd.core();
 }
 
 auto Network::InetSocket::to_namesymbol(Symbol symbol) noexcept ->

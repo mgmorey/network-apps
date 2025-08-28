@@ -23,8 +23,8 @@
 #include "network/namesymbol.hpp"       // NameSymbol
 #include "network/opensymbol.hpp"       // OpenSymbol
 #include "network/oserror.hpp"          // OsError
-#include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/socket.hpp"           // Socket
+#include "network/socketcore.hpp"       // SocketCore
 #include "network/socketdata.hpp"       // SocketData
 #include "network/symbol.hpp"           // Symbol
 
@@ -58,7 +58,7 @@ namespace Network
         [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
 
     protected:
-        [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
+        [[nodiscard]] auto core() const noexcept -> SocketCore;
         static auto to_namesymbol(Symbol symbol) noexcept ->
             std::optional<NameSymbol>;
         static auto to_symbol(OpenSymbol symbol) noexcept ->
