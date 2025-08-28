@@ -40,6 +40,11 @@ define clean-files
 $(strip printf '%s\n' $(sort $(wildcard $1)) | xargs -r /bin/rm -f)
 endef
 
+# $(call compile-source-to-assembly,SOURCE-FILENAMES,OUTPUT-FILENAME)
+define compile-source-to-assembly
+$(strip $(patsubst %-c,%-S,$(COMPILE$(source_suffix))) $(OUTPUT_OPTION) $1)
+endef
+
 # $(call compile-source-to-depend,SOURCE-FILENAME,OUTPUT-FILENAME)
 define compile-source-to-depend
 $(strip $(COMPILE$(depend_suffix)) $1 | $(script_dir)/make-rule -d	\
@@ -69,6 +74,11 @@ format-xx-flag = $(if $(strip $3),$(if $(filter gnu,$1),$2=$3,$2 $3),)
 
 # $(generate-code-coverage-report)
 generate-code-coverage-report = $(strip $(GCOVR) $(GCOVRFLAGS))
+
+# $(call get-assemblies-from-sources,SOURCE-FILENAMES)
+define get-assemblies-from-sources
+$(addprefix $(object_prefix),$(addsuffix $(assembly_suffix),$(basename $1)))
+endef
 
 # $(call get-dependencies-from-sources,SOURCE-FILENAMES)
 define get-dependencies-from-sources

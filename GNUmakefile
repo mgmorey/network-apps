@@ -46,10 +46,12 @@ major = $(call get-version-number,1,$(VERSION))
 minor = $(call get-version-number,2,$(VERSION))
 patch = $(call get-version-number,3,$(VERSION))
 
-# Define variables for cache, coverage, cppcheck, dependency, object,
-# output, and temporary directories
+# Define variables for coverage, cache, cppcheck, dependency,
+# assembly, object, and output directories
+
 cache_dir = .cache
 coverage_dir = coverage
+
 cppcheck_dir = $(cache_prefix)cppcheck
 depend_dir = $(cache_prefix)dependency
 object_dir = $(output_prefix)object
@@ -72,6 +74,7 @@ source_dirs = $(addprefix $(source_dir)/,$(api) .)
 # Define variables for filename suffixes
 alias_suffix = $(if $(is_windows_api),,.so.$(major))
 alias_suffixes = $(alias_suffix)
+assembly_suffix = .s
 binary_suffix = $(if $(is_windows_api),.exe,)
 depend_suffix = .dep
 include_suffix = .hpp
@@ -151,6 +154,7 @@ program_sources = $(test_sources) $(if $(is_posix),$(unix_sources),)
 test_sources = $(test_common_sources) $(if $(filter	\
 unix,$(api)),$(test_unix_sources),)
 
+assemblies = $(call get-assemblies-from-sources,$(sources))
 dependencies = $(call get-dependencies-from-sources,$(sources))
 
 objects = $(call get-objects-from-sources,$(sources))
@@ -217,6 +221,9 @@ vpath %$(source_suffix) $(source_dirs:/.=)
 
 .PHONY: all
 all: $(all_targets)
+
+.PHONY: assembly
+assembly: $(assemblies)
 
 .PHONY: buildonly
 buildonly: $(build_targets)
@@ -357,6 +364,8 @@ sizes.txt: $(if $(with-shared-library),$(shared_library) $(objects)) $(programs)
 TAGS:
 	$(call tag-dirs,$(include_dirs:/.=),$(source_dirs:/.=))
 
+$(assemblies): | $(object_dir)
+
 $(coverage_html): | $(coverage_dir)
 
 $(dependencies): | $(depend_dir)
@@ -386,6 +395,9 @@ $(output_dir):
 
 $(depend_prefix)%$(depend_suffix): %$(source_suffix)
 	$(call compile-source-to-depend,$<,$@)
+
+$(object_prefix)%$(assembly_suffix): %$(source_suffix)
+	$(call compile-source-to-assembly,$<,$@)
 
 $(object_prefix)%$(object_suffix): %$(source_suffix)
 	$(call compile-source-to-object,$<,$@)
