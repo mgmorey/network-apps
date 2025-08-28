@@ -59,6 +59,7 @@ namespace Network
 
     protected:
         [[nodiscard]] auto core() const noexcept -> SocketCore;
+
         static auto to_namesymbol(Symbol symbol) noexcept ->
             std::optional<NameSymbol>;
         static auto to_symbol(OpenSymbol symbol) noexcept ->
