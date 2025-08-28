@@ -183,9 +183,10 @@ unix_logfiles = $(unix_programs:$(binary_suffix)=$(log_suffix))
 artifacts = $(binary_artifacts) $(text_artifacts)
 binary_artifacts = $(gcov_files) $(libraries) $(objects) $(package)	\
 $(programs) TAGS
-text_artifacts = $(coverage_alias) $(coverage_html) $(coverage_json)	\
-$(compile_commands) $(compile_flags) $(cppcheck_log) $(dependencies)	\
-$(listings) $(logfiles) $(mapfiles) $(stackdumps) $(sizes)
+text_artifacts = $(assemblies) $(coverage_alias) $(coverage_html)	\
+$(coverage_json) $(compile_commands) $(compile_flags) $(cppcheck_log)	\
+$(dependencies) $(listings) $(logfiles) $(mapfiles) $(stackdumps)	\
+$(sizes)
 
 build_artifacts = $(compile_commands) $(compile_flags) $(gcov_files)	\
 $(libraries) $(listings) $(mapfiles) $(objects) $(programs) $(sizes)
