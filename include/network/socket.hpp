@@ -62,12 +62,12 @@ namespace Network
             return open(t_bs, OpenSymbol::connect);
         }
 
-        [[nodiscard]] auto peername() const -> ByteSpan
+        [[nodiscard]] auto get_peername() const -> ByteSpan
         {
             return name(Symbol::getpeername);
         }
 
-        [[nodiscard]] auto sockname() const -> ByteSpan
+        [[nodiscard]] auto get_sockname() const -> ByteSpan
         {
             return name(Symbol::getsockname);
         }

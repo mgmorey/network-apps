@@ -203,7 +203,7 @@ namespace
                 actual_result = result;
             }
             else {
-                const auto self {sock.sockname()};
+                const auto self {sock.get_sockname()};
                 print(sock, self);
                 assert(self == path);  // NOLINT
             }

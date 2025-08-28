@@ -56,8 +56,8 @@ namespace
     {
         auto ps {create_socket(SocketData {s.accept()})};
         const Address host {ps->name(Symbol::accept)};
-        const Address peer {ps->peername()};
-        const Address self {ps->sockname()};
+        const Address peer {ps->get_peername()};
+        const Address self {ps->get_sockname()};
 
         if (is_verbose) {
             // clang-format off
@@ -86,7 +86,7 @@ namespace
         }
 
         if (is_verbose) {
-            const Address self {ps->sockname()};
+            const Address self {ps->get_sockname()};
             // clang-format off
             std::cout << "Socket "
                       << std::right << std::setw(handle_width) << *ps

@@ -70,8 +70,8 @@ namespace
         }
 
         const Address host {ps->name(Symbol::connect)};
-        const Address peer {ps->peername()};
-        const Address self {ps->sockname()};
+        const Address peer {ps->get_peername()};
+        const Address self {ps->get_sockname()};
 
         if (is_verbose) {
             // clang-format off

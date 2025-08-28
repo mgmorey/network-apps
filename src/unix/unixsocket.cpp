@@ -76,7 +76,7 @@ auto Network::UnixSocket::state(SocketState t_state) -> UnixSocket&
     }
 
     if (current == SocketState::bound) {
-        m_path = to_path(sockname());
+        m_path = to_path(get_sockname());
     }
     else if (previous == SocketState::bound) {
         static_cast<void>(remove(m_path));

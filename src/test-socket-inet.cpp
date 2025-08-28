@@ -232,7 +232,7 @@ namespace
 
         try {
             const auto sock {create_inet_socket()};
-            static_cast<void>(sock->peername());
+            static_cast<void>(sock->get_peername());
         }
         catch (const Error& error) {
             print(error);
