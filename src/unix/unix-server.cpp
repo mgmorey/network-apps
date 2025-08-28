@@ -52,17 +52,17 @@ namespace
 
     auto is_verbose {false};  // NOLINT
 
-    auto accept(const Socket& s)
+    auto accept(const Socket& as)
     {
-        auto ps {create_socket(SocketData {s.accept()})};
-        const Address host {ps->get_name(Symbol::accept)};
-        const Address peer {ps->get_peername()};
-        const Address self {ps->get_sockname()};
+        auto s {create_socket(SocketData {as.accept()})};
+        const Address host {s->get_name(Symbol::accept)};
+        const Address peer {s->get_peername()};
+        const Address self {s->get_sockname()};
 
         if (is_verbose) {
             // clang-format off
             std::cout << "Socket "
-                      << std::right << std::setw(handle_width) << *ps
+                      << std::right << std::setw(handle_width) << *s
                       << " connected "
                       << self
                       << std::endl
@@ -73,30 +73,30 @@ namespace
         }
 
         assert(host.text() == peer.text());
-        return ps;
+        return s;
     }
 
     auto bind()
     {
-        auto ps {create_socket(SOCKET_HINTS, is_verbose)};
+        auto s {create_socket(SOCKET_HINTS, is_verbose)};
 
-        if (const auto error {ps->bind(to_bytestring(SOCKET_NAME))}) {
+        if (const auto error {s->bind(to_bytestring(SOCKET_NAME))}) {
             std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
 
         if (is_verbose) {
-            const Address self {ps->get_sockname()};
+            const Address self {s->get_sockname()};
             // clang-format off
             std::cout << "Socket "
-                      << std::right << std::setw(handle_width) << *ps
+                      << std::right << std::setw(handle_width) << *s
                       << " bound to "
                       << self
                       << std::endl;
             // clang-format on
         }
 
-        return ps;
+        return s;
     }
 
     auto listen(const Socket& s)

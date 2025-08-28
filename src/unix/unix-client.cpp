@@ -62,21 +62,21 @@ namespace
 
     auto connect()
     {
-        auto ps {create_socket(SOCKET_HINTS, is_verbose)};
+        auto s {create_socket(SOCKET_HINTS, is_verbose)};
 
-        if (const auto error {ps->connect(to_bytestring(SOCKET_NAME))}) {
+        if (const auto error {s->connect(to_bytestring(SOCKET_NAME))}) {
             std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
 
-        const Address host {ps->get_name(Symbol::connect)};
-        const Address peer {ps->get_peername()};
-        const Address self {ps->get_sockname()};
+        const Address host {s->get_name(Symbol::connect)};
+        const Address peer {s->get_peername()};
+        const Address self {s->get_sockname()};
 
         if (is_verbose) {
             // clang-format off
             std::cout << "Socket "
-                      << std::right << std::setw(handle_width) << *ps
+                      << std::right << std::setw(handle_width) << *s
                       << " connected "
                       << self
                       << std::endl
@@ -87,7 +87,7 @@ namespace
         }
 
         assert(host.text() == peer.text());
-        return ps;
+        return s;
     }
 
     auto parse(int argc, char** argv)
