@@ -24,6 +24,8 @@
 #include "network/oserror.hpp"          // OsError
 #include "network/symbol.hpp"           // Symbol
 
+#include <sys/types.h>      // ssize_t
+
 #include <ostream>      // std::ostream
 #include <string_view>  // std::string_view
 
