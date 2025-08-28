@@ -18,6 +18,7 @@
 #include "network/opensymbol.hpp"       // OpenSymbol
 #include "network/oserror.hpp"          // OsError
 #include "network/socketdata.hpp"       // SocketData
+#include "network/socketstate.hpp"      // SocketState
 #include "network/to-path.hpp"          // to_path()
 
 #include <filesystem>   // std::filesystem
