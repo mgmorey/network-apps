@@ -18,7 +18,7 @@
 
 #ifndef _WIN32
 
-#include "network/bytespan.hpp"                 // ByteSpan
+#include "network/bytespan.hpp"         // ByteSpan
 
 #include <string_view>  // std::string_view
 
