@@ -17,9 +17,9 @@
 #define NETWORK_CREATE_SOCKET_HPP
 
 #include "network/create-socket-acceptdata.hpp" // create_socket()
-#include "network/create-socket-socketdata.hpp" // create_socket()
 #include "network/create-socket-handle.hpp"     // create_socket()
 #include "network/create-socket-hints.hpp"      // create_socket()
 #include "network/create-socket-socket.hpp"     // create_socket()
+#include "network/create-socket-socketdata.hpp" // create_socket()
 
 #endif
