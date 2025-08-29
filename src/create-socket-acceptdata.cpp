@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2022  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,17 +13,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CREATE_SOCKET_HPP
-#define NETWORK_CREATE_SOCKET_HPP
-
+#include "network/create-socket.hpp"    // create_socket()
 #include "network/acceptdata.hpp"       // AcceptData
 #include "network/socketdata.hpp"       // SocketData
 #include "network/uniquesocket.hpp"     // UniqueSocket
 
-namespace Network
+auto Network::create_socket(const AcceptData& ad) -> UniqueSocket
 {
-    extern auto create_socket(const AcceptData& ad) -> UniqueSocket;
-    extern auto create_socket(const SocketData& sd) -> UniqueSocket;
+    return create_socket(SocketData {ad});
 }
-
-#endif

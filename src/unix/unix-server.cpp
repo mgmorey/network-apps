@@ -37,7 +37,6 @@ namespace
     using Network::Address;
     using Network::Error;
     using Network::Socket;
-    using Network::SocketData;
     using Network::Symbol;
     using Network::TextBuffer;
     using Network::create_socket;
@@ -54,7 +53,7 @@ namespace
 
     auto accept(const Socket& as)
     {
-        auto s {create_socket(SocketData {as.accept()})};
+        auto s {create_socket(as.accept())};
         const Address host {s->get_name(Symbol::accept)};
         const Address peer {s->get_peername()};
         const Address self {s->get_sockname()};
