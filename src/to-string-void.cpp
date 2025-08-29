@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/to-string-void.hpp"           // to_string()
-#include "network/to-string-span-byte.hpp"      // to_string()
+#include "network/to-string-bytespan.hpp"       // to_string()
 
 #include <cstddef>      // std::byte
 #include <span>         // std::span

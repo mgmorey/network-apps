@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_STRING_SPAN_BYTE_HPP
-#define NETWORK_TO_STRING_SPAN_BYTE_HPP
+#ifndef NETWORK_TO_STRING_BYTESPAN_HPP
+#define NETWORK_TO_STRING_BYTESPAN_HPP
 
 #include "network/bytespan.hpp"         // ByteSpan
 

@@ -25,7 +25,7 @@
 #include "network/socket-error.hpp"             // socket_error
 #include "network/socketcore.hpp"               // SocketCore
 #include "network/to-os-error.hpp"              // to_os_error()
-#include "network/to-string-span-byte.hpp"      // to_string()
+#include "network/to-string-bytespan.hpp"       // to_string()
 
 #include <expected>     // std::unexpected
 #include <iostream>     // std::cout, std::endl

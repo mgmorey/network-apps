@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/to-string-span-byte.hpp"      // to_string()
+#include "network/to-string-bytespan.hpp"       // to_string()
 #include "network/address.hpp"                  // Address
 #include "network/bytespan.hpp"                 // ByteSpan
 #include "network/logicerror.hpp"               // LogicError

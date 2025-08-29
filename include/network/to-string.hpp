@@ -16,8 +16,8 @@
 #ifndef NETWORK_TO_STRING_HPP
 #define NETWORK_TO_STRING_HPP
 
+#include "network/to-string-bytespan.hpp"       // to_string()
 #include "network/to-string-in-addr.hpp"        // to_string()
 #include "network/to-string-in6-addr.hpp"       // to_string()
-#include "network/to-string-span-byte.hpp"      // to_string()
 
 #endif

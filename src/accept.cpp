@@ -23,7 +23,7 @@
 #include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/socketcore.hpp"               // SocketCore
 #include "network/to-os-error.hpp"              // to_os_error()
-#include "network/to-string-span-byte.hpp"      // to_string()
+#include "network/to-string-bytespan.hpp"       // to_string()
 
 #ifdef _WIN32
 #include <winsock2.h>       // ::accept()
