@@ -23,6 +23,7 @@
 #include "network/opensymbol.hpp"       // OpenSymbol
 #include "network/oserror.hpp"          // OsError
 #include "network/symbol.hpp"           // Symbol
+#include "network/to-bytestring.hpp"    // to_bytestring()
 
 #include <sys/types.h>      // ssize_t
 
@@ -54,14 +55,16 @@ namespace Network
         [[nodiscard]] virtual auto write(std::string_view t_sv) const ->
             ssize_t = 0;
 
-        [[nodiscard]] auto bind(ByteSpan t_bs) -> OsError
+        [[nodiscard]] auto bind(auto t_peer) -> OsError
         {
-            return open(t_bs, OpenSymbol::bind);
+            ByteString bs {to_bytestring(t_peer)};
+            return open(bs, OpenSymbol::bind);
         }
 
-        [[nodiscard]] auto connect(ByteSpan t_bs) -> OsError
+        [[nodiscard]] auto connect(auto t_peer) -> OsError
         {
-            return open(t_bs, OpenSymbol::connect);
+            ByteString bs {to_bytestring(t_peer)};
+            return open(bs, OpenSymbol::connect);
         }
 
         [[nodiscard]] auto get_peername() const -> ByteSpan
@@ -73,6 +76,7 @@ namespace Network
         {
             return get_name(Symbol::getsockname);
         }
+
     };
 
     extern auto operator<<(std::ostream& os, const Socket& s) -> std::ostream&;

@@ -41,7 +41,6 @@ namespace
     using Network::TextBuffer;
     using Network::create_socket;
     using Network::socket_error;
-    using Network::to_bytestring;
 
     using Number = long long;
 
@@ -79,7 +78,7 @@ namespace
     {
         auto s {create_socket(SOCKET_HINTS, is_verbose)};
 
-        if (const auto error {s->bind(to_bytestring(SOCKET_NAME))}) {
+        if (const auto error {s->bind(SOCKET_NAME)}) {
             std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }

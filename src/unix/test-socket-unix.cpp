@@ -195,10 +195,8 @@ namespace
 
         try {
             OsError actual_result;
-            const auto bs {to_bytestring(path)};  // NOLINT
-            assert(bs == path);  // NOLINT
 
-            if (const auto result {sock.bind(bs)}) {
+            if (const auto result {sock.bind(path)}) {
                 print(result);
                 actual_result = result;
             }

@@ -47,7 +47,6 @@ namespace
     using Network::TextBuffer;
     using Network::Symbol;
     using Network::socket_error;
-    using Network::to_bytestring;
 
     constexpr auto handle_width {6};
     constexpr auto indent_width {handle_width + 18};
@@ -63,7 +62,7 @@ namespace
     {
         auto s {create_socket(SOCKET_HINTS, is_verbose)};
 
-        if (const auto error {s->connect(to_bytestring(SOCKET_NAME))}) {
+        if (const auto error {s->connect(SOCKET_NAME)}) {
             std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
