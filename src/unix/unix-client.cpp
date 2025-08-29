@@ -46,7 +46,6 @@ namespace
     using Network::Socket;
     using Network::TextBuffer;
     using Network::Symbol;
-    using Network::handle_type;
     using Network::socket_error;
     using Network::to_bytestring;
 
