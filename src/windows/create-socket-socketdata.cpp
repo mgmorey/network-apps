@@ -15,10 +15,10 @@
 
 #ifdef _WIN32
 
-#include "network/create-socket.hpp"    // create_socket()
-#include "network/inetsocket.hpp"       // InetSocket
-#include "network/socketdata.hpp"       // SocketData
-#include "network/uniquesocket.hpp"     // UniqueSocket
+#include "network/create-socket-socketdata.hpp" // create_socket()
+#include "network/inetsocket.hpp"               // InetSocket
+#include "network/socketdata.hpp"               // SocketData
+#include "network/uniquesocket.hpp"             // UniqueSocket
 
 #include <memory>       // std::make_unique()
 

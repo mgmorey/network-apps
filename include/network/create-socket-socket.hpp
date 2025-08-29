@@ -13,13 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CREATE_SOCKET_HPP
-#define NETWORK_CREATE_SOCKET_HPP
+#ifndef NETWORK_CREATE_SOCKET_SOCKET_HPP
+#define NETWORK_CREATE_SOCKET_SOCKET_HPP
 
-#include "network/create-socket-acceptdata.hpp" // create_socket()
-#include "network/create-socket-socketdata.hpp" // create_socket()
-#include "network/create-socket-handle.hpp"     // create_socket()
-#include "network/create-socket-hints.hpp"      // create_socket()
-#include "network/create-socket-socket.hpp"     // create_socket()
+#include "network/socket.hpp"           // Socket
+#include "network/uniquesocket.hpp"     // UniqueSocket
+
+namespace Network
+{
+    extern auto create_socket(const Socket& s) -> UniqueSocket;
+}
 
 #endif

@@ -15,11 +15,11 @@
 
 #ifndef _WIN32
 
-#include "network/create-socket.hpp"    // create_socket()
-#include "network/inetsocket.hpp"       // InetSocket
-#include "network/socketdata.hpp"       // SocketData
-#include "network/uniquesocket.hpp"     // UniqueSocket
-#include "network/unixsocket.hpp"       // UnixSocket
+#include "network/create-socket-socketdata.hpp" // create_socket()
+#include "network/inetsocket.hpp"               // InetSocket
+#include "network/socketdata.hpp"               // SocketData
+#include "network/uniquesocket.hpp"             // UniqueSocket
+#include "network/unixsocket.hpp"               // UnixSocket
 
 #include <sys/socket.h>     // AF_UNIX
 

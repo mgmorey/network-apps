@@ -53,7 +53,7 @@ namespace
 
     auto accept(const Socket& as)
     {
-        auto s {create_socket(as.accept())};
+        auto s {create_socket(as)};
         const Address host {s->get_name(Symbol::accept)};
         const Address peer {s->get_peername()};
         const Address self {s->get_sockname()};
