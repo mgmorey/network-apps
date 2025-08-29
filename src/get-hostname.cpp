@@ -25,7 +25,7 @@ auto Network::get_hostname(const SharedRuntime& sr) -> Hostname
     auto result {get_hostnameresult(sr)};
 
     if (!result) {
-        throw Error(result.error().string());
+        throw Error {result.error().string()};
     }
 
     return *result;

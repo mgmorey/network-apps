@@ -68,7 +68,7 @@ auto Network::write(const SocketCore& sc, std::string_view sv) -> ssize_t
             << ": "
             << format_os_error(os_error);
         // clang-format on
-        throw Error(oss.str());
+        throw Error {oss.str()};
     }
 
     return result;

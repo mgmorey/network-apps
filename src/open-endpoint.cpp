@@ -33,7 +33,7 @@ auto Network::open(const OpenInputs& oi,
     SocketTemplateVector stv;
 
     if (const auto error = insert(std::back_inserter(stv), oi)) {
-        throw Error(error.string());
+        throw Error {error.string()};
     }
 
     SocketResultVector srv;

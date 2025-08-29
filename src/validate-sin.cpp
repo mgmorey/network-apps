@@ -37,15 +37,16 @@ auto Network::validate(const sockaddr_in* sin) -> const sockaddr_in*
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
     if (std::cmp_not_equal(sin->sin_len, sizeof *sin)) {
-        throw ValueError<length_type>("sin_len_type",
-                                      sin->sin_len,
-                                      sizeof *sin,
-                                      sizeof *sin);
+        throw ValueError<length_type>
+        {"sin_len_type",
+                sin->sin_len,
+                sizeof *sin,
+                sizeof *sin};
     }
 #endif
 
     if (sin->sin_family != AF_INET) {
-        throw FamilyError(sin->sin_family);
+        throw FamilyError {sin->sin_family};
     }
 
     return sin;

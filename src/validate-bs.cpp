@@ -44,7 +44,7 @@ auto Network::validate(ByteSpan bs) -> ByteSpan
         break;
 #endif
     default:
-        throw FamilyError(family);
+        throw FamilyError {family};
     }
 
     return bs;

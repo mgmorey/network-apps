@@ -84,7 +84,7 @@ auto Network::Address::port() const -> port_type
     case AF_INET6:
         return sin6_port();
     default:
-        throw FamilyError(sa_family());
+        throw FamilyError {sa_family()};
     }
 }
 
@@ -104,6 +104,6 @@ auto Network::Address::text() const -> std::string
         return quote(sun_text());
 #endif
     default:
-        throw FamilyError(sa_family());
+        throw FamilyError {sa_family()};
     }
 }

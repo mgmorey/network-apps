@@ -316,7 +316,7 @@ namespace
         std::string actual;
 
         try {
-            throw Error(expected);
+            throw Error {expected};
         }
         catch (const Error& error) {
             print(error);
@@ -332,7 +332,7 @@ namespace
         std::string actual;
 
         try {
-            throw LogicError(expected);
+            throw LogicError {expected};
         }
         catch (const LogicError& error) {
             print(error);
@@ -348,7 +348,7 @@ namespace
         std::string actual;
 
         try {
-            throw RuntimeError(expected);
+            throw RuntimeError {expected};
         }
         catch (const RuntimeError& error) {
             print(error);

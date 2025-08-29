@@ -43,7 +43,7 @@ Network::SocketCore::SocketCore(handle_type t_handle,
     }
 
     if (!error.empty()) {
-        throw LogicError(error);
+        throw LogicError {error};
     }
 }
 

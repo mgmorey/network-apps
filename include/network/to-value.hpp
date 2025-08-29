@@ -30,7 +30,7 @@ namespace Network
     auto to_value(const std::string& value_type, V value) -> T
     {
         if (!std::in_range<T>(value)) {
-            throw ValueError<T>(value_type, value);
+            throw ValueError<T> {value_type, value};
         }
 
         return static_cast<T>(value);
@@ -42,7 +42,7 @@ namespace Network
     auto to_value(const std::string& value_type, V value, T min, T max) -> T
     {
         if (std::cmp_less(value, min) || std::cmp_greater(value, max)) {
-            throw ValueError<T>(value_type, value, min, max);
+            throw ValueError<T> {value_type, value, min, max};
         }
 
         return static_cast<T>(value);

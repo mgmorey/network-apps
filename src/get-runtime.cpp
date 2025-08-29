@@ -34,6 +34,6 @@ auto Network::get_runtime(ApiOptions ao, RuntimeScope rs) -> SharedRuntime
     case RuntimeScope::shared:
         return create_runtime(ao);
     default:
-        throw LogicError("Invalid scope");
+        throw LogicError {"Invalid scope"};
     }
 }

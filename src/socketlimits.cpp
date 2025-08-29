@@ -46,7 +46,7 @@ Network::SocketLimits::SocketLimits(family_type t_family)
     case AF_UNSPEC:
         break;
     default:
-        throw FamilyError(m_family);
+        throw FamilyError {m_family};
     }
 }
 

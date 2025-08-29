@@ -31,7 +31,7 @@ auto Network::create_socketpair(const SocketHints& hints,
     auto result {create_socketpairresult(hints, sr)};
 
     if (!result) {
-        throw Error(result.error().string());
+        throw Error {result.error().string()};
     }
 
     return std::move(*result);

@@ -71,7 +71,7 @@ auto Network::read(const SocketCore& sc, CharSpan cs) -> ssize_t
             << ": "
             << format_os_error(os_error);
         // clang-format on
-        throw Error(oss.str());
+        throw Error {oss.str()};
     }
 
     if (is_verbose) {

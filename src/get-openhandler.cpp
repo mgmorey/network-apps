@@ -33,6 +33,6 @@ auto Network::get_openhandler(OpenSymbol symbol) -> OpenHandler
     case OpenSymbol::connect:
         return {::connect, "::connect"};
     default:
-        throw LogicError(HANDLER_ERROR);
+        throw LogicError {HANDLER_ERROR};
     }
 }

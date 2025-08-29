@@ -40,8 +40,8 @@ auto Network::open(const SocketCore& sc, ByteSpan bs, OpenSymbol symbol) -> OsEr
     const auto oh {get_openhandler(symbol)};
 
     if (std::cmp_equal(sa_length, sa_length_min)) {
-        throw AddressError("Address payload length is zero: " +
-                           to_string(bs));
+        throw AddressError {"Address payload length is zero: " +
+                            to_string(bs)};
     }
 
     if (sc.runtime()->is_verbose()) {

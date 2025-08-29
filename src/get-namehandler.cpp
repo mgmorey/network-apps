@@ -33,6 +33,6 @@ auto Network::get_namehandler(NameSymbol symbol) -> NameHandler
     case NameSymbol::getpeername:
         return {::getpeername, "::getpeername"};
     default:
-        throw LogicError(HANDLER_ERROR);
+        throw LogicError {HANDLER_ERROR};
     }
 }

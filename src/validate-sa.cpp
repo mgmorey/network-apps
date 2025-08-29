@@ -40,10 +40,11 @@ auto Network::validate(const sockaddr* sa,
 
 #ifdef HAVE_SOCKADDR_SA_LEN
     if (std::cmp_not_equal(sa->sa_len, sa_len)) {
-        throw ValueError<length_type>("sa_length_type",
-                                      sa->sa_len,
-                                      sa_len,
-                                      sa_len);
+        throw ValueError<length_type>
+        {"sa_length_type",
+                sa->sa_len,
+                sa_len,
+                sa_len};
     }
 #endif
 
@@ -55,7 +56,7 @@ auto Network::validate(const sockaddr* sa,
 #endif
         break;
     default:
-        throw FamilyError(sa->sa_family);
+        throw FamilyError {sa->sa_family};
     }
 
     return sa;

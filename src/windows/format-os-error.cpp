@@ -50,8 +50,8 @@ auto Network::format_os_error(os_error_type os_error_code) -> std::string
     LPTSTR error_text {nullptr};
 
     if (format(os_error_code, error_text) == 0 || error_text == nullptr) {
-        throw RuntimeError(std::string("Unable to format message for error ") +
-                           std::to_string(os_error_code));
+        throw RuntimeError {std::string("Unable to format message for error ") +
+                            std::to_string(os_error_code)};
     }
 
     const std::string message {error_text};

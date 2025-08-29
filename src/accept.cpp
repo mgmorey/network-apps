@@ -75,7 +75,7 @@ auto Network::accept(const SocketCore& sc) -> AcceptData
             << ": "
             << format_os_error(os_error);
         // clang-format on
-        throw Error(oss.str());
+        throw Error {oss.str()};
     }
 
     if (is_verbose) {

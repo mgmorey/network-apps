@@ -46,7 +46,7 @@ auto Network::get_option(const ArgumentSpan& args,
                          const char* optstring) -> int
 {
     if (optstring == nullptr || *optstring == '\0') {
-        throw LogicError("No command-line options to parse");
+        throw LogicError {"No command-line options to parse"};
     }
 
     return ::getopt(static_cast<int>(args.size()), args.data(), optstring);

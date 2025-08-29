@@ -28,10 +28,11 @@ auto Network::validate(std::string_view path) -> std::string_view
     const auto path_length {path.length()};
 
     if (path_length > path_length_max) {
-        throw ValueError<length_type>("path_length_type",
-                                      path_length,
-                                      path_length_min,
-                                      path_length_max);
+        throw ValueError<length_type>
+        {"path_length_type",
+                path_length,
+                path_length_min,
+                path_length_max};
     }
 
     return path;

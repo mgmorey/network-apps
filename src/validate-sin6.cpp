@@ -38,15 +38,16 @@ auto Network::validate(const sockaddr_in6* sin6) -> const sockaddr_in6*
 {
 #ifdef HAVE_SOCKADDR_SA_LEN
     if (std::cmp_not_equal(sin6->sin6_len, sizeof *sin6)) {
-        throw ValueError<length_type>("sin6_len_type",
-                                      sin6->sin6_len,
-                                      sizeof *sin6,
-                                      sizeof *sin6);
+        throw ValueError<length_type>
+        {"sin6_len_type",
+                sin6->sin6_len,
+                sizeof *sin6,
+                sizeof *sin6};
     }
 #endif
 
     if (sin6->sin6_family != AF_INET6) {
-        throw FamilyError(sin6->sin6_family);
+        throw FamilyError {sin6->sin6_family};
     }
 
     return sin6;

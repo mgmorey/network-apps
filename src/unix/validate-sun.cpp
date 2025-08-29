@@ -43,15 +43,16 @@ auto Network::validate(const sockaddr_un* sun,
     sun_len = get_sun_length(sun, to_sun_length(sun_len));
 
     if (std::cmp_not_equal(sun->sun_len, sun_len)) {
-        throw ValueError<length_type>("sun_len_type",
-                                      sun->sun_len,
-                                      sun_len,
-                                      sun_len);
+        throw ValueError<length_type>
+        {"sun_len_type",
+                sun->sun_len,
+                sun_len,
+                sun_len};
     }
 #endif
 
     if (sun->sun_family != AF_UNIX) {
-        throw FamilyError(sun->sun_family);
+        throw FamilyError {sun->sun_family};
     }
 
     return sun;

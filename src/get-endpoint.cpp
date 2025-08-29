@@ -28,7 +28,7 @@ auto Network::get_endpoint(ByteSpan bs,
     auto result {get_endpointresult(bs, flags, sr)};
 
     if (!result) {
-        throw Error(result.error().string());
+        throw Error {result.error().string()};
     }
 
     return *result;
