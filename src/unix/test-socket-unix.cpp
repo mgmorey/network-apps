@@ -64,7 +64,6 @@ namespace
     using Network::parse;
     using Network::path_length_max;
     using Network::run;
-    using Network::to_bytestring;
     using Network::to_path;
 
     using ErrorCodeSet = std::set<os_error_type>;
