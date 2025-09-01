@@ -176,17 +176,16 @@ auto main(int argc, char* argv[]) -> int
         while (!shutdown_pending) {
             // Wait for incoming connection.
             const auto data_socket {accept(*connection_socket)};
-            std::string read_str;
+            std::string str;
             Number sum {};
 
-            while((read_str = read(*data_socket)) != "DOWN" &&
-                  read_str != "END") {
+            while((str = read(*data_socket)) != "DOWN" && str != "END") {
                 // Add received inputs.
-                sum += std::stoll(read_str);
+                sum += std::stoll(str);
             }
 
             // Handle commands.
-            if (read_str == "DOWN") {
+            if (str == "DOWN") {
                 // Quit on DOWN command.
                 shutdown_pending = true;
             }
