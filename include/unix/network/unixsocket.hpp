@@ -21,6 +21,7 @@
 #include "network/bytespan.hpp"         // ByteSpan
 #include "network/inetsocket.hpp"       // InetSocket
 #include "network/opensymbol.hpp"       // OpenSymbol
+#include "network/oserror.hpp"          // OsError
 #include "network/pathname.hpp"         // Pathname
 #include "network/pathnameview.hpp"     // PathnameView
 #include "network/socketdata.hpp"       // SocketData
