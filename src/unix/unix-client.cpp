@@ -19,9 +19,7 @@
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Address, Error, Socket,
                                         // Symbol, TextBuffer,
-                                        // create_socket,
-                                        // socket_error,
-                                        // to_bytestring()
+                                        // create_socket, socket_error
 #include "network/parse.hpp"            // parse()
 #include "unix/connection.hpp"          // BUFFER_SIZE, SOCKET_HINTS,
                                         // SOCKET_NAME
