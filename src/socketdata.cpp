@@ -18,6 +18,8 @@
 #include "network/family-type.hpp"      // family_type
 #include "network/handle-type.hpp"      // handle_type
 #include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/socketcore.hpp"       // SocketCore
+#include "network/symbol.hpp"           // Symbol
 
 Network::SocketData::SocketData(handle_type t_handle,
                                 family_type t_family,
