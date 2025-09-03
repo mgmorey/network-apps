@@ -1,4 +1,4 @@
-// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,12 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/create-socket-socket.hpp"     // create_socket()
-#include "network/create-socket-acceptdata.hpp" // create_socket()
-#include "network/socket.hpp"                   // Socket
-#include "network/uniquesocket.hpp"             // UniqueSocket
+#ifndef NETWORK_ACCEPT_SOCKETCORE_HPP
+#define NETWORK_ACCEPT_SOCKETCORE_HPP
 
-auto Network::create_socket(const Socket& s) -> UniqueSocket
+#include "network/acceptdata.hpp"       // AcceptData
+#include "network/socketcore.hpp"       // SocketCore
+
+namespace Network
 {
-    return create_socket(s.accept());
+    extern auto accept(const SocketCore& sc) -> AcceptData;
 }
+
+#endif

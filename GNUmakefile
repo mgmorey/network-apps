@@ -92,12 +92,12 @@ coverage_html = $(coverage_dir)/coverage.html
 coverage_json = coverage.json
 cppcheck_log = cppcheck$(log_suffix)
 
-library_common_sources = accept.cpp acceptdata.cpp address-sa.cpp	\
-address-sin.cpp address-sin6.cpp address.cpp addresserror.cpp		\
-addresslist.cpp argumentdata.cpp binarybuffer.cpp bind-endpoint.cpp	\
-close.cpp connect-endpoint.cpp create-runtime.cpp			\
-create-socket-acceptdata.cpp create-socket-handle.cpp			\
-create-socket-hints.cpp create-socket-socket.cpp			\
+library_common_sources = accept-socket.cpp accept-socketcore.cpp	\
+acceptdata.cpp address-sa.cpp address-sin.cpp address-sin6.cpp		\
+address.cpp addresserror.cpp addresslist.cpp argumentdata.cpp		\
+binarybuffer.cpp bind-endpoint.cpp close.cpp connect-endpoint.cpp	\
+create-runtime.cpp create-socket-acceptdata.cpp				\
+create-socket-handle.cpp create-socket-hints.cpp			\
 create-socketresult.cpp error.cpp familyerror.cpp format.cpp		\
 get-endpoint.cpp get-endpointresult.cpp get-hostname.cpp		\
 get-hostnameresult.cpp get-name.cpp get-namehandler.cpp			\

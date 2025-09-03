@@ -1,4 +1,4 @@
-// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,10 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_ACCEPT_HPP
-#define NETWORK_ACCEPT_HPP
+#ifndef NETWORK_ACCEPT_SOCKET_HPP
+#define NETWORK_ACCEPT_SOCKET_HPP
 
-#include "network/accept-socket.hpp"            // accept()
-#include "network/accept-socketcore.hpp"        // accept()
+#include "network/socket.hpp"           // Socket
+#include "network/uniquesocket.hpp"     // UniqueSocket
+
+namespace Network
+{
+    extern auto accept(const Socket& s) -> UniqueSocket;
+}
 
 #endif

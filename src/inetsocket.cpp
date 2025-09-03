@@ -13,25 +13,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/inetsocket.hpp"       // InetSocket
-#include "network/accept.hpp"           // accept()
-#include "network/acceptdata.hpp"       // AcceptData
-#include "network/bytespan.hpp"         // ByteSpan
-#include "network/charspan.hpp"         // CharSpan
-#include "network/close.hpp"            // close()
-#include "network/get-name.hpp"         // get_name()
-#include "network/handle-type.hpp"      // handle_type
-#include "network/listen.hpp"           // listen()
-#include "network/namesymbol.hpp"       // NameSymbol
-#include "network/open-handle.hpp"      // open()
-#include "network/opensymbol.hpp"       // OpenSymbol
-#include "network/oserror.hpp"          // OsError
-#include "network/read.hpp"             // read()
-#include "network/shutdown.hpp"         // shutdown()
-#include "network/socketcore.hpp"       // SocketCore
-#include "network/socketdata.hpp"       // SocketData
-#include "network/symbol.hpp"           // Symbol
-#include "network/write.hpp"            // write()
+#include "network/inetsocket.hpp"               // InetSocket
+#include "network/accept-socketcore.hpp"        // accept()
+#include "network/acceptdata.hpp"               // AcceptData
+#include "network/bytespan.hpp"                 // ByteSpan
+#include "network/charspan.hpp"                 // CharSpan
+#include "network/close.hpp"                    // close()
+#include "network/get-name.hpp"                 // get_name()
+#include "network/handle-type.hpp"              // handle_type
+#include "network/listen.hpp"                   // listen()
+#include "network/namesymbol.hpp"               // NameSymbol
+#include "network/open-handle.hpp"              // open()
+#include "network/opensymbol.hpp"               // OpenSymbol
+#include "network/oserror.hpp"                  // OsError
+#include "network/read.hpp"                     // read()
+#include "network/shutdown.hpp"                 // shutdown()
+#include "network/socketcore.hpp"               // SocketCore
+#include "network/socketdata.hpp"               // SocketData
+#include "network/symbol.hpp"                   // Symbol
+#include "network/write.hpp"                    // write()
 
 #include <sys/types.h>      // ssize_t
 
