@@ -62,30 +62,31 @@ namespace
 
         if (auto result {connect(SOCKET_NAME, SOCKET_HINTS, is_verbose)}) {
             s.swap(result.value());
+
+            const Address host {s->get_name(Symbol::connect)};
+            const Address peer {s->get_peername()};
+            const Address self {s->get_sockname()};
+
+            if (is_verbose) {
+                // clang-format off
+                std::cout << "Socket "
+                          << std::right << std::setw(handle_width) << *s
+                          << " connected "
+                          << self
+                          << std::endl
+                          << std::right << std::setw(indent_width) << "to "
+                          << peer
+                          << std::endl;
+                // clang-format on
+            }
+
+            assert(host.text() == peer.text());
         }
         else {
             std::cerr << result.error().string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
 
-        const Address host {s->get_name(Symbol::connect)};
-        const Address peer {s->get_peername()};
-        const Address self {s->get_sockname()};
-
-        if (is_verbose) {
-            // clang-format off
-            std::cout << "Socket "
-                      << std::right << std::setw(handle_width) << *s
-                      << " connected "
-                      << self
-                      << std::endl
-                      << std::right << std::setw(indent_width) << "to "
-                      << peer
-                      << std::endl;
-            // clang-format on
-        }
-
-        assert(host.text() == peer.text());
         return s;
     }
 
