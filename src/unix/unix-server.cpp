@@ -79,21 +79,21 @@ namespace
 
         if (auto result {bind(SOCKET_NAME, SOCKET_HINTS, is_verbose)}) {
             s.swap(result.value());
+
+            if (is_verbose) {
+                const Address self {s->get_sockname()};
+                // clang-format off
+                std::cout << "Socket "
+                          << std::right << std::setw(handle_width) << *s
+                          << " bound to "
+                          << self
+                          << std::endl;
+                // clang-format on
+            }
         }
         else {
             std::cerr << result.error().string() << std::endl;
             std::exit(EXIT_FAILURE);
-        }
-
-        if (is_verbose) {
-            const Address self {s->get_sockname()};
-            // clang-format off
-            std::cout << "Socket "
-                      << std::right << std::setw(handle_width) << *s
-                      << " bound to "
-                      << self
-                      << std::endl;
-            // clang-format on
         }
 
         return s;
