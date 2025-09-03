@@ -40,7 +40,6 @@
 namespace
 {
     using Network::Address;
-    using Network::create_socket;
     using Network::Error;
     using Network::Socket;
     using Network::Symbol;
