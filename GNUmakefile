@@ -123,10 +123,11 @@ format-ai-error.cpp format-os-error.cpp get-api-error.cpp		\
 get-os-error.cpp read.cpp set-api-error.cpp set-os-error.cpp		\
 start.cpp stop.cpp write.cpp
 
-library_unix_sources = address-sun.cpp create-socketpair.cpp		\
-create-socketpairresult.cpp get-path-length.cpp get-path-pointer.cpp	\
-get-sun-length.cpp get-sun-pointer.cpp to-bytestring-path.cpp		\
-to-path.cpp unixsocket.cpp validate-path.cpp validate-sun.cpp
+library_unix_sources = address-sun.cpp bind-path.cpp connect-path.cpp	\
+create-socketpair.cpp create-socketpairresult.cpp get-path-length.cpp	\
+get-path-pointer.cpp get-sun-length.cpp get-sun-pointer.cpp		\
+to-bytestring-path.cpp to-path.cpp unixsocket.cpp validate-path.cpp	\
+validate-sun.cpp
 
 test_common_sources = test-address.cpp test-bind.cpp test-connect.cpp	\
 test-errors.cpp test-host.cpp test-hostname.cpp test-option.cpp		\

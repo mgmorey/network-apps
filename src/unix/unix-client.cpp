@@ -35,6 +35,7 @@
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
+#include <utility>      // std::move()
 
 namespace
 {
@@ -42,8 +43,9 @@ namespace
     using Network::create_socket;
     using Network::Error;
     using Network::Socket;
-    using Network::TextBuffer;
     using Network::Symbol;
+    using Network::TextBuffer;
+    using Network::UniqueSocket;
     using Network::socket_error;
 
     constexpr auto handle_width {6};
@@ -58,10 +60,13 @@ namespace
 
     auto connect()
     {
-        auto s {create_socket(SOCKET_HINTS, is_verbose)};
+        UniqueSocket s;
 
-        if (const auto error {s->connect(SOCKET_NAME)}) {
-            std::cerr << error.string() << std::endl;
+        if (auto result {connect(SOCKET_NAME, SOCKET_HINTS, is_verbose)}) {
+            s = std::move(result.value());
+        }
+        else {
+            std::cerr << result.error().string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
 

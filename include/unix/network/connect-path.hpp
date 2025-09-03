@@ -13,12 +13,26 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_CONNECT_HPP
-#define NETWORK_CONNECT_HPP
+#ifndef UNIX_NETWORK_CONNECT_PATH_HPP
+#define UNIX_NETWORK_CONNECT_PATH_HPP
 
-#include "network/connect-endpoint.hpp"         // connect()
 #ifndef _WIN32
-#include "network/connect-path.hpp"             // bind()
+
+#include "network/pathnameview.hpp"     // PathnameView
+#include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/sockethints.hpp"      // SocketHints
+#include "network/socketresult.hpp"     // SocketResult
+
+namespace Network
+{
+    extern auto connect(const PathnameView& pathname,
+                        const SocketHints& hints,
+                        const SharedRuntime& sr) -> SocketResult;
+    extern auto connect(const PathnameView& pathname,
+                        const SocketHints& hints,
+                        bool is_verbose = false) -> SocketResult;
+}
+
 #endif
 
 #endif

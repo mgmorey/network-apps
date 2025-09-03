@@ -29,6 +29,7 @@
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
+#include <utility>      // std::move()
 
 namespace
 {
@@ -37,6 +38,7 @@ namespace
     using Network::Socket;
     using Network::Symbol;
     using Network::TextBuffer;
+    using Network::UniqueSocket;
     using Network::create_socket;
     using Network::socket_error;
 
@@ -74,10 +76,13 @@ namespace
 
     auto bind()
     {
-        auto s {create_socket(SOCKET_HINTS, is_verbose)};
+        UniqueSocket s;
 
-        if (const auto error {s->bind(SOCKET_NAME)}) {
-            std::cerr << error.string() << std::endl;
+        if (auto result {bind(SOCKET_NAME, SOCKET_HINTS, is_verbose)}) {
+            s = std::move(result.value());
+        }
+        else {
+            std::cerr << result.error().string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
 

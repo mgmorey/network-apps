@@ -17,5 +17,8 @@
 #define NETWORK_BIND_HPP
 
 #include "network/bind-endpoint.hpp"            // bind()
+#ifndef _WIN32
+#include "network/bind-path.hpp"                // bind()
+#endif
 
 #endif
