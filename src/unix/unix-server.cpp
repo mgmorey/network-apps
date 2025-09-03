@@ -29,7 +29,6 @@
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
-#include <utility>      // std::move()
 
 namespace
 {
@@ -79,7 +78,7 @@ namespace
         UniqueSocket s;
 
         if (auto result {bind(SOCKET_NAME, SOCKET_HINTS, is_verbose)}) {
-            s = std::move(result.value());
+            s.swap(result.value());
         }
         else {
             std::cerr << result.error().string() << std::endl;
