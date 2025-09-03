@@ -49,6 +49,30 @@ namespace
 
     auto is_verbose {false};  // NOLINT
 
+    auto accept(const UniqueSocket& s1)
+    {
+        auto s2 {accept(*s1)};
+        const Address host {s2->get_name(Symbol::accept)};
+        const Address peer {s2->get_peername()};
+        const Address self {s2->get_sockname()};
+
+        if (is_verbose) {
+            // clang-format off
+            std::cout << "Socket "
+                      << std::right << std::setw(handle_width) << *s2
+                      << " connected "
+                      << self
+                      << std::endl
+                      << std::right << std::setw(indent_width) << "to "
+                      << peer
+                      << std::endl;
+            // clang-format on
+        }
+
+        assert(host.text() == peer.text());
+        return s2;
+    }
+
     auto bind()
     {
         UniqueSocket s;
@@ -153,7 +177,7 @@ auto main(int argc, char* argv[]) -> int
         // This is the main loop for handling connections.
         while (!shutdown_pending) {
             // Wait for incoming connection.
-            const auto data_socket {accept(*connection_socket)};
+            const auto data_socket {accept(connection_socket)};
             const Address host {data_socket->get_name(Symbol::accept)};
             const Address peer {data_socket->get_peername()};
             const Address self {data_socket->get_sockname()};
