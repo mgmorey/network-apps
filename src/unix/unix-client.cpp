@@ -66,7 +66,7 @@ namespace
             std::exit(EXIT_FAILURE);
         }
 
-        auto& s {result.value()};
+        auto& s {*result};
         const Address host {s->get_name(Symbol::connect)};
         const Address peer {s->get_peername()};
 
