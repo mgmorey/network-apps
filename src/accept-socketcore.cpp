@@ -87,8 +87,11 @@ auto Network::accept(const SocketCore& sc) -> AcceptData
                   << str
                   << ", "
                   << sa_length
-                  << ") returned data "
+                  << ") returned data {"
+                  << handle_2
+                  << ", "
                   << str
+                  << '}'
                   << std::endl;
         // clang-format on
     }
