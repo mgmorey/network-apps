@@ -13,20 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_SOCKET_ERROR_HPP
-#define NETWORK_SOCKET_ERROR_HPP
+#ifndef WINDOWS_NETWORK_SOCKET_ERROR_HPP
+#define WINDOWS_NETWORK_SOCKET_ERROR_HPP
 
 #ifdef _WIN32
+
 #include <winsock2.h>       // SOCKET_ERROR
-#else
-#ifndef SOCKET_ERROR
-#define SOCKET_ERROR	(-1)	// NOLINT
-#endif
-#endif
 
 namespace Network
 {
     constexpr auto socket_error {SOCKET_ERROR};
 }
+
+#endif
 
 #endif
