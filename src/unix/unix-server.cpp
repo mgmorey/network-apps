@@ -40,6 +40,7 @@ namespace
     using Network::TextBuffer;
     using Network::UniqueSocket;
     using Network::accept;
+    using Network::bind;
     using Network::socket_error;
 
     using Number = long long;
