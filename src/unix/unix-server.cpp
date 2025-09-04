@@ -29,6 +29,7 @@
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::stoll(), std::string, std::to_string()
+#include <utility>      // std::move()
 
 namespace
 {
@@ -75,28 +76,27 @@ namespace
 
     auto bind()
     {
-        UniqueSocket s;
+        auto result {bind(SOCKET_NAME, SOCKET_HINTS, is_verbose)};
 
-        if (auto result {bind(SOCKET_NAME, SOCKET_HINTS, is_verbose)}) {
-            s.swap(result.value());
-
-            if (is_verbose) {
-                const Address self {s->get_sockname()};
-                // clang-format off
-                std::cout << "Socket "
-                          << std::right << std::setw(handle_width) << *s
-                          << " bound to "
-                          << self
-                          << std::endl;
-                // clang-format on
-            }
-        }
-        else {
+        if (!result) {
             std::cerr << result.error().string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
 
-        return s;
+        auto& s {result.value()};
+
+        if (is_verbose) {
+            const Address self {s->get_sockname()};
+            // clang-format off
+            std::cout << "Socket "
+                      << std::right << std::setw(handle_width) << *s
+                      << " bound to "
+                      << self
+                      << std::endl;
+            // clang-format on
+        }
+
+        return std::move(s);
     }
 
     auto listen(const Socket& s)
