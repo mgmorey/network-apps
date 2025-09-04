@@ -83,7 +83,7 @@ namespace
             std::exit(EXIT_FAILURE);
         }
 
-        auto& s {result.value()};
+        auto& s {*result};
 
         if (is_verbose) {
             const Address self {s->get_sockname()};
