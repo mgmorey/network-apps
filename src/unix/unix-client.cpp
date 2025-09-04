@@ -45,6 +45,7 @@ namespace
     using Network::Symbol;
     using Network::TextBuffer;
     using Network::UniqueSocket;
+    using Network::connect;
     using Network::socket_error;
 
     constexpr auto handle_width {6};
