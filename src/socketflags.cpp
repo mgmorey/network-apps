@@ -16,13 +16,13 @@
 #include "network/socketflags.hpp"      // SocketFlags, operator<<()
 
 #ifdef _WIN32
-#include <ws2tcpip.h>   // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
-                        // AI_NUMERICHOST, AI_NUMERICSERV, AI_PASSIVE,
-                        // AI_V4MAPPED
+#include <ws2tcpip.h>       // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
+                            // AI_NUMERICHOST, AI_NUMERICSERV,
+                            // AI_PASSIVE, AI_V4MAPPED
 #else
-#include <netdb.h>      // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
-                        // AI_NUMERICHOST, AI_NUMERICSERV, AI_PASSIVE,
-                        // AI_V4MAPPED
+#include <netdb.h>          // AI_ADDRCONFIG, AI_ALL, AI_CANONNAME,
+                            // AI_NUMERICHOST, AI_NUMERICSERV,
+                            // AI_PASSIVE, AI_V4MAPPED
 #endif
 
 #include <cstddef>      // std::size_t
