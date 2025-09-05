@@ -30,9 +30,9 @@
 #include "network/to-string-bytespan.hpp"       // to_string()
 
 #ifdef _WIN32
-#include <ws2tcpip.h>   // ::getnameinfo()
+#include <ws2tcpip.h>       // ::getnameinfo()
 #else
-#include <netdb.h>      // ::getnameinfo()
+#include <netdb.h>          // ::getnameinfo()
 #endif
 
 #include <expected>     // std::unexpected
