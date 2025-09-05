@@ -48,10 +48,11 @@ auto Network::create_socketpairresult(const SocketHints& hints,
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
 
-    const auto family {hints.m_family};
     std::vector<handle_type> handles(2, handle_null);
+    const auto family {hints.m_family};
+    const auto is_verbose {sr->is_verbose()};
 
-    if (sr->is_verbose()) {
+    if (is_verbose) {
         // clang-format off
         std::cout << "Calling ::socketpair("
                   << Format("domain")
@@ -100,7 +101,7 @@ auto Network::create_socketpairresult(const SocketHints& hints,
         return std::unexpected {OsError {os_error, oss.str()}};
     }
 
-    if (sr->is_verbose()) {
+    if (is_verbose) {
         // clang-format off
         std::cout << "Call to ::socketpair("
                   << Format("domain")
