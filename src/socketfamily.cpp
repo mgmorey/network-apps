@@ -17,9 +17,9 @@
                                         // operator<<()
 
 #ifdef _WIN32
-#include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
+#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #else
-#include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC,
+#include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX, AF_UNSPEC
 #endif
 
 #include <ostream>      // std::ostream
