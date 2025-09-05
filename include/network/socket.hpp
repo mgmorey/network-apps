@@ -57,14 +57,12 @@ namespace Network
 
         [[nodiscard]] auto bind(auto t_peer) -> OsError
         {
-            ByteString bs {to_bytestring(t_peer)};
-            return open(bs, OpenSymbol::bind);
+            return open(to_bytestring(t_peer), OpenSymbol::bind);
         }
 
         [[nodiscard]] auto connect(auto t_peer) -> OsError
         {
-            ByteString bs {to_bytestring(t_peer)};
-            return open(bs, OpenSymbol::connect);
+            return open(to_bytestring(t_peer), OpenSymbol::connect);
         }
 
         [[nodiscard]] auto get_peername() const -> ByteSpan
