@@ -16,12 +16,12 @@
 #include "network/sockettype.hpp"       // SocketType, operator<<()
 
 #ifdef _WIN32
-#include <winsock2.h>   // SOCK_DGRAM, SOCK_RAW, SOCK_RDM,
-                        // SOCK_SEQPACKET, SOCK_STREAM
+#include <winsock2.h>       // SOCK_DGRAM, SOCK_RAW, SOCK_RDM,
+                            // SOCK_SEQPACKET, SOCK_STREAM
 #else
-#include <sys/socket.h> // SOCK_DGRAM, SOCK_DCCP, SOCK_PACKET,
-                        // SOCK_RAW, SOCK_RDM, SOCK_SEQPACKET,
-                        // SOCK_STREAM
+#include <sys/socket.h>     // SOCK_DGRAM, SOCK_DCCP, SOCK_PACKET,
+                            // SOCK_RAW, SOCK_RDM, SOCK_SEQPACKET,
+                            // SOCK_STREAM
 #endif
 
 #include <cstddef>      // std::size_t
