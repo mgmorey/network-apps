@@ -17,9 +17,9 @@
 #define NETWORK_NAME_LENGTH_LIMITS_HPP
 
 #ifdef _WIN32
-#include <ws2tcpip.h>   // NI_MAXHOST
+#include <ws2tcpip.h>       // NI_MAXHOST
 #else
-#include <netdb.h>      // NI_MAXHOST
+#include <netdb.h>          // NI_MAXHOST
 #endif
 
 #ifndef NI_MAXHOST
