@@ -17,13 +17,13 @@
                                         // operator<<()
 
 #ifdef _WIN32
-#include <winsock2.h>   // AF_INET, AF_INET6, IPPROTO_ICMP,
-                        // IPPROTO_IGMP, IPPROTO_IP, IPPROTO_RAW,
-                        // IPPROTO_TCP, IPPROTO_UDP
+#include <winsock2.h>       // AF_INET, AF_INET6, IPPROTO_ICMP,
+                            // IPPROTO_IGMP, IPPROTO_IP, IPPROTO_RAW,
+                            // IPPROTO_TCP, IPPROTO_UDP
 #else
-#include <netinet/in.h> // IPPROTO_ICMP, IPPROTO_IGMP, IPPROTO_IP,
-                        // IPPROTO_RAW, IPPROTO_TCP, IPPROTO_UDP
-#include <sys/socket.h> // AF_INET, AF_INET6
+#include <netinet/in.h>     // IPPROTO_ICMP, IPPROTO_IGMP, IPPROTO_IP,
+                            // IPPROTO_RAW, IPPROTO_TCP, IPPROTO_UDP
+#include <sys/socket.h>     // AF_INET, AF_INET6
 #endif
 
 #include <ostream>      // std::ostream
