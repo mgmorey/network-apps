@@ -17,7 +17,7 @@
 
 #include "network/set-api-error.hpp"   // set_api_error()
 
-#include <cerrno>           // errno
+#include <cerrno>       // errno
 
 auto Network::set_api_error(int error_code) -> int
 {

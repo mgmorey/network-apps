@@ -18,7 +18,7 @@
 #include "network/get-os-error.hpp"     // get_os_error()
 #include "network/os-error-type.hpp"    // os_error_type
 
-#include <cerrno>           // errno
+#include <cerrno>       // errno
 
 auto Network::get_os_error() -> os_error_type
 {
