@@ -27,7 +27,7 @@ Network::ArgumentData::ArgumentData(const std::vector<std::string>& data)
 {
     std::ranges::transform(data,
                            std::back_inserter(m_args),
-                           [&](const std::string& arg) {
+                           [&](const std::string& arg) -> char* {
                                return ::strdup(arg.c_str());  // NOLINT
                            });
 }
