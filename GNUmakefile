@@ -233,7 +233,7 @@ buildonly: $(build_targets)
 
 .PHONY: analyze
 analyze: $(sources) | $(cppcheck_dir)
-	printf '%s\n' $^ | xargs cppcheck $(CPPCHECK_FLAGS)
+	cppcheck $(CPPCHECK_FLAGS) $(sort $^)
 
 .PHONY: assert
 assert:
