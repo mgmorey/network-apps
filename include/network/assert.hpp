@@ -18,7 +18,7 @@
 
 #include <cassert>
 
-#if defined(NDEBUG)
+#ifdef NDEBUG
 #undef assert
 #define assert(e) (static_cast<void>(0))  // NOLINT
 #elif defined(__APPLE__) && defined(__MACH__)

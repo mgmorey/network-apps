@@ -263,7 +263,7 @@ namespace
 
     auto test_paths_valid() -> void
     {
-#if defined(__linux__)
+#ifdef __linux__
         test("", {0}, {});
 #endif
 
