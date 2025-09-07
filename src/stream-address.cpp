@@ -21,9 +21,9 @@
 #include "network/socketfamily.hpp"     // SocketFamily
 
 #ifdef _WIN32
-#include <winsock2.h>   // AF_INET, AF_INET6, AF_UNIX
+#include <winsock2.h>       // AF_INET, AF_INET6, AF_UNIX
 #else
-#include <sys/socket.h> // AF_INET, AF_INET6, AF_UNIX
+#include <sys/socket.h>     // AF_INET, AF_INET6, AF_UNIX
 #endif
 
 #include <ostream>      // std::ostream
