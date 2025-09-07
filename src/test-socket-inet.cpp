@@ -25,11 +25,11 @@
 #include "network/parse.hpp"            // parse()
 
 #ifdef _WIN32
-#include <winsock2.h>   // AF_INET, AF_UNSPEC, SOCK_STREAM, ::close(),
-                        // ::socket()
+#include <winsock2.h>       // AF_INET, AF_UNSPEC, SOCK_STREAM,
+                            // ::close(), ::socket()
 #else
-#include <sys/socket.h> // AF_INET, AF_UNSPEC, SOCK_STREAM ::close(),
-                        // ::socket()
+#include <sys/socket.h>     // AF_INET, AF_UNSPEC, SOCK_STREAM
+                            // ::close(), ::socket()
 #endif
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit(),
