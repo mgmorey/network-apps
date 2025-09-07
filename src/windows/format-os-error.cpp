@@ -29,20 +29,17 @@
 
 #include <string>       // std::string, std::to_string()
 
-namespace
+static auto format(DWORD error, LPTSTR& error_text) -> DWORD
 {
-    auto format(DWORD error, LPTSTR& error_text) -> DWORD
-    {
-        return ::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM |
-                               FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                               FORMAT_MESSAGE_IGNORE_INSERTS,
-                               nullptr,
-                               error,
-                               MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                               reinterpret_cast<LPTSTR>(&error_text),  // NOLINT
-                               0,
-                               nullptr);
-    }
+    return ::FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM |
+                           FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                           FORMAT_MESSAGE_IGNORE_INSERTS,
+                           nullptr,
+                           error,
+                           MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                           reinterpret_cast<LPTSTR>(&error_text),  // NOLINT
+                           0,
+                           nullptr);
 }
 
 auto Network::format_os_error(os_error_type os_error_code) -> std::string
