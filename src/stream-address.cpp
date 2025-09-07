@@ -29,40 +29,37 @@
 #include <ostream>      // std::ostream
 #include <string>       // std::string
 
-namespace
+static auto get_prefix(Network::family_type family) noexcept -> std::string
 {
-    auto get_prefix(Network::family_type family) noexcept -> std::string
-    {
-        switch (family) {
-        case AF_INET:
-            return "sin_";
-            break;
-        case AF_INET6:
-            return "sin6_";
-            break;
-        case AF_UNIX:
-            return "sun_";
-            break;
-        default:
-            return "sa_";
-        }
+    switch (family) {
+    case AF_INET:
+        return "sin_";
+        break;
+    case AF_INET6:
+        return "sin6_";
+        break;
+    case AF_UNIX:
+        return "sun_";
+        break;
+    default:
+        return "sa_";
     }
+}
 
-    auto get_suffix(Network::family_type family) noexcept -> std::string
-    {
-        switch (family) {
-        case AF_INET:
-            return "_in";
-            break;
-        case AF_INET6:
-            return "_in6";
-            break;
-        case AF_UNIX:
-            return "_un";
-            break;
-        default:
-            return {};
-        }
+static auto get_suffix(Network::family_type family) noexcept -> std::string
+{
+    switch (family) {
+    case AF_INET:
+        return "_in";
+        break;
+    case AF_INET6:
+        return "_in6";
+        break;
+    case AF_UNIX:
+        return "_un";
+        break;
+    default:
+        return {};
     }
 }
 
