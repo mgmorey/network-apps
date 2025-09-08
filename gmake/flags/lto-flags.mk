@@ -16,7 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ifneq "$(call is-optimized,$(CXXFLAGS))" ""
-ifeq "$(with-shared-library)" ""
+ifeq "$(with_shared_library)" ""
 CXXFLAGS += -flto
 LDFLAGS += -flto
 endif

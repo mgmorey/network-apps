@@ -45,16 +45,20 @@ is_unix = $(filter Darwin FreeBSD,$(os_label_kernel))
 is_windows_api = $(filter MINGW64_NT,$(os_label_kernel))
 is_windows_os = $(filter windows,$(os_label_id))
 
-# Define predicates for compiler and linker features
+# Define compiler and linker feature predicates
 is_as_listings = $(filter listings,$(as_features))
 is_ld_install_name = $(filter install_name,$(ld_features))
 is_ld_rpath = $(filter rpath,$(ld_features))
 is_ld_soname = $(filter soname,$(ld_features))
 
-# Define predicates for object and shared object files
+# Define object and shared object file predicates
 is_depend = $(filter %$(depend_suffix),$@)
 is_object = $(filter %$(object_suffix),$@)
 is_shared = $(filter %$(shared_suffix),$@)
+
+# Define shared and static library predicates
+with_shared_library = $(filter shared,$(WITH_LIBRARY))
+with_static_library = $(filter static,$(WITH_LIBRARY))
 
 # Define install_name and soname linker option variables
 install_name = $(library_stem)$(alias_suffix)
@@ -93,7 +97,7 @@ warnings = all error extra $(if $(is_macos),,pedantic) shadow sign-conversion
 CXXFLAGS += $(addprefix -W,$(warnings))
 
 # Add position-independent code flag to CXXFLAGS
-CXXFLAGS += $(if $(with-shared-library),-fPIC,)
+CXXFLAGS += $(if $(with_shared_library),-fPIC,)
 
 # Add automatic variable initialization flag to CXXFLAGS
 CXXFLAGS += -ftrivial-auto-var-init=zero

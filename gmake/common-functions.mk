@@ -209,12 +209,6 @@ define to-upper
 $(shell printf '%s\n' $1 | tr '[:lower:]' '[:upper:]')
 endef
 
-# $(with-shared-library)
-with-shared-library = $(filter shared,$(WITH_LIBRARY))
-
-# $(with-static-library)
-with-static-library = $(filter static,$(WITH_LIBRARY))
-
 # Local Variables:
 # mode: makefile
 # End:
