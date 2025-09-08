@@ -16,6 +16,8 @@
 #ifndef UNIX_NETWORK_SOCKETPAIRRESULT_HPP
 #define UNIX_NETWORK_SOCKETPAIRRESULT_HPP
 
+#ifndef _WIN32
+
 #include "network/oserror.hpp"          // OsError
 #include "network/socketpair.hpp"       // SocketPair
 
@@ -25,5 +27,7 @@ namespace Network
 {
     using SocketPairResult = std::expected<SocketPair, OsError>;
 }
+
+#endif
 
 #endif
