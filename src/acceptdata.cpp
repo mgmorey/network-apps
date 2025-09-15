@@ -16,6 +16,7 @@
 #include "network/acceptdata.hpp"       // AcceptData
 #include "network/bytestring.hpp"       // ByteString
 #include "network/handle-type.hpp"      // handle_type
+#include "network/socketcore.hpp"       // SocketCore
 
 Network::AcceptData::AcceptData(const ByteString& t_nm,
                                 const SocketCore& t_sc,
