@@ -35,7 +35,7 @@ endif
 
 ifeq "$(filter -fsanitize=%,$(CXXFLAGS))" ""
 ifneq "$(findstring memory,$(WITH_SANITIZE))" ""
-CXXFLAGS += -fsanitize-memory-track-origins=1
+CXXFLAGS += -fsanitize-memory-track-origins
 endif
 ifneq "$(findstring null,$(WITH_SANITIZE))" ""
 CXXFLAGS += -fno-sanitize-recover=null
