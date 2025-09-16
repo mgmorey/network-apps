@@ -52,13 +52,13 @@
                             __FILE__,                                   \
                             __LINE__,                                   \
                             #e))
-#elif defined(__linux__)
+#elifdef __linux__
 #undef assert
 /* When possible, define assert so that it does not add extra
    parentheses around EXPR.  Otherwise, those added parentheses would
    suppress warnings we'd expect to be detected by gcc's
    -Wparentheses.  */
-# if defined __cplusplus
+# ifdef __cplusplus
 // NOLINTNEXTLINE
 #  define assert(expr)							\
      (static_cast <bool> (expr)						\
