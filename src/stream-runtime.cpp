@@ -19,7 +19,7 @@
 
 auto Network::operator<<(std::ostream& os, const Runtime& rt) -> std::ostream&
 {
-    if (rt.description().empty()) {
+    if (rt.system_status().empty()) {
         return os;
     }
 
@@ -29,10 +29,7 @@ auto Network::operator<<(std::ostream& os, const Runtime& rt) -> std::ostream&
         os << " Version " << rt.version();
     }
 
-    if (!rt.system_status().empty()) {
-        os << ' ' << rt.system_status();
-    }
-
+    os << ' ' << rt.system_status();
 #ifdef CODE_COVERAGE_ENABLED
     os << " (with code coverage enabled)";
 #endif
