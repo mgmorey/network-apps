@@ -43,7 +43,7 @@ namespace Network
 
         explicit constexpr operator bool() const noexcept
         {
-            return m_major == 0 && m_minor == 0;
+            return m_major != 0 || m_minor != 0;
         }
 
         [[nodiscard]] constexpr auto major() const noexcept -> field_type
