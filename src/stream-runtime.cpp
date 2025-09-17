@@ -26,12 +26,25 @@ auto Network::operator<<(std::ostream& os, const Runtime& rt) -> std::ostream&
     os << rt.description();
 
     if (static_cast<bool>(rt.version())) {
-        os << " Version " << rt.version();
+        if (os.tellp() != 0) {
+            os << ' ';
+        }
+
+        os << "Version " << rt.version();
     }
 
-    os << ' ' << rt.system_status();
+    if (os.tellp() != 0) {
+        os << ' ';
+    }
+
+    os << rt.system_status();
+
 #ifdef CODE_COVERAGE_ENABLED
-    os << " (with code coverage enabled)";
+    if (os.tellp() != 0) {
+        os << ' ';
+    }
+
+    os << "(with code coverage enabled)";
 #endif
 
     return os;
