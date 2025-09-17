@@ -31,7 +31,7 @@
 #include <vector>       // std::vector
 
 auto Network::operator<<(std::ostream& os,
-                         const SocketType& type) -> std::ostream&
+                         const SocketType& st) -> std::ostream&
 {
     static const std::vector<std::pair<int, const char*>> values {
 #ifdef SOCK_CLOEXEC
@@ -47,8 +47,8 @@ auto Network::operator<<(std::ostream& os,
     std::ostringstream oss;
     std::size_t index {0};
 
-    if ((type & mask) != 0) {
-        switch (type & mask) {
+    if ((st & mask) != 0) {
+        switch (st & mask) {
         case SOCK_STREAM:
             oss << "SOCK_STREAM";
             break;
@@ -62,15 +62,15 @@ auto Network::operator<<(std::ostream& os,
             oss << "SOCK_SEQPACKET";
             break;
         default:
-            oss << static_cast<int>(type);
+            oss << static_cast<int>(st);
         }
 
         ++index;
     }
 
-    if (type != -1) {
+    if (st != -1) {
         for (const auto& value : values) {
-            if ((type & value.first) != 0) {
+            if ((st & value.first) != 0) {
                 if (index++ > 0) {
                     oss << " | ";
                 }

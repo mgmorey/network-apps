@@ -27,18 +27,18 @@ namespace Network
         public Integer<socket_type_type>
     {
         friend auto operator<<(std::ostream& os,
-                               const SocketType& type) -> std::ostream&;
+                               const SocketType& st) -> std::ostream&;
 
     public:
         // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
-        constexpr SocketType(socket_type_type t_value) noexcept :
-            Integer(t_value)
+        constexpr SocketType(socket_type_type t_st) noexcept :
+            Integer(t_st)
         {
         }
     };
 
     extern auto operator<<(std::ostream& os,
-                           const SocketType& type) -> std::ostream&;
+                           const SocketType& st) -> std::ostream&;
 }
 
 #endif
