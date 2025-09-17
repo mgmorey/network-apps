@@ -21,10 +21,6 @@ auto Network::operator<<(std::ostream& os, const Runtime& rt) -> std::ostream&
 {
     const auto start {os.tellp()};
 
-    if (rt.system_status().empty()) {
-        return os;
-    }
-
     os << rt.description();
 
     if (static_cast<bool>(rt.version())) {
