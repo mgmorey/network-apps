@@ -25,7 +25,7 @@ auto Network::operator<<(std::ostream& os, const Runtime& rt) -> std::ostream&
 
     os << rt.description();
 
-    if (rt.version() != Version {0, 0}) {
+    if (static_cast<bool>(rt.version())) {
         os << " Version " << rt.version();
     }
 
