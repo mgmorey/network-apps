@@ -31,11 +31,13 @@ auto Network::operator<<(std::ostream& os, const Runtime& rt) -> std::ostream&
     }
 
 #ifdef CODE_COVERAGE_ENABLED
+
     if (os.tellp() != start) {
         os << ' ';
     }
 
     os << "(with code coverage enabled)";
+
 #endif
 
     if (os.tellp() != start) {
