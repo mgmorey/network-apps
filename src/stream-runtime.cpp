@@ -20,7 +20,6 @@
 auto Network::operator<<(std::ostream& os, const Runtime& rt) -> std::ostream&
 {
     const auto start {os.tellp()};
-
     os << rt.description();
 
     if (static_cast<bool>(rt.version())) {
@@ -28,14 +27,8 @@ auto Network::operator<<(std::ostream& os, const Runtime& rt) -> std::ostream&
             os << ' ';
         }
 
-        os << "Version " << rt.version();
+        os << rt.version();
     }
-
-    if (os.tellp() != start) {
-        os << ' ';
-    }
-
-    os << rt.system_status();
 
 #ifdef CODE_COVERAGE_ENABLED
     if (os.tellp() != start) {
@@ -45,5 +38,10 @@ auto Network::operator<<(std::ostream& os, const Runtime& rt) -> std::ostream&
     os << "(with code coverage enabled)";
 #endif
 
+    if (os.tellp() != start) {
+        os << ' ';
+    }
+
+    os << rt.system_status();
     return os;
 }
