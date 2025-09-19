@@ -51,16 +51,22 @@ namespace
     constexpr auto expected_code_stopped {WSANOTINITIALISED};
     constexpr auto expected_runtime_platform_re
     {
-        "WinSock 2.0"
+        "WinSock 2.0 "
     };
 #else
     constexpr auto expected_code_stopped {0};
     constexpr auto expected_runtime_platform_re {
-        "Berkeley Software Distribution Sockets"
+        "Berkeley Software Distribution Sockets "
     };
 #endif
     constexpr auto expected_runtime_version_re {
-        "(Version \\d{1,3}\\.\\d{1,3} )?" // NOLINT
+        "(\\d{1,3}\\.\\d{1,3} )?" // NOLINT
+    };
+    constexpr auto expected_runtime_options_re {
+        "(\\(with code coverage enabled\\) )?"
+    };
+    constexpr auto expected_runtime_status_re {
+        "Running"
     };
 
     const auto fail_mode {FailMode::return_error};
@@ -92,10 +98,10 @@ namespace
         std::string result;
         result += "(";
         result += expected_runtime_platform_re;
-        result += " ";
         result += expected_runtime_version_re;
-        result += "(\\(with code coverage enabled\\))? )";
-        result += "Running";
+        result += expected_runtime_options_re;
+        result += expected_runtime_status_re;
+        result += ")";
         return result;
     }
 
@@ -175,10 +181,10 @@ namespace
         sa.start();
         print(sa);
         assert(sa.is_running());
-        const std::string actual_str {get_actual_str(sa)};
+        const auto actual_str {get_actual_str(sa)};
         const std::regex expected_regex {get_expected_re()};
         assert(std::regex_match(actual_str, expected_regex));
-        const int error_code {sa.stop()};
+        const auto error_code {sa.stop()};
         assert(!error_code);
         print(sa);
         assert(!sa.is_running());
