@@ -135,6 +135,7 @@ test-parse.cpp test-runtime.cpp test-socket-api.cpp			\
 test-socket-data.cpp test-socket-inet.cpp
 
 test_unix_sources = test-socket-pair.cpp test-socket-unix.cpp
+
 unix_sources = unix-server.cpp unix-client.cpp
 
 sizes = sizes.txt sizes.txt~
