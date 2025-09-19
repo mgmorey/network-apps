@@ -33,6 +33,7 @@
 
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
+#include <cstring>      // std::strcmp()
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <string>       // std::string
@@ -153,10 +154,9 @@ auto main(int argc, char* argv[]) -> int
 
         // Send arguments to server.
         for (const auto& arg : args) {
-            const std::string write_str {arg};
-            write(write_str, *s);
+            write(arg, *s);
 
-            if (write_str == "DOWN") {
+            if (std::strcmp(arg, "DOWN") == 0) {
                 shutdown_pending = true;
                 shutdown(*s);
                 break;
