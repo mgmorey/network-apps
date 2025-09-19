@@ -13,15 +13,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Define variables for project name
+# Define variables for project name and version
 PROJECT_NAME := network
-
-# Define variables for project defaults
 VERSION ?= 0.0.1
+
+# Define variables for other project defaults
 BUILD_DIR ?= .
 BUILD_TYPE ?= Default
-INSTALL_PREFIX ?= ~/.local
 HTML_THEME ?= green
+INSTALL_PREFIX ?= ~/.local
 TMPDIR ?= /tmp
 WITH_FORTIFY_SOURCE ?= 3
 WITH_LIBRARY ?= shared
