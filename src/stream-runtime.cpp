@@ -16,34 +16,42 @@
 #include "network/runtime.hpp"          // Runtime, operator<<()
 
 #include <ostream>      // std::ostream
+#include <sstream>      // std::ostringstream
+#include <string>       // std::string
 
-auto Network::operator<<(std::ostream& os, const Runtime& rt) -> std::ostream&
+static auto to_string(const Network::Runtime& rt) -> std::string
 {
-    const auto start {os.tellp()};
-    os << rt.description();
+    std::ostringstream oss;
+    const auto start {oss.tellp()};
+    oss << rt.description();
 
     if (static_cast<bool>(rt.version())) {
-        if (os.tellp() != start) {
-            os << ' ';
+        if (oss.tellp() != start) {
+            oss << ' ';
         }
 
-        os << rt.version();
+        oss << rt.version();
     }
 
 #ifdef CODE_COVERAGE_ENABLED
 
-    if (os.tellp() != start) {
-        os << ' ';
+    if (oss.tellp() != start) {
+        oss << ' ';
     }
 
-    os << "(with code coverage enabled)";
+    oss << "(with code coverage enabled)";
 
 #endif
 
-    if (os.tellp() != start) {
-        os << ' ';
+    if (oss.tellp() != start) {
+        oss << ' ';
     }
 
-    os << rt.system_status();
-    return os;
+    oss << rt.system_status();
+    return oss.str();
+}
+
+auto Network::operator<<(std::ostream& os, const Runtime& rt) -> std::ostream&
+{
+    return os << to_string(rt);
 }
