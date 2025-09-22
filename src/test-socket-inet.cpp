@@ -287,11 +287,6 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
         const auto rt {run(is_verbose)};
-
-        if (is_verbose) {
-            std::cout << *rt << std::endl;
-        }
-
         test_handle_null();
         test_handle_zero();
         test_inet_accept();

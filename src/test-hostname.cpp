@@ -140,11 +140,6 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
         const auto rt {run(is_verbose)};
-
-        if (is_verbose) {
-            std::cout << *rt << std::endl;
-        }
-
         test_get_hostnameresult_overflow(rt);
         test_get_hostnameresult_valid(rt);
         test_get_hostname_valid();

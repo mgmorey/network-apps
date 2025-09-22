@@ -63,7 +63,6 @@ namespace
     using Network::os_error_type;
     using Network::parse;
     using Network::path_length_max;
-    using Network::run;
     using Network::to_path;
 
     using ErrorCodeSet = std::set<os_error_type>;
@@ -312,12 +311,6 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        const auto rt {run(is_verbose)};
-
-        if (is_verbose) {
-            std::cout << *rt << std::endl;
-        }
-
         test_paths_invalid();
         test_paths_valid();
         test_unix_invalid_socktype();

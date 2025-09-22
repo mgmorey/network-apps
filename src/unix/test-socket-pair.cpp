@@ -51,7 +51,6 @@ namespace
     using Network::handle_type;
     using Network::os_error_type;
     using Network::parse;
-    using Network::run;
 
     using ErrorCodeSet = std::set<os_error_type>;
 
@@ -135,12 +134,6 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        const auto rt {run(is_verbose)};
-
-        if (is_verbose) {
-            std::cout << *rt << std::endl;
-        }
-
         test_socketpair_invalid_socktype();
         test_socketpair_invalid_protocol();
         test_socketpair_valid();

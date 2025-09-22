@@ -151,10 +151,6 @@ auto main(int argc, char* argv[]) -> int
         const auto endpoint {parse_arguments(argc, argv)};
         const auto rt {run(is_verbose)};
 
-        if (is_verbose) {
-            std::cout << *rt << std::endl;
-        }
-
         if (getenv("http_proxy") == nullptr) {
             test_bind_valid(endpoint, socket_hints);
         }

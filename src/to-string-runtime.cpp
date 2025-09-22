@@ -1,4 +1,4 @@
-// Copyright (C) 2023  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,13 +13,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/runtime.hpp"          // Runtime, operator<<()
+#include "network/runtime.hpp"                  // Runtime
+#include "network/to-string-runtime.hpp"        // to_string()
 
-#include <ostream>      // std::ostream
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
 
-static auto to_string(const Network::Runtime& rt) -> std::string
+extern auto Network::to_string(const Runtime& rt) -> std::string
 {
     std::ostringstream oss;
     const auto start {oss.tellp()};
@@ -49,9 +49,4 @@ static auto to_string(const Network::Runtime& rt) -> std::string
 
     oss << rt.system_status();
     return oss.str();
-}
-
-auto Network::operator<<(std::ostream& os, const Runtime& rt) -> std::ostream&
-{
-    return os << to_string(rt);
 }

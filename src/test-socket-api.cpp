@@ -32,7 +32,6 @@
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <regex>        // std::regex, std::regex_match
-#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 #include <string_view>  // std::string_view
 
@@ -71,13 +70,6 @@ namespace
 
     const auto fail_mode {FailMode::return_error};
     auto is_verbose {false};  // NOLINT
-
-    auto get_actual_str(const Runtime& rt) -> std::string
-    {
-        std::ostringstream oss;
-        oss << rt;
-        return oss.str();
-    }
 
     auto get_expected(Version version) -> std::string_view
     {
@@ -147,7 +139,7 @@ namespace
                       << std::endl;
         }
         else {
-            std::cout << rt << std::endl;
+            std::cout << to_string(rt) << std::endl;
         }
     }
 
@@ -181,7 +173,7 @@ namespace
         sa.start();
         print(sa);
         assert(sa.is_running());
-        const auto actual_str {get_actual_str(sa)};
+        const auto actual_str {to_string(sa)};
         const std::regex expected_regex {get_expected_re()};
         assert(std::regex_match(actual_str, expected_regex));
         const auto error_code {sa.stop()};

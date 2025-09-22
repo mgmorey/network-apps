@@ -332,11 +332,6 @@ auto main(int argc, char* argv[]) -> int
     try {
         const auto args {parse_arguments(argc, argv)};
         const auto rt {run(is_verbose)};
-
-        if (is_verbose) {
-            std::cout << *rt << std::endl;
-        }
-
         test_get_endpoint_invalid_flag(rt);
         test_get_endpointresult_invalid_flag(rt);
         test_invalid_family();

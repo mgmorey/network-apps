@@ -13,16 +13,23 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/run.hpp"              // run()
-#include "network/apioptions.hpp"       // ApiOptions
-#include "network/get-runtime.hpp"      // get_runtime()
-#include "network/runtimescope.hpp"     // RuntimeScope
-#include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/run.hpp"                      // run()
+#include "network/apioptions.hpp"               // ApiOptions
+#include "network/get-runtime.hpp"              // get_runtime()
+#include "network/runtimescope.hpp"             // RuntimeScope
+#include "network/sharedruntime.hpp"            // SharedRuntime
+#include "network/to-string-runtime.hpp"        // to_string()
+
+#include <iostream>     // std::cout, std::endl
 
 auto Network::run(ApiOptions ao, RuntimeScope rs) -> SharedRuntime
 {
     auto sr {get_runtime(ao, rs)};
-    sr->start();
+
+    if (sr->start() && sr->is_verbose()) {
+        std::cout << to_string(*sr) << std::endl;
+    }
+
     return sr;
 }
 

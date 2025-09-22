@@ -33,7 +33,6 @@
 #include <iostream>     // std::cerr, std::cout, std::endl
 #include <ostream>      // std::ostream
 #include <regex>        // std::regex, std::regex_match
-#include <sstream>      // std::ostringstream
 #include <string>       // std::string
 #include <string_view>  // std::string_view
 
@@ -86,13 +85,6 @@ namespace
         }
 
         return os;
-    }
-
-    auto get_actual_str(const Runtime& rt) -> std::string
-    {
-        std::ostringstream oss;
-        oss << rt;
-        return oss.str();
     }
 
     auto get_expected(Version version) -> std::string_view
@@ -163,7 +155,7 @@ namespace
                       << std::endl;
         }
         else {
-            std::cout << rt << std::endl;
+            std::cout << to_string(rt) << std::endl;
         }
     }
 
@@ -197,7 +189,7 @@ namespace
         rt.start();
         print(rt);
         assert(rt.is_running());
-        const auto actual_str {get_actual_str(rt)};
+        const auto actual_str {to_string(rt)};
         const std::regex expected_regex {get_expected_re()};
         assert(std::regex_match(actual_str, expected_regex));
         const auto error_code {rt.stop()};

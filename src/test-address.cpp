@@ -471,11 +471,6 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
         const auto rt {run(is_verbose)};
-
-        if (is_verbose) {
-            std::cout << *rt << std::endl;
-        }
-
         test_empty();
         test_sa_invalid_length();
         test_sin6_invalid_family();

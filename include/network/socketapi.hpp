@@ -45,7 +45,7 @@ namespace Network
         [[nodiscard]] auto is_running() const noexcept -> bool final;
         [[nodiscard]] auto is_verbose() const noexcept -> bool final;
 
-        auto start() -> void final;
+        auto start() -> bool final;
         auto stop() -> int final;
 
     private:

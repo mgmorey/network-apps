@@ -1,4 +1,4 @@
-// Copyright (C) 2024  "Michael G. Morey" <mgmorey@gmail.com>
+// Copyright (C) 2025  "Michael G. Morey" <mgmorey@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,12 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_STRING_HPP
-#define NETWORK_TO_STRING_HPP
+#ifndef NETWORK_TO_STRING_RUNTIME_HPP
+#define NETWORK_TO_STRING_RUNTIME_HPP
 
-#include "network/to-string-bytespan.hpp"       // to_string()
-#include "network/to-string-in-addr.hpp"        // to_string()
-#include "network/to-string-in6-addr.hpp"       // to_string()
-#include "network/to-string-runtime.hpp"        // to_string()
+#include "network/runtime.hpp"          // Runtime
+
+#include <string>       // std::string
+
+namespace Network
+{
+    extern auto to_string(const Runtime& rt) -> std::string;
+}
 
 #endif

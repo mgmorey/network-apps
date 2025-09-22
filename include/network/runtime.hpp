@@ -42,12 +42,9 @@ namespace Network
         [[nodiscard]] virtual auto is_running() const noexcept -> bool = 0;
         [[nodiscard]] virtual auto is_verbose() const noexcept -> bool = 0;
 
-        virtual auto start() -> void = 0;
+        virtual auto start() -> bool = 0;
         virtual auto stop() -> int = 0;
     };
-
-    extern auto operator<<(std::ostream& os,
-                           const Runtime& rt) -> std::ostream&;
 }
 
 #endif

@@ -203,11 +203,6 @@ auto main(int argc, char* argv[]) -> int
     try {
         const auto endpoint {parse_arguments(argc, argv)};
         const auto rt {run(is_verbose)};
-
-        if (is_verbose) {
-            std::cout << *rt << std::endl;
-        }
-
         const auto hostname {get_hostname(rt)};
 
         if (getenv("http_proxy") == nullptr) {
