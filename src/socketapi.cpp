@@ -64,12 +64,8 @@ auto Network::SocketApi::is_verbose() const noexcept -> bool
     return m_ao.is_verbose();
 }
 
-auto Network::SocketApi::start() -> bool
+auto Network::SocketApi::start() -> void
 {
-    if (is_running()) {
-        return false;
-    }
-
     m_as = Network::start(m_ao);
 
     if (!is_running()) {
@@ -80,8 +76,6 @@ auto Network::SocketApi::start() -> bool
             << "\".";
         throw RuntimeError {oss.str()};
     }
-
-    return true;
 }
 
 auto Network::SocketApi::stop() -> int
