@@ -27,9 +27,7 @@ Network::SocketApi::SocketApi(ApiOptions t_ao) : m_ao(t_ao)
 
 Network::SocketApi::~SocketApi()
 {
-    if (is_running()) {
-        Network::stop(m_ao);
-    }
+    Network::stop(m_ao);
 }
 
 auto Network::SocketApi::version() const noexcept -> Version
