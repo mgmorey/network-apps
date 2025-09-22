@@ -15,12 +15,10 @@
 
 #include "network/socketapi.hpp"        // SocketApi
 #include "network/apioptions.hpp"       // ApiOptions
-#include "network/runtimeerror.hpp"     // RuntimeError
 #include "network/start.hpp"            // start()
 #include "network/stop.hpp"             // stop()
 #include "network/version.hpp"          // Version
 
-#include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
 Network::SocketApi::SocketApi(ApiOptions t_ao) : m_ao(t_ao)
@@ -67,15 +65,6 @@ auto Network::SocketApi::is_verbose() const noexcept -> bool
 auto Network::SocketApi::start() -> void
 {
     m_as = Network::start(m_ao);
-
-    if (!is_running()) {
-        std::ostringstream oss;
-        oss << m_as.description()
-            << " status is \""
-            << m_as.system_status()
-            << "\".";
-        throw RuntimeError {oss.str()};
-    }
 }
 
 auto Network::SocketApi::stop() -> int

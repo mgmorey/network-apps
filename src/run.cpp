@@ -16,11 +16,13 @@
 #include "network/run.hpp"                      // run()
 #include "network/apioptions.hpp"               // ApiOptions
 #include "network/get-runtime.hpp"              // get_runtime()
+#include "network/runtimeerror.hpp"             // RuntimeError
 #include "network/runtimescope.hpp"             // RuntimeScope
 #include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/to-string-runtime.hpp"        // to_string()
 
 #include <iostream>     // std::cout, std::endl
+#include <sstream>      // std::ostringstream
 
 auto Network::run(ApiOptions ao, RuntimeScope rs) -> SharedRuntime
 {
@@ -31,6 +33,15 @@ auto Network::run(ApiOptions ao, RuntimeScope rs) -> SharedRuntime
     }
 
     sr->start();
+
+    if (!sr->is_running()) {
+        std::ostringstream oss;
+        oss << sr->description()
+            << " status is \""
+            << sr->system_status()
+            << "\".";
+        throw RuntimeError {oss.str()};
+    }
 
     if (sr->is_verbose()) {
         std::cout << to_string(*sr) << std::endl;
