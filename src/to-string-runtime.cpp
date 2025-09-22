@@ -14,6 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/runtime.hpp"                  // Runtime
+#include "network/string-null.hpp"              // string_null
 #include "network/to-string-runtime.hpp"        // to_string()
 
 #include <sstream>      // std::ostringstream
@@ -47,6 +48,6 @@ extern auto Network::to_string(const Runtime& rt) -> std::string
         oss << ' ';
     }
 
-    oss << rt.system_status();
+    oss << (rt.system_status().empty() ? string_null : rt.system_status());
     return oss.str();
 }
