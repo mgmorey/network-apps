@@ -18,7 +18,6 @@
 
 #include "network/version.hpp"          // Version
 
-#include <ostream>      // std::ostream
 #include <string_view>  // std::string_view
 
 namespace Network
