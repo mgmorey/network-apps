@@ -80,14 +80,10 @@ auto Network::SocketApi::start() -> void
 
 auto Network::SocketApi::stop() -> int
 {
-    int error_code {0};
+    const auto error_code = Network::stop(m_ao);
 
-    if (is_running()) {
-        error_code = Network::stop(m_ao);
-
-        if (error_code == 0) {
-            m_as = {};
-        }
+    if (error_code == 0) {
+        m_as = {};
     }
 
     return error_code;
