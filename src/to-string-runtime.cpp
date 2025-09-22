@@ -19,6 +19,7 @@
 
 #include <sstream>      // std::ostringstream
 #include <string>       // std::string
+#include <string_view>  // std::string_view
 
 extern auto Network::to_string(const Runtime& rt) -> std::string
 {
@@ -48,6 +49,12 @@ extern auto Network::to_string(const Runtime& rt) -> std::string
         oss << ' ';
     }
 
-    oss << (rt.system_status().empty() ? string_null : rt.system_status());
+    std::string_view system_status {rt.system_status()};
+
+    if (rt.system_status().empty()) {
+        system_status = string_null;
+    }
+
+    oss << system_status;
     return oss.str();
 }
