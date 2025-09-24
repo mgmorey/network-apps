@@ -71,6 +71,23 @@ namespace
     const auto fail_mode {FailMode::return_error};
     auto is_verbose {false};  // NOLINT
 
+    auto operator<<(std::ostream& os, const FailMode& fm) -> std::ostream&
+    {
+        switch (fm) {
+        case FailMode::return_zero:
+            os << "return zero";
+            break;
+        case FailMode::return_error:
+            os << "return error";
+            break;
+        case FailMode::throw_error:
+            os << "throw error";
+            break;
+        }
+
+        return os;
+    }
+
     auto get_expected(Version version) -> std::string_view
     {
         constexpr std::array<std::string_view, 3> errors {

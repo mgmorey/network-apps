@@ -17,7 +17,6 @@
 #define NETWORK_FAILMODE_HPP
 
 #include <cstdint>      // std::uint8_t
-#include <ostream>      // std::ostream
 
 namespace Network
 {
@@ -26,9 +25,6 @@ namespace Network
         return_error,
         return_zero
     };
-
-    extern auto operator<<(std::ostream& os,
-                           const FailMode& fm) -> std::ostream&;
 }
 
 #endif

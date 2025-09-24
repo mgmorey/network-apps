@@ -112,11 +112,11 @@ quote.cpp rangeerror.cpp reset-api-error.cpp reset-os-error.cpp		\
 run.cpp runtimeerror.cpp shutdown.cpp socketapi.cpp socketcore.cpp	\
 socketdata.cpp socketfamily.cpp socketflags.cpp sockethost.cpp		\
 socketlimits.cpp socketprotocol.cpp sockettype.cpp stream-address.cpp	\
-stream-addrinfo.cpp stream-failmode.cpp stream-socket.cpp		\
-stream-version.cpp textbuffer.cpp to-bytestring-void.cpp		\
-to-string-bytespan.cpp to-string-in-addr.cpp to-string-in6-addr.cpp	\
-to-string-runtime.cpp to-string-void.cpp validate-bs.cpp		\
-validate-sa.cpp validate-sin.cpp validate-sin6.cpp
+stream-addrinfo.cpp stream-socket.cpp stream-version.cpp		\
+textbuffer.cpp to-bytestring-void.cpp to-string-bytespan.cpp		\
+to-string-in-addr.cpp to-string-in6-addr.cpp to-string-runtime.cpp	\
+to-string-void.cpp validate-bs.cpp validate-sa.cpp validate-sin.cpp	\
+validate-sin6.cpp
 
 library_native_sources = apistate.cpp create-socket-socketdata.cpp	\
 format-ai-error.cpp format-os-error.cpp get-api-error.cpp		\
