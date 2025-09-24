@@ -20,13 +20,12 @@
                                         // get_optopt()
 #include "network/options.hpp"          // Options
 
-auto Network::get_options(const ArgumentSpan& args,
-                          const char* optstring) -> Options
+auto Network::get_options(const ArgumentSpan& args, const char* opts) -> Options
 {
     Options options;
     int opt {};
 
-    while ((opt = get_option(args, optstring)) != -1) {
+    while ((opt = get_option(args, opts)) != -1) {
         const auto optchar {static_cast<char>(opt)};
         options[optchar] = get_optarg();
     }

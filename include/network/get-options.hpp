@@ -21,8 +21,7 @@
 
 namespace Network
 {
-    auto get_options(const ArgumentSpan& args,
-                     const char* optstring) -> Options;
+    auto get_options(const ArgumentSpan& args, const char* opts) -> Options;
 }
 
 #endif
