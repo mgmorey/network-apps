@@ -43,13 +43,13 @@ auto Network::get_optind() noexcept -> int
 }
 
 auto Network::get_option(const ArgumentSpan& args,
-                         const char* optstring) -> int
+                         const char* str) -> int
 {
-    if (optstring == nullptr || *optstring == '\0') {
+    if (str == nullptr || *str == '\0') {
         throw LogicError {"No command-line options to parse"};
     }
 
-    return ::getopt(static_cast<int>(args.size()), args.data(), optstring);
+    return ::getopt(static_cast<int>(args.size()), args.data(), str);
 }
 
 auto Network::get_optopt() noexcept -> int
