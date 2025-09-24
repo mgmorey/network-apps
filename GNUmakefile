@@ -99,8 +99,8 @@ binarybuffer.cpp bind-endpoint.cpp close.cpp connect-endpoint.cpp	\
 create-runtime.cpp create-socket-acceptdata.cpp				\
 create-socket-handle.cpp create-socket-hints.cpp			\
 create-socketresult.cpp error.cpp familyerror.cpp format.cpp		\
-get-endpoint.cpp get-endpointresult.cpp get-hostname-charspan.cpp	\
-get-hostname.cpp get-hostnameresult.cpp get-name.cpp			\
+get-endpoint.cpp get-endpointresult.cpp get-hostname-bool.cpp		\
+get-hostname-charspan.cpp get-hostnameresult.cpp get-name.cpp		\
 get-namehandler.cpp get-nameresult.cpp get-openhandler.cpp		\
 get-operands.cpp get-option.cpp get-options.cpp get-runtime.cpp		\
 get-sa-family.cpp get-sa-length.cpp get-sa-pointer.cpp			\
