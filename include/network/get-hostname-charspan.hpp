@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_HOSTNAME_HOSTNAME_HPP
-#define NETWORK_GET_HOSTNAME_HOSTNAME_HPP
+#ifndef NETWORK_GET_HOSTNAME_CHARSPAN_HPP
+#define NETWORK_GET_HOSTNAME_CHARSPAN_HPP
 
 #include "network/charspan.hpp"         // CharSpan
 #include "network/oserror.hpp"          // OsError
@@ -22,8 +22,7 @@
 
 namespace Network
 {
-    extern auto get_hostname(CharSpan hostname,
-                             const SharedRuntime& sr) -> OsError;
+    extern auto get_hostname(CharSpan cs, const SharedRuntime& sr) -> OsError;
 }
 
 #endif

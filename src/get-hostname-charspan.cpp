@@ -34,17 +34,16 @@
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
-auto Network::get_hostname(CharSpan hostname,
-                           const SharedRuntime& sr) -> OsError
+auto Network::get_hostname(CharSpan cs, const SharedRuntime& sr) -> OsError
 {
-    const std::string_view hostname_sv {hostname.data(), hostname.size()};
+    const std::string_view sv {cs.data(), cs.size()};
 
     if (sr->is_verbose()) {
         // clang-format off
         std::cout << "Calling ::gethostname("
-                  << quote(hostname_sv)
+                  << quote(sv)
                   << ", "
-                  << hostname_sv.size()
+                  << sv.size()
                   << ')'
                   << std::endl;
         // clang-format on
@@ -52,15 +51,15 @@ auto Network::get_hostname(CharSpan hostname,
 
     reset_api_error();
 
-    if (::gethostname(hostname.data(), to_name_length(hostname.size())) == -1) {
+    if (::gethostname(cs.data(), to_name_length(cs.size())) == -1) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         // clang-format off
         oss << "Call to ::gethostname("
-            << quote(hostname_sv)
+            << quote(sv)
             << ", "
-            << hostname_sv.size()
+            << sv.size()
             << ") failed with error "
             << api_error
             << ": "
@@ -72,11 +71,11 @@ auto Network::get_hostname(CharSpan hostname,
     if (sr->is_verbose()) {
         // clang-format off
         std::cout << "Call to ::gethostname("
-                  << quote(hostname_sv)
+                  << quote(sv)
                   << ", "
-                  << hostname_sv.size()
+                  << sv.size()
                   << ") returned data "
-                  << quote(hostname_sv)
+                  << quote(sv)
                   << std::endl;
         // clang-format on
     }
