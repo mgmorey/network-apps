@@ -23,8 +23,7 @@ namespace Network
     extern auto get_optarg() noexcept -> char*;
     extern auto get_opterr() noexcept -> int;
     extern auto get_optind() noexcept -> int;
-    extern auto get_option(const ArgumentSpan& args,
-                           const char* str) -> int;
+    extern auto get_option(const ArgumentSpan& args, const char* str) -> int;
     extern auto get_optopt() noexcept -> int;
 }
 

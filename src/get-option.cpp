@@ -42,8 +42,7 @@ auto Network::get_optind() noexcept -> int
     return ::optind;  // NOLINT
 }
 
-auto Network::get_option(const ArgumentSpan& args,
-                         const char* str) -> int
+auto Network::get_option(const ArgumentSpan& args, const char* str) -> int
 {
     if (str == nullptr || *str == '\0') {
         throw LogicError {"No command-line options to parse"};
