@@ -26,8 +26,7 @@ auto Network::get_options(const ArgumentSpan& args, const char* str) -> Options
     int opt {};
 
     while ((opt = get_option(args, str)) != -1) {
-        const auto optchar {static_cast<char>(opt)};
-        options[optchar] = get_optarg();
+        options[static_cast<char>(opt)] = get_optarg();
     }
 
     return options;
