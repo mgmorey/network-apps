@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hostname.hpp"             // get_hostname()
+#include "network/get-hostname-bool.hpp"        // get_hostname()
 #include "network/error.hpp"                    // Error
 #include "network/get-hostnameresult.hpp"       // get_hostname()
 #include "network/hostname.hpp"                 // Hostname

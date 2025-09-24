@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_GET_HOSTNAMERESULT_HPP
-#define NETWORK_GET_HOSTNAMERESULT_HPP
+#ifndef NETWORK_GET_HOSTNAME_BOOL_HPP
+#define NETWORK_GET_HOSTNAME_BOOL_HPP
 
-#include "network/hostnameresult.hpp"   // HostnameResult
+#include "network/hostname.hpp"         // Hostname
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
 namespace Network
 {
-    extern auto get_hostnameresult(const SharedRuntime& sr) -> HostnameResult;
-    extern auto get_hostnameresult(bool is_verbose = false) -> HostnameResult;
+    extern auto get_hostname(const SharedRuntime& sr) -> Hostname;
+    extern auto get_hostname(bool is_verbose = false) -> Hostname;
 }
 
 #endif

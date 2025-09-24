@@ -94,10 +94,10 @@ namespace
 
     auto test_get_hostnameresult_overflow(const SharedRuntime& sr) -> void
     {
-        std::string hostname_str(1, '\0');
         std::string actual_str;
+        std::string hostname_str(1, '\0');
 
-        if (auto error {get_hostnameresult(hostname_str, sr)}) {
+        if (auto error {get_hostname(hostname_str, sr)}) {
             print(error);
             actual_str = error.string();
         }

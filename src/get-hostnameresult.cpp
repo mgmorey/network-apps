@@ -14,18 +14,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/get-hostnameresult.hpp"       // get_hostname()
-#include "network/charspan.hpp"                 // CharSpan
-#include "network/format-os-error.hpp"          // format_os_error()
-#include "network/get-api-error.hpp"            // get_api_error()
+#include "network/get-hostname-charspan.hpp"    // get_hostname()
 #include "network/hostname-length-limits.hpp"   // hostname_length_max
 #include "network/hostnameresult.hpp"           // HostnameResult
-#include "network/oserror.hpp"                  // OsError
-#include "network/quote.hpp"                    // quote()
-#include "network/reset-api-error.hpp"          // reset_api_error()
 #include "network/sharedruntime.hpp"            // SharedRuntime
 #include "network/textbuffer.hpp"               // TextBuffer
-#include "network/to-name-length.hpp"           // to_name_length()
-#include "network/to-os-error.hpp"              // to_os_error()
 
 #ifdef _WIN32
 #include <winsock2.h>   // ::gethostname()
@@ -34,65 +27,12 @@
 #endif
 
 #include <expected>     // std::unexpected
-#include <iostream>     // std::cout, std::endl
-#include <sstream>      // std::ostringstream
-#include <string_view>  // std::string_view
-
-auto Network::get_hostnameresult(CharSpan hostname,
-                                 const SharedRuntime& sr) -> OsError
-{
-    const std::string_view hostname_sv {hostname.data(), hostname.size()};
-
-    if (sr->is_verbose()) {
-        // clang-format off
-        std::cout << "Calling ::gethostname("
-                  << quote(hostname_sv)
-                  << ", "
-                  << hostname_sv.size()
-                  << ')'
-                  << std::endl;
-        // clang-format on
-    }
-
-    reset_api_error();
-
-    if (::gethostname(hostname.data(), to_name_length(hostname.size())) == -1) {
-        const auto api_error {get_api_error()};
-        const auto os_error {to_os_error(api_error)};
-        std::ostringstream oss;
-        // clang-format off
-        oss << "Call to ::gethostname("
-            << quote(hostname_sv)
-            << ", "
-            << hostname_sv.size()
-            << ") failed with error "
-            << api_error
-            << ": "
-            << format_os_error(os_error);
-        // clang-format on
-        return {os_error, oss.str()};
-    }
-
-    if (sr->is_verbose()) {
-        // clang-format off
-        std::cout << "Call to ::gethostname("
-                  << quote(hostname_sv)
-                  << ", "
-                  << hostname_sv.size()
-                  << ") returned data "
-                  << quote(hostname_sv)
-                  << std::endl;
-        // clang-format on
-    }
-
-    return {};
-}
 
 auto Network::get_hostnameresult(const SharedRuntime& sr) -> HostnameResult
 {
     TextBuffer hostname {hostname_length_max};
 
-    if (auto error {get_hostnameresult(hostname, sr)}) {
+    if (auto error {get_hostname(hostname, sr)}) {
         return std::unexpected {error};
     }
 
