@@ -22,7 +22,7 @@
 
 auto Network::get_name(const SocketCore& sc, NameSymbol symbol) -> ByteString
 {
-    auto result {get_nameresult(sc, symbol)};
+    const auto result {get_nameresult(sc, symbol)};
 
     if (!result) {
         throw Error {result.error().string()};
