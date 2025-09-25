@@ -47,9 +47,9 @@ auto Network::listen(const SocketCore& sc, int backlog) -> OsError
     }
 
     reset_api_error();
-    const auto result {::listen(handle, backlog)};
+    const auto error {::listen(handle, backlog)};
 
-    if (result == socket_error) {
+    if (error == socket_error) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
