@@ -20,7 +20,7 @@ VERSION ?= 0.0.1
 # Define variables for other project defaults
 BUILD_DIR ?= .
 BUILD_TYPE ?= Default
-HTML_THEME ?= green
+HTML_THEME ?= github.dark-green
 INSTALL_PREFIX ?= ~/.local
 TMPDIR ?= /tmp
 WITH_FORTIFY_SOURCE ?= 3
