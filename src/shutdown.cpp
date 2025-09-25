@@ -47,11 +47,11 @@ auto Network::shutdown(const SocketCore& sc, int how) -> OsError
     }
 
     reset_api_error();
-    const auto result {::shutdown(handle, how)};
+    const auto error {::shutdown(handle, how)};
 
-    if (result == socket_error) {
-        const auto error {get_api_error()};
-        const auto os_error {to_os_error(error)};
+    if (error == socket_error) {
+        const auto api_error {get_api_error()};
+        const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         // clang-format off
         oss << "Call to ::shutdown("
