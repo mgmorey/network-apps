@@ -22,7 +22,7 @@
 
 namespace Network
 {
-    extern auto get_hostname(CharSpan cs, const SharedRuntime& sr) -> OsError;
+    extern auto get_hostname(CharSpan cs, const Runtime& rt) -> OsError;
 }
 
 #endif
