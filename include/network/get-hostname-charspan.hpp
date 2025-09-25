@@ -18,7 +18,7 @@
 
 #include "network/charspan.hpp"         // CharSpan
 #include "network/oserror.hpp"          // OsError
-#include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/runtime.hpp"          // Runtime
 
 namespace Network
 {
