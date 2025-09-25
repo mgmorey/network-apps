@@ -16,7 +16,7 @@
 #ifndef NETWORK_GET_HOSTNAME_HPP
 #define NETWORK_GET_HOSTNAME_HPP
 
-#include "network/get-hostname-runtime.hpp"     // get_hostname()
 #include "network/get-hostname-charspan.hpp"    // get_hostname()
+#include "network/get-hostname-runtime.hpp"     // get_hostname()
 
 #endif
