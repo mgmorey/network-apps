@@ -43,13 +43,13 @@
 auto Network::get_endpointresult(CharSpan hostname,
                                  CharSpan service,
                                  ByteSpan bs, int flags,
-                                 const SharedRuntime& sr) -> OsError
+                                 const Runtime& rt) -> OsError
 {
     const auto [sa, sa_length] {get_sa_span(bs)};
     const std::string_view hostname_sv {hostname.data(), hostname.size()};
     const std::string_view service_sv {service.data(), service.size()};
 
-    if (sr->is_verbose()) {
+    if (rt.is_verbose()) {
         // clang-format off
         std::cout << "Calling ::getnameinfo("
                   << to_string(bs)
@@ -103,7 +103,7 @@ auto Network::get_endpointresult(CharSpan hostname,
         return {os_error, oss.str()};
     }
 
-    if (sr->is_verbose()) {
+    if (rt.is_verbose()) {
         // clang-format off
         std::cout << "Call to ::getnameinfo("
                   << to_string(bs)
@@ -132,7 +132,7 @@ auto Network::get_endpointresult(CharSpan hostname,
 }
 
 auto Network::get_endpointresult(ByteSpan bs, int flags,
-                                 const SharedRuntime& sr) -> EndpointResult
+                                 const Runtime& rt) -> EndpointResult
 {
     TextBuffer hostname {hostname_length_max};
     TextBuffer service {service_length_max};
@@ -141,7 +141,7 @@ auto Network::get_endpointresult(ByteSpan bs, int flags,
                                        service,
                                        bs,
                                        flags,
-                                       sr)}) {
+                                       rt)}) {
         return std::unexpected {error};
     }
 

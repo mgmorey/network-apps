@@ -20,6 +20,7 @@
 #include "network/charspan.hpp"         // CharSpan
 #include "network/endpointresult.hpp"   // EndpointResult
 #include "network/oserror.hpp"          // OsError
+#include "network/runtime.hpp"          // Runtime
 #include "network/sharedruntime.hpp"    // SharedRuntime
 
 namespace Network
@@ -27,9 +28,9 @@ namespace Network
     extern auto get_endpointresult(CharSpan hostname,
                                    CharSpan service,
                                    ByteSpan bs, int flags,
-                                   const SharedRuntime& sr) -> OsError;
+                                   const Runtime& rt) -> OsError;
     extern auto get_endpointresult(ByteSpan bs, int flags,
-                                   const SharedRuntime& sr) -> EndpointResult;
+                                   const Runtime& rt) -> EndpointResult;
 }
 
 #endif
