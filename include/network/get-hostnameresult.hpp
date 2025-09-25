@@ -17,11 +17,11 @@
 #define NETWORK_GET_HOSTNAMERESULT_HPP
 
 #include "network/hostnameresult.hpp"   // HostnameResult
-#include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/runtime.hpp"          // Runtime
 
 namespace Network
 {
-    extern auto get_hostnameresult(const Runtime& sr) -> HostnameResult;
+    extern auto get_hostnameresult(const Runtime& rt) -> HostnameResult;
     extern auto get_hostnameresult(bool is_verbose = false) -> HostnameResult;
 }
 

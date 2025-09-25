@@ -17,7 +17,7 @@
 #include "network/get-hostname-charspan.hpp"    // get_hostname()
 #include "network/hostname-length-limits.hpp"   // hostname_length_max
 #include "network/hostnameresult.hpp"           // HostnameResult
-#include "network/sharedruntime.hpp"            // SharedRuntime
+#include "network/runtime.hpp"                  // Runtime
 #include "network/textbuffer.hpp"               // TextBuffer
 
 #ifdef _WIN32
@@ -28,11 +28,11 @@
 
 #include <expected>     // std::unexpected
 
-auto Network::get_hostnameresult(const Runtime& sr) -> HostnameResult
+auto Network::get_hostnameresult(const Runtime& rt) -> HostnameResult
 {
     TextBuffer hostname {hostname_length_max};
 
-    if (auto error {get_hostname(hostname, sr)}) {
+    if (auto error {get_hostname(hostname, rt)}) {
         return std::unexpected {error};
     }
 
