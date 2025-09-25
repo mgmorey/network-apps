@@ -43,9 +43,9 @@ auto Network::close(const SocketCore& sc) -> OsError
     }
 
     reset_api_error();
-    const auto result {close_function_pointer(handle)};
+    const auto error {close_function_pointer(handle)};
 
-    if (result == socket_error) {
+    if (error == socket_error) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
