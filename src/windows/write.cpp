@@ -50,9 +50,9 @@ auto Network::write(const SocketCore& sc, std::string_view sv) -> ssize_t
     }
 
     reset_api_error();
-    const auto result {::send(handle, sv.data(), static_cast<int>(sv.size()), 0)};
+    const auto error {::send(handle, sv.data(), static_cast<int>(sv.size()), 0)};
 
-    if (result == socket_error) {
+    if (error == socket_error) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
@@ -71,7 +71,7 @@ auto Network::write(const SocketCore& sc, std::string_view sv) -> ssize_t
         throw Error {oss.str()};
     }
 
-    return result;
+    return error;
 }
 
 #endif
