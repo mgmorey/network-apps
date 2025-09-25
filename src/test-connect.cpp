@@ -202,8 +202,8 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto endpoint {parse_arguments(argc, argv)};
-        const auto rt {run(is_verbose)};
-        const auto hostname {get_hostname(rt)};
+        const auto sr {run(is_verbose)};
+        const auto hostname {get_hostname(*sr)};
 
         if (getenv("http_proxy") == nullptr) {
             test_connect_valid(endpoint, socket_hints, hostname);
