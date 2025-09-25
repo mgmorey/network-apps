@@ -23,7 +23,7 @@
 
 auto Network::get_endpoint(ByteSpan bs,
                            int flags,
-                           const SharedRuntime& sr) -> Endpoint
+                           const Runtime& sr) -> Endpoint
 {
     const auto result {get_endpointresult(bs, flags, sr)};
 
@@ -38,5 +38,6 @@ auto Network::get_endpoint(ByteSpan bs,
                            int flags,
                            bool is_verbose) -> Endpoint
 {
-    return get_endpoint(bs, flags, run(is_verbose));
+    auto sr {run(is_verbose)};
+    return get_endpoint(bs, flags, *sr);
 }

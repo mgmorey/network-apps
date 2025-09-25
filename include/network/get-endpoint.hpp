@@ -23,7 +23,7 @@
 namespace Network
 {
     extern auto get_endpoint(ByteSpan bs, int flags,
-                             const SharedRuntime& sr) -> Endpoint;
+                             const Runtime& sr) -> Endpoint;
     extern auto get_endpoint(ByteSpan bs, int flags,
                              bool is_verbose = false) -> Endpoint;
 }
