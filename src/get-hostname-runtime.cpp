@@ -18,10 +18,11 @@
 #include "network/get-hostnameresult.hpp"       // get_hostname()
 #include "network/hostname.hpp"                 // Hostname
 #include "network/run.hpp"                      // run()
+#include "network/runtime.hpp"                  // Runtime
 
-auto Network::get_hostname(const Runtime& sr) -> Hostname
+auto Network::get_hostname(const Runtime& rt) -> Hostname
 {
-    const auto result {get_hostnameresult(sr)};
+    const auto result {get_hostnameresult(rt)};
 
     if (!result) {
         throw Error {result.error().string()};
