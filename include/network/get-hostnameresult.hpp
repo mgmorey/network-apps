@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto get_hostnameresult(const SharedRuntime& sr) -> HostnameResult;
+    extern auto get_hostnameresult(const Runtime& sr) -> HostnameResult;
     extern auto get_hostnameresult(bool is_verbose = false) -> HostnameResult;
 }
 
