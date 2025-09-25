@@ -53,9 +53,9 @@ auto Network::read(const SocketCore& sc, CharSpan cs) -> ssize_t
     }
 
     reset_api_error();
-    const auto result {::recv(handle, cs.data(), static_cast<int>(cs.size()), 0)};
+    const auto error {::recv(handle, cs.data(), static_cast<int>(cs.size()), 0)};
 
-    if (result == socket_error) {
+    if (error == socket_error) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
@@ -88,7 +88,7 @@ auto Network::read(const SocketCore& sc, CharSpan cs) -> ssize_t
         // clang-format on
     }
 
-    return result;
+    return error;
 }
 
 #endif
