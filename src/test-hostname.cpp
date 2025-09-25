@@ -91,12 +91,12 @@ namespace
         }
     }
 
-    auto test_get_hostnameresult_overflow(const Runtime& sr) -> void
+    auto test_get_hostnameresult_overflow(const Runtime& rt) -> void
     {
         std::string actual_str;
         std::string hostname_str(1, '\0');
 
-        if (auto error {get_hostname(hostname_str, sr)}) {
+        if (auto error {get_hostname(hostname_str, rt)}) {
             print(error);
             actual_str = error.string();
         }
@@ -105,10 +105,10 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_get_hostnameresult_valid(const Runtime& sr) -> void
+    auto test_get_hostnameresult_valid(const Runtime& rt) -> void
     {
         std::string actual_str;
-        const auto result {get_hostnameresult(sr)};
+        const auto result {get_hostnameresult(rt)};
 
         if (!result) {
             print(result.error());
