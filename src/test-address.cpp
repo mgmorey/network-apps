@@ -15,10 +15,9 @@
 
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Address, ByteSpan, Error,
-                                        // Hostname, SharedRuntime,
-                                        // SocketFamily, SocketHints,
-                                        // SocketHost, SocketLimits,
-                                        // insert(), run(),
+                                        // Hostname, SocketFamily,
+                                        // SocketHints, SocketHost,
+                                        // SocketLimits, insert(),
                                         // sa_family_type, sa_size,
                                         // sin_family_type,
                                         // sun_length_max,
@@ -58,7 +57,6 @@ namespace
     using Network::ByteString;
     using Network::Error;
     using Network::Hostname;
-    using Network::SharedRuntime;
     using Network::SocketFamily;
     using Network::SocketHints;
     using Network::SocketHost;
@@ -72,7 +70,6 @@ namespace
 #ifndef _WIN32
     using Network::path_length_max;
 #endif
-    using Network::run;
     using Network::sa_family_type;
     using Network::sa_size;
     using Network::sin_family_type;
@@ -439,13 +436,13 @@ namespace
 
 #endif
 
-    auto test(const SharedRuntime& sr) -> void
+    auto test() -> void
     {
         static const Hostname localhost {"localhost"};
 
         std::vector<SocketHost> hosts;
         auto it {std::back_inserter(hosts)};
-        const auto result {insert(it, localhost, {}, unspec, sr)};
+        const auto result {insert(it, localhost, {}, unspec, is_verbose)};
 
         if (result) {
             std::cout << "No " << localhost << " addresses: " << result.string()
@@ -470,7 +467,6 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        const auto rt {run(is_verbose)};
         test_empty();
         test_sa_invalid_length();
         test_sin6_invalid_family();
@@ -483,7 +479,7 @@ auto main(int argc, char* argv[]) -> int
 #endif
         test_sin_valid();
         test_sin6_valid();
-        test(rt);
+        test();
     }
     catch (const Error& error) {
         std::cerr << error.what()

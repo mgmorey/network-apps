@@ -21,8 +21,8 @@
 #include "network/optionalhints.hpp"    // OptionalHints
 #include "network/oserror.hpp"          // OsError
 #include "network/run.hpp"              // run()
+#include "network/runtime.hpp"          // Runtime
 #include "network/serviceview.hpp"      // ServiceView
-#include "network/sharedruntime.hpp"    // SharedRuntime
 
 #include <algorithm>    // std::copy()
 
@@ -32,9 +32,9 @@ namespace Network
                 const HostnameView& hostname,
                 const ServiceView& service,
                 const OptionalHints& hints,
-                const SharedRuntime& sr) -> OsError
+                const Runtime& rt) -> OsError
     {
-        const auto list {AddressList(hostname, service, hints, sr)};
+        const auto list {AddressList(hostname, service, hints, rt)};
         std::copy(list.begin(), list.end(), it);
         return list.error();
     }
@@ -45,7 +45,8 @@ namespace Network
                 const OptionalHints& hints,
                 bool is_verbose) -> OsError
     {
-        return insert(it, hostname, service, hints, run(is_verbose));
+        const auto sr {run(is_verbose)};
+        return insert(it, hostname, service, hints, *sr);
     }
 }
 

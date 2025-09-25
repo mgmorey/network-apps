@@ -18,8 +18,8 @@
 #include "network/hostnameview.hpp"     // HostnameView
 #include "network/optionalhints.hpp"    // OptionalHints
 #include "network/oserror.hpp"          // OsError
+#include "network/runtime.hpp"          // Runtime
 #include "network/serviceview.hpp"      // ServiceView
-#include "network/sharedruntime.hpp"    // SharedRuntime
 #include "network/stream-addrinfo.hpp"  // operator<<()
 #include "network/string-null.hpp"      // string_null
 #include "network/to-os-error.hpp"      // to_os_error()
@@ -80,14 +80,14 @@ auto Network::AddressList::StringOrNull::c_str() const -> const char*
 Network::AddressList::AddressList(const HostnameView& t_hostname,
                                   const ServiceView& t_service,
                                   const OptionalHints& t_hints,
-                                  const SharedRuntime& t_sr)
+                                  const Runtime& t_rt)
 {
     const auto hints_ptr {to_ai_ptr(t_hints)};
     const auto hints_str {to_string(t_hints)};
     const StringOrNull hostname {t_hostname};
     const StringOrNull service {t_service};
 
-    if (t_sr->is_verbose()) {
+    if (t_rt.is_verbose()) {
         // clang-format off
         std::cout << "Calling ::getaddrinfo("
                   << hostname
@@ -120,7 +120,7 @@ Network::AddressList::AddressList(const HostnameView& t_hostname,
         // clang-format on
         m_os_error = {os_error, oss.str()};
     }
-    else if (t_sr->is_verbose()) {
+    else if (t_rt.is_verbose()) {
         for (const auto& node : *this) {
             std::cout << node << std::endl;
         }

@@ -28,7 +28,7 @@ namespace Network
                       oi.m_endpoint.at(0),
                       oi.m_endpoint.at(1),
                       oi.m_hints,
-                      oi.m_sr);
+                      *oi.m_sr);
     }
 }
 
