@@ -19,7 +19,6 @@
 #include "network/error.hpp"                    // Error
 #include "network/get-endpointresult.hpp"       // get_endpointresult()
 #include "network/run.hpp"                      // run()
-#include "network/sharedruntime.hpp"            // SharedRuntime
 
 auto Network::get_endpoint(ByteSpan bs,
                            int flags,

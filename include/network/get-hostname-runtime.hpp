@@ -13,26 +13,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/get-hostname-bool.hpp"        // get_hostname()
-#include "network/error.hpp"                    // Error
-#include "network/get-hostnameresult.hpp"       // get_hostname()
-#include "network/hostname.hpp"                 // Hostname
-#include "network/run.hpp"                      // run()
-#include "network/sharedruntime.hpp"            // SharedRuntime
+#ifndef NETWORK_GET_HOSTNAME_RUNTIME_HPP
+#define NETWORK_GET_HOSTNAME_RUNTIME_HPP
 
-auto Network::get_hostname(const Runtime& sr) -> Hostname
+#include "network/hostname.hpp"         // Hostname
+#include "network/sharedruntime.hpp"    // SharedRuntime
+
+namespace Network
 {
-    const auto result {get_hostnameresult(sr)};
-
-    if (!result) {
-        throw Error {result.error().string()};
-    }
-
-    return *result;
+    extern auto get_hostname(const Runtime& sr) -> Hostname;
+    extern auto get_hostname(bool is_verbose = false) -> Hostname;
 }
 
-auto Network::get_hostname(bool is_verbose) -> Hostname
-{
-    auto sr {run(is_verbose)};
-    return get_hostname(*sr);
-}
+#endif
