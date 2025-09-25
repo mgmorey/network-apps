@@ -38,6 +38,6 @@ auto Network::get_endpoint(ByteSpan bs,
                            int flags,
                            bool is_verbose) -> Endpoint
 {
-    auto sr {run(is_verbose)};
+    const auto sr {run(is_verbose)};
     return get_endpoint(bs, flags, *sr);
 }

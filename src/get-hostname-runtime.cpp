@@ -33,6 +33,6 @@ auto Network::get_hostname(const Runtime& rt) -> Hostname
 
 auto Network::get_hostname(bool is_verbose) -> Hostname
 {
-    auto sr {run(is_verbose)};
+    const auto sr {run(is_verbose)};
     return get_hostname(*sr);
 }
