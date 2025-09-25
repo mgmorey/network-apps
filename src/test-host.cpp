@@ -21,7 +21,7 @@
                                         // IpSocketHints,
                                         // OptionalHints,
                                         // OptionalHostname, OsError,
-                                        // SharedRuntime, SocketHints,
+                                        // Runtime, SocketHints,
                                         // SocketHost, get_endpoint(),
                                         // get_endpointresult(),
                                         // get_hostname(), insert(),
@@ -61,7 +61,7 @@ namespace
     using Network::OptionalHints;
     using Network::OptionalHostname;
     using Network::OsError;
-    using Network::SharedRuntime;
+    using Network::Runtime;
     using Network::SocketHints;
     using Network::SocketHost;
     using Network::get_endpoint;
@@ -259,7 +259,7 @@ namespace
         assert(expected_codes.contains(actual_code));
     }
 
-    auto test_get_endpoint_invalid_flag(const SharedRuntime& sr) -> void
+    auto test_get_endpoint_invalid_flag(const Runtime& sr) -> void
     {
         std::string actual_str;
         const ByteString addr {get_inet_address()};
@@ -276,7 +276,7 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_get_endpointresult_invalid_flag(const SharedRuntime& sr) -> void
+    auto test_get_endpointresult_invalid_flag(const Runtime& sr) -> void
     {
         std::string actual_str;
         const ByteString addr {get_inet_address()};
@@ -331,9 +331,9 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         const auto args {parse_arguments(argc, argv)};
-        const auto rt {run(is_verbose)};
-        test_get_endpoint_invalid_flag(rt);
-        test_get_endpointresult_invalid_flag(rt);
+        const auto sr {run(is_verbose)};
+        test_get_endpoint_invalid_flag(*sr);
+        test_get_endpointresult_invalid_flag(*sr);
         test_invalid_family();
         test_invalid_socktype();
 #if !defined(__CYGWIN__) && !defined(_WIN32)
@@ -344,7 +344,7 @@ auto main(int argc, char* argv[]) -> int
         std::ranges::copy(args, std::back_inserter(hosts));
 
         if (hosts.empty()) {
-            hosts.emplace_back(get_hostname(rt));
+            hosts.emplace_back(get_hostname(*sr));
         }
 
         std::ranges::for_each(hosts, test_valid);
