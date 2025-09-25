@@ -18,12 +18,12 @@
 
 #include "network/bytespan.hpp"         // ByteSpan
 #include "network/endpoint.hpp"         // Endpoint
-#include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/runtime.hpp"          // Runtime
 
 namespace Network
 {
     extern auto get_endpoint(ByteSpan bs, int flags,
-                             const Runtime& sr) -> Endpoint;
+                             const Runtime& rt) -> Endpoint;
     extern auto get_endpoint(ByteSpan bs, int flags,
                              bool is_verbose = false) -> Endpoint;
 }

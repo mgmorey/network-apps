@@ -19,12 +19,13 @@
 #include "network/error.hpp"                    // Error
 #include "network/get-endpointresult.hpp"       // get_endpointresult()
 #include "network/run.hpp"                      // run()
+#include "network/runtime.hpp"                  // Runtime
 
 auto Network::get_endpoint(ByteSpan bs,
                            int flags,
-                           const Runtime& sr) -> Endpoint
+                           const Runtime& rt) -> Endpoint
 {
-    const auto result {get_endpointresult(bs, flags, sr)};
+    const auto result {get_endpointresult(bs, flags, rt)};
 
     if (!result) {
         throw Error {result.error().string()};
