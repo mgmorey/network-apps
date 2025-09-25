@@ -21,7 +21,6 @@
 #include "network/endpointresult.hpp"   // EndpointResult
 #include "network/oserror.hpp"          // OsError
 #include "network/runtime.hpp"          // Runtime
-#include "network/sharedruntime.hpp"    // SharedRuntime
 
 namespace Network
 {
