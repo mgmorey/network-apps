@@ -259,13 +259,13 @@ namespace
         assert(expected_codes.contains(actual_code));
     }
 
-    auto test_get_endpoint_invalid_flag(const Runtime& sr) -> void
+    auto test_get_endpoint_invalid_flag(const Runtime& rt) -> void
     {
         std::string actual_str;
         const ByteString addr {get_inet_address()};
 
         try {
-            static_cast<void>(get_endpoint(addr, -1, sr));
+            static_cast<void>(get_endpoint(addr, -1, rt));
         }
         catch (const Error& error) {
             print(error);
@@ -276,11 +276,11 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_get_endpointresult_invalid_flag(const Runtime& sr) -> void
+    auto test_get_endpointresult_invalid_flag(const Runtime& rt) -> void
     {
         std::string actual_str;
         const ByteString addr {get_inet_address()};
-        const auto result {get_endpointresult(addr, -1, sr)};
+        const auto result {get_endpointresult(addr, -1, rt)};
 
         if (!result) {
             print(result.error());
