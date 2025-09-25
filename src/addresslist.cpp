@@ -118,7 +118,7 @@ Network::AddressList::AddressList(const HostnameView& t_hostname,
             << ": "
             << format_ai_error(error);
         // clang-format on
-        m_result = {os_error, oss.str()};
+        m_os_error = {os_error, oss.str()};
     }
     else if (t_sr->is_verbose()) {
         for (const auto& node : *this) {
@@ -144,9 +144,9 @@ auto Network::AddressList::end() const noexcept -> InputIterator // NOLINT
     return nullptr;
 }
 
-auto Network::AddressList::result() const noexcept -> const OsError&
+auto Network::AddressList::error() const noexcept -> const OsError&
 {
-    return m_result;
+    return m_os_error;
 }
 
 auto Network::AddressList::to_ai_ptr(const OptionalHints& t_hints) noexcept ->

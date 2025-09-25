@@ -87,7 +87,7 @@ namespace Network
         auto operator=(AddressList &&) noexcept -> AddressList& = delete;
         [[nodiscard]] auto begin() const noexcept -> InputIterator;
         [[nodiscard]] auto end() const noexcept -> InputIterator;
-        [[nodiscard]] auto result() const noexcept -> const OsError&;
+        [[nodiscard]] auto error() const noexcept -> const OsError&;
 
     protected:
         static auto to_ai_ptr(const OptionalHints& t_hints) noexcept ->
@@ -96,7 +96,7 @@ namespace Network
 
     private:
         addrinfo* m_list {nullptr};
-        OsError m_result;
+        OsError m_os_error;
     };
 
     extern auto operator<<(std::ostream& os,

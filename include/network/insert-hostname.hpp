@@ -36,7 +36,7 @@ namespace Network
     {
         const auto list {AddressList(hostname, service, hints, sr)};
         std::copy(list.begin(), list.end(), it);
-        return list.result();
+        return list.error();
     }
 
     auto insert(auto it,
