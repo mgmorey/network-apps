@@ -15,8 +15,7 @@
 
 #include "network/assert.hpp"           // assert()
 #include "network/network.hpp"          // Error, Hostname, OsError,
-                                        // SharedRuntime,
-                                        // get_hostname(),
+                                        // Runtime, get_hostname(),
                                         // get_hostnameresult(), run()
 #include "network/parse.hpp"            // parse()
 
@@ -36,7 +35,7 @@ namespace
     using Network::Error;
     using Network::Hostname;
     using Network::OsError;
-    using Network::SharedRuntime;
+    using Network::Runtime;
     using Network::get_hostname;
     using Network::get_hostnameresult;
     using Network::parse;
@@ -92,7 +91,7 @@ namespace
         }
     }
 
-    auto test_get_hostnameresult_overflow(const SharedRuntime& sr) -> void
+    auto test_get_hostnameresult_overflow(const Runtime& sr) -> void
     {
         std::string actual_str;
         std::string hostname_str(1, '\0');
@@ -106,7 +105,7 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_get_hostnameresult_valid(const SharedRuntime& sr) -> void
+    auto test_get_hostnameresult_valid(const Runtime& sr) -> void
     {
         std::string actual_str;
         const auto result {get_hostnameresult(sr)};
@@ -139,9 +138,9 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        const auto rt {run(is_verbose)};
-        test_get_hostnameresult_overflow(rt);
-        test_get_hostnameresult_valid(rt);
+        const auto sr {run(is_verbose)};
+        test_get_hostnameresult_overflow(*sr);
+        test_get_hostnameresult_valid(*sr);
         test_get_hostname_valid();
     }
     catch (const Error& error) {
