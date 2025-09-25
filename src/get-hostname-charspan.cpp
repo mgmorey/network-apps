@@ -20,7 +20,7 @@
 #include "network/oserror.hpp"                  // OsError
 #include "network/quote.hpp"                    // quote()
 #include "network/reset-api-error.hpp"          // reset_api_error()
-#include "network/sharedruntime.hpp"            // SharedRuntime
+#include "network/runtime.hpp"                  // Runtime
 #include "network/to-name-length.hpp"           // to_name_length()
 #include "network/to-os-error.hpp"              // to_os_error()
 
