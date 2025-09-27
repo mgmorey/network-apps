@@ -17,16 +17,16 @@
 #include "network/create-socketresult.hpp"      // create_socketresult()
 #include "network/error.hpp"                    // Error
 #include "network/run.hpp"                      // run()
-#include "network/sharedruntime.hpp"            // SharedRuntime
+#include "network/runtime.hpp"                  // Runtime
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/uniquesocket.hpp"             // UniqueSocket
 
 #include <utility>      // std::move()
 
 auto Network::create_socket(const SocketHints& hints,
-                            const SharedRuntime& sr) -> UniqueSocket
+                            const Runtime* rt) -> UniqueSocket
 {
-    auto result {create_socketresult(hints, sr)};
+    auto result {create_socketresult(hints, rt)};
 
     if (!result) {
         throw Error {result.error().string()};
@@ -38,5 +38,6 @@ auto Network::create_socket(const SocketHints& hints,
 auto Network::create_socket(const SocketHints& hints,
                             bool is_verbose) -> UniqueSocket
 {
-    return create_socket(hints, run(is_verbose));
+    const auto sr {run(is_verbose)};
+    return create_socket(hints, sr.get());
 }

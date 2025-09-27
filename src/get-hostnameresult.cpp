@@ -28,7 +28,7 @@
 
 #include <expected>     // std::unexpected
 
-auto Network::get_hostnameresult(const Runtime& rt) -> HostnameResult
+auto Network::get_hostnameresult(const Runtime* rt) -> HostnameResult
 {
     TextBuffer hostname {hostname_length_max};
 

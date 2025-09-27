@@ -19,16 +19,16 @@
 #include "network/create-socketpairresult.hpp"  // create_socketpairresult()
 #include "network/error.hpp"                    // Error
 #include "network/run.hpp"                      // run()
-#include "network/sharedruntime.hpp"            // SharedRuntime
+#include "network/runtime.hpp"                  // Runtime
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/socketpair.hpp"               // SocketPair
 
 #include <utility>      // std::move()
 
 auto Network::create_socketpair(const SocketHints& hints,
-                                const SharedRuntime& sr) -> SocketPair
+                                const Runtime* rt) -> SocketPair
 {
-    auto result {create_socketpairresult(hints, sr)};
+    auto result {create_socketpairresult(hints, rt)};
 
     if (!result) {
         throw Error {result.error().string()};
@@ -40,7 +40,8 @@ auto Network::create_socketpair(const SocketHints& hints,
 auto Network::create_socketpair(const SocketHints& hints,
                                 bool is_verbose) -> SocketPair
 {
-    return create_socketpair(hints, run(is_verbose));
+    const auto sr {run(is_verbose)};
+    return create_socketpair(hints, sr.get());
 }
 
 #endif

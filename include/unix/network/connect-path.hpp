@@ -19,7 +19,7 @@
 #ifndef _WIN32
 
 #include "network/pathnameview.hpp"     // PathnameView
-#include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/runtime.hpp"          // Runtime
 #include "network/sockethints.hpp"      // SocketHints
 #include "network/socketresult.hpp"     // SocketResult
 
@@ -27,7 +27,7 @@ namespace Network
 {
     extern auto connect(const PathnameView& pathname,
                         const SocketHints& hints,
-                        const SharedRuntime& sr) -> SocketResult;
+                        const Runtime* rt) -> SocketResult;
     extern auto connect(const PathnameView& pathname,
                         const SocketHints& hints,
                         bool is_verbose = false) -> SocketResult;

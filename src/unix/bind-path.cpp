@@ -19,7 +19,7 @@
 #include "network/create-socket-hints.hpp"      // create_socket()
 #include "network/pathnameview.hpp"             // PathnameView
 #include "network/run.hpp"                      // run()
-#include "network/sharedruntime.hpp"            // SharedRuntime
+#include "network/runtime.hpp"                  // Runtime
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/socketresult.hpp"             // SocketResultVector
 
@@ -27,9 +27,9 @@
 
 auto Network::bind(const PathnameView& pathname,
                    const SocketHints& hints,
-                   const SharedRuntime& sr) -> SocketResult
+                   const Runtime* rt) -> SocketResult
 {
-    auto s {create_socket(hints, sr->is_verbose())};
+    auto s {create_socket(hints, rt)};
 
     if (auto error {s->bind(pathname)}) {
         return std::unexpected(error);
@@ -42,7 +42,8 @@ auto Network::bind(const PathnameView& pathname,
                    const SocketHints& hints,
                    bool is_verbose) -> SocketResult
 {
-    return bind(pathname, hints, run(is_verbose));
+    const auto sr {run(is_verbose)};
+    return bind(pathname, hints, sr.get());
 }
 
 #endif

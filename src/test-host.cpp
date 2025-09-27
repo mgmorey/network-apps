@@ -259,7 +259,7 @@ namespace
         assert(expected_codes.contains(actual_code));
     }
 
-    auto test_get_endpoint_invalid_flag(const Runtime& rt) -> void
+    auto test_get_endpoint_invalid_flag(const Runtime* rt) -> void
     {
         std::string actual_str;
         const ByteString addr {get_inet_address()};
@@ -276,7 +276,7 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_get_endpointresult_invalid_flag(const Runtime& rt) -> void
+    auto test_get_endpointresult_invalid_flag(const Runtime* rt) -> void
     {
         std::string actual_str;
         const ByteString addr {get_inet_address()};
@@ -332,8 +332,9 @@ auto main(int argc, char* argv[]) -> int
     try {
         const auto args {parse_arguments(argc, argv)};
         const auto sr {run(is_verbose)};
-        test_get_endpoint_invalid_flag(*sr);
-        test_get_endpointresult_invalid_flag(*sr);
+        const auto* rt {sr.get()};
+        test_get_endpoint_invalid_flag(rt);
+        test_get_endpointresult_invalid_flag(rt);
         test_invalid_family();
         test_invalid_socktype();
 #if !defined(__CYGWIN__) && !defined(_WIN32)
@@ -344,7 +345,7 @@ auto main(int argc, char* argv[]) -> int
         std::ranges::copy(args, std::back_inserter(hosts));
 
         if (hosts.empty()) {
-            hosts.emplace_back(get_hostname(*sr));
+            hosts.emplace_back(get_hostname(sr.get()));
         }
 
         std::ranges::for_each(hosts, test_valid);

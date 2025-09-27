@@ -22,7 +22,7 @@
 
 namespace Network
 {
-    extern auto to_string(const Runtime& rt) -> std::string;
+    extern auto to_string(const Runtime* rt) -> std::string;
 }
 
 #endif

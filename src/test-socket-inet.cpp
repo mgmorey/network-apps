@@ -44,6 +44,7 @@ namespace
 {
     using Network::Error;
     using Network::InetSocket;
+    using Network::Runtime;
     using Network::SharedRuntime;
     using Network::Socket;
     using Network::SocketData;
@@ -140,13 +141,13 @@ namespace
 
     auto test(handle_type handle,
               family_type family,
-              const SharedRuntime& sr,
+              const Runtime* rt,
               const std::string& expected_re) -> void
     {
         std::string actual_str;
 
         try {
-            const SocketData sd {handle, family, sr};
+            const SocketData sd {handle, family, rt};
             const InetSocket s {sd};
             test(s);
         }
@@ -243,12 +244,12 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_inet_socket(const SharedRuntime& sr) -> void
+    auto test_inet_socket(const Runtime* rt) -> void
     {
         const family_type family {AF_INET};
         const handle_type handle {::socket(family, SOCK_STREAM, 0)};
-        const SocketData sd {handle, family, sr};
-        test(handle, family, sr, "");
+        const SocketData sd {handle, family, rt};
+        test(handle, family, rt, "");
         close(sd.core());
     }
 
@@ -286,12 +287,12 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        const auto rt {run(is_verbose)};
+        const auto sr {run(is_verbose)};
         test_handle_null();
         test_handle_zero();
         test_inet_accept();
         test_inet_peername();
-        test_inet_socket(rt);
+        test_inet_socket(sr.get());
         test_socket_family_invalid();
         test_socket_handle_invalid();
         test_socket_protocol_invalid();

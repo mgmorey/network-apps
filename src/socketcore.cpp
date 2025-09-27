@@ -19,20 +19,20 @@
 #include "network/handle-null.hpp"      // handle_null
 #include "network/handle-type.hpp"      // handle_type
 #include "network/logicerror.hpp"       // LogicError
-#include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/runtime.hpp"          // Runtime
 
 #include <string_view>  // std::string_view
 
 Network::SocketCore::SocketCore(handle_type t_handle,
                                 family_type t_family,
-                                const SharedRuntime& t_sr) :
-    m_sr(t_sr),
+                                const Runtime* t_rt) :
+    m_rt(t_rt),
     m_handle(t_handle),
     m_family(t_family)
 {
     std::string_view error;
 
-    if (m_sr == nullptr) {
+    if (m_rt == nullptr) {
         error = "Null runtime pointer";
     }
     else if (m_handle == handle_null) {
@@ -48,7 +48,7 @@ Network::SocketCore::SocketCore(handle_type t_handle,
 }
 
 Network::SocketCore::SocketCore(const SocketCore& t_sc, handle_type t_handle) :
-    SocketCore(t_handle, t_sc.m_family, t_sc.m_sr)
+    SocketCore(t_handle, t_sc.m_family, t_sc.m_rt)
 {
 }
 
@@ -62,7 +62,7 @@ auto Network::SocketCore::handle() const noexcept -> handle_type
     return m_handle;
 }
 
-auto Network::SocketCore::runtime() const noexcept -> SharedRuntime
+auto Network::SocketCore::runtime() const noexcept -> const Runtime*
 {
-    return m_sr;
+    return m_rt;
 }

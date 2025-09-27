@@ -27,9 +27,9 @@ namespace Network
     extern auto get_endpointresult(CharSpan hostname,
                                    CharSpan service,
                                    ByteSpan bs, int flags,
-                                   const Runtime& rt) -> OsError;
+                                   const Runtime* rt) -> OsError;
     extern auto get_endpointresult(ByteSpan bs, int flags,
-                                   const Runtime& rt) -> EndpointResult;
+                                   const Runtime* rt) -> EndpointResult;
 }
 
 #endif

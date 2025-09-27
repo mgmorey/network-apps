@@ -20,7 +20,7 @@
 #include "network/family-type.hpp"      // family_type
 #include "network/handle-null.hpp"      // handle_null
 #include "network/handle-type.hpp"      // handle_type
-#include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/runtime.hpp"          // Runtime
 
 namespace Network
 {
@@ -29,7 +29,7 @@ namespace Network
     public:
         SocketCore(handle_type t_handle,
                    family_type t_family,
-                   const SharedRuntime& t_sr);
+                   const Runtime* t_rt);
         SocketCore(const SocketCore& t_sc,
                    handle_type t_handle);
 
@@ -42,10 +42,10 @@ namespace Network
 
         [[nodiscard]] auto family() const noexcept -> family_type;
         [[nodiscard]] auto handle() const noexcept -> handle_type;
-        [[nodiscard]] auto runtime() const noexcept -> SharedRuntime;
+        [[nodiscard]] auto runtime() const noexcept -> const Runtime*;
 
     private:
-        SharedRuntime m_sr;
+        const Runtime* m_rt;
         handle_type m_handle {handle_null};
         family_type m_family {family_null};
     };

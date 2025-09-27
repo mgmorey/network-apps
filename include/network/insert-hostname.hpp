@@ -32,7 +32,7 @@ namespace Network
                 const HostnameView& hostname,
                 const ServiceView& service,
                 const OptionalHints& hints,
-                const Runtime& rt) -> OsError
+                const Runtime* rt) -> OsError
     {
         const auto list {AddressList(hostname, service, hints, rt)};
         std::copy(list.begin(), list.end(), it);
@@ -46,7 +46,7 @@ namespace Network
                 bool is_verbose) -> OsError
     {
         const auto sr {run(is_verbose)};
-        return insert(it, hostname, service, hints, *sr);
+        return insert(it, hostname, service, hints, sr.get());
     }
 }
 

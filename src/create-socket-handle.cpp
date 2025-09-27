@@ -18,19 +18,20 @@
 #include "network/family-type.hpp"              // family_type
 #include "network/handle-type.hpp"              // handle_type
 #include "network/run.hpp"                      // run()
-#include "network/sharedruntime.hpp"            // SharedRuntime
+#include "network/runtime.hpp"                  // Runtime
 #include "network/socketdata.hpp"               // SocketData
 
 auto Network::create_socket(handle_type handle,
                             family_type family,
-                            const SharedRuntime& sr) -> UniqueSocket
+                            const Runtime* rt) -> UniqueSocket
 {
-    return create_socket(SocketData {handle, family, sr});
+    return create_socket(SocketData {handle, family, rt});
 }
 
 auto Network::create_socket(handle_type handle,
                             family_type family,
                             bool is_verbose) -> UniqueSocket
 {
-    return create_socket(handle, family, run(is_verbose));
+    const auto sr {run(is_verbose)};
+    return create_socket(handle, family, sr.get());
 }

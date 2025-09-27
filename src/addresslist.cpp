@@ -80,14 +80,14 @@ auto Network::AddressList::StringOrNull::c_str() const -> const char*
 Network::AddressList::AddressList(const HostnameView& t_hostname,
                                   const ServiceView& t_service,
                                   const OptionalHints& t_hints,
-                                  const Runtime& t_rt)
+                                  const Runtime* t_rt)
 {
     const auto hints_ptr {to_ai_ptr(t_hints)};
     const auto hints_str {to_string(t_hints)};
     const StringOrNull hostname {t_hostname};
     const StringOrNull service {t_service};
 
-    if (t_rt.is_verbose()) {
+    if (t_rt->is_verbose()) {
         // clang-format off
         std::cout << "Calling ::getaddrinfo("
                   << hostname
@@ -120,7 +120,7 @@ Network::AddressList::AddressList(const HostnameView& t_hostname,
         // clang-format on
         m_os_error = {os_error, oss.str()};
     }
-    else if (t_rt.is_verbose()) {
+    else if (t_rt->is_verbose()) {
         for (const auto& node : *this) {
             std::cout << node << std::endl;
         }

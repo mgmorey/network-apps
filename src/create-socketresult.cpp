@@ -21,7 +21,7 @@
 #include "network/handle-null.hpp"              // handle_null
 #include "network/oserror.hpp"                  // OsError
 #include "network/reset-api-error.hpp"          // reset_api_error()
-#include "network/sharedruntime.hpp"            // SharedRuntime
+#include "network/runtime.hpp"                  // Runtime
 #include "network/socketfamily.hpp"             // SocketFamily
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/socketprotocol.hpp"           // SocketProtocol
@@ -40,14 +40,14 @@
 #include <sstream>      // std::ostringstream
 
 auto Network::create_socketresult(const SocketHints& hints,
-                                  const SharedRuntime& sr) -> SocketResult
+                                  const Runtime* rt) -> SocketResult
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
 
     const auto family {hints.m_family};
 
-    if (sr->is_verbose()) {
+    if (rt->is_verbose()) {
         // clang-format off
         std::cout << "Calling ::socket("
                   << Format("domain")
@@ -86,7 +86,7 @@ auto Network::create_socketresult(const SocketHints& hints,
         return std::unexpected {OsError {os_error, oss.str()}};
     }
 
-    if (sr->is_verbose()) {
+    if (rt->is_verbose()) {
         // clang-format off
         std::cout << "Call to ::socket("
                   << Format("domain")
@@ -101,5 +101,5 @@ auto Network::create_socketresult(const SocketHints& hints,
         // clang-format on
     }
 
-     return create_socket(handle, family, sr->is_verbose());
+     return create_socket(handle, family, rt->is_verbose());
 }

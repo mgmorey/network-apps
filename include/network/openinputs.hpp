@@ -17,7 +17,7 @@
 #define NETWORK_OPENINPUTS_HPP
 
 #include "network/endpointview.hpp"     // Endpoint
-#include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/runtime.hpp"          // Runtime
 #include "network/sockethints.hpp"      // SocketHints
 
 namespace Network
@@ -26,14 +26,14 @@ namespace Network
     {
         OpenInputs(const EndpointView& t_endpoint,
                    const SocketHints& t_hints,
-                   const SharedRuntime& t_sr) :
+                   const Runtime* t_sr) :
                 m_endpoint(t_endpoint), m_hints(t_hints), m_sr(t_sr)
         {
         }
 
         const EndpointView& m_endpoint;  // NOLINT
         const SocketHints& m_hints;  // NOLINT
-        const SharedRuntime& m_sr;  // NOLINT
+        const Runtime* m_sr;  // NOLINT
     };
 }
 

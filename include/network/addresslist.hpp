@@ -81,7 +81,7 @@ namespace Network
         AddressList(const HostnameView& t_hostname,
                     const ServiceView& t_service,
                     const OptionalHints& t_hints,
-                    const Runtime& t_rt);
+                    const Runtime* t_rt);
         ~AddressList() noexcept;
         auto operator=(const AddressList&) noexcept -> AddressList& = delete;
         auto operator=(AddressList &&) noexcept -> AddressList& = delete;

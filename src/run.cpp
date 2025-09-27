@@ -26,19 +26,20 @@
 auto Network::run(ApiOptions ao, RuntimeScope rs) -> SharedRuntime
 {
     auto sr {get_runtime(ao, rs)};
+    auto* rt {sr.get()};
 
-    if (sr->is_running()) {
+    if (rt->is_running()) {
         return sr;
     }
 
-    sr->start();
+    rt->start();
 
-    if (!sr->is_running()) {
-        throw RuntimeError {to_string(*sr)};
+    if (!rt->is_running()) {
+        throw RuntimeError {to_string(rt)};
     }
 
-    if (sr->is_verbose()) {
-        std::cout << to_string(*sr) << std::endl;
+    if (rt->is_verbose()) {
+        std::cout << to_string(rt) << std::endl;
     }
 
     return sr;

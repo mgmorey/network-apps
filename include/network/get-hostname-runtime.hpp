@@ -21,7 +21,7 @@
 
 namespace Network
 {
-    extern auto get_hostname(const Runtime& rt) -> Hostname;
+    extern auto get_hostname(const Runtime* rt) -> Hostname;
     extern auto get_hostname(bool is_verbose = false) -> Hostname;
 }
 

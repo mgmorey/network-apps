@@ -21,18 +21,18 @@
 #include <string>       // std::string
 #include <string_view>  // std::string_view
 
-extern auto Network::to_string(const Runtime& rt) -> std::string
+extern auto Network::to_string(const Runtime* rt) -> std::string
 {
     std::ostringstream oss;
     const auto start {oss.tellp()};
-    oss << rt.description();
+    oss << rt->description();
 
-    if (static_cast<bool>(rt.version())) {
+    if (static_cast<bool>(rt->version())) {
         if (oss.tellp() != start) {
             oss << ' ';
         }
 
-        oss << rt.version();
+        oss << rt->version();
     }
 
 #ifdef CODE_COVERAGE_ENABLED
@@ -49,9 +49,9 @@ extern auto Network::to_string(const Runtime& rt) -> std::string
         oss << ' ';
     }
 
-    std::string_view system_status {rt.system_status()};
+    std::string_view system_status {rt->system_status()};
 
-    if (rt.system_status().empty()) {
+    if (rt->system_status().empty()) {
         system_status = string_null;
     }
 

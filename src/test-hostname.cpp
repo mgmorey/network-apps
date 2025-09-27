@@ -91,7 +91,7 @@ namespace
         }
     }
 
-    auto test_get_hostnameresult_overflow(const Runtime& rt) -> void
+    auto test_get_hostnameresult_overflow(const Runtime* rt) -> void
     {
         std::string actual_str;
         std::string hostname_str(1, '\0');
@@ -105,7 +105,7 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_get_hostnameresult_valid(const Runtime& rt) -> void
+    auto test_get_hostnameresult_valid(const Runtime* rt) -> void
     {
         std::string actual_str;
         const auto result {get_hostnameresult(rt)};
@@ -139,8 +139,9 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
         const auto sr {run(is_verbose)};
-        test_get_hostnameresult_overflow(*sr);
-        test_get_hostnameresult_valid(*sr);
+        const auto* rt {sr.get()};
+        test_get_hostnameresult_overflow(rt);
+        test_get_hostnameresult_valid(rt);
         test_get_hostname_valid();
     }
     catch (const Error& error) {

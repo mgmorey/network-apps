@@ -23,7 +23,7 @@
 #include "network/handle-null.hpp"              // handle_null
 #include "network/oserror.hpp"                  // OsError
 #include "network/reset-api-error.hpp"          // reset_api_error()
-#include "network/sharedruntime.hpp"            // SharedRuntime
+#include "network/runtime.hpp"                  // Runtime
 #include "network/socket-error.hpp"             // socket_error
 #include "network/socketfamily.hpp"             // SocketFamily
 #include "network/sockethints.hpp"              // SocketHints
@@ -43,14 +43,14 @@
 #include <vector>       // std::vector
 
 auto Network::create_socketpairresult(const SocketHints& hints,
-                                      const SharedRuntime& sr) -> SocketPairResult
+                                      const Runtime* rt) -> SocketPairResult
 {
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
 
     std::vector<handle_type> handles(2, handle_null);
     const auto family {hints.m_family};
-    const auto is_verbose {sr->is_verbose()};
+    const auto is_verbose {rt->is_verbose()};
 
     if (is_verbose) {
         // clang-format off
@@ -126,7 +126,7 @@ auto Network::create_socketpairresult(const SocketHints& hints,
 
     SocketPair sp;
     auto create = [=](handle_type handle) -> UniqueSocket {
-        return create_socket(handle, family, sr);
+        return create_socket(handle, family, rt);
     };
     std::ranges::transform(handles, std::back_inserter(sp), create);
     return sp;

@@ -19,15 +19,15 @@
 #include "network/openinputs.hpp"               // OpenInputs
 #include "network/opensymbol.hpp"               // OpenSymbol
 #include "network/run.hpp"                      // run()
-#include "network/sharedruntime.hpp"            // SharedRuntime
+#include "network/runtime.hpp"                  // Runtime
 #include "network/sockethints.hpp"              // SocketHints
 #include "network/socketresultvector.hpp"       // SocketResultVector
 
 auto Network::connect(const EndpointView& endpoint,
                       const SocketHints& hints,
-                      const SharedRuntime& sr) -> SocketResultVector
+                      const Runtime* rt) -> SocketResultVector
 {
-    const OpenInputs oi {endpoint, hints, sr};
+    const OpenInputs oi {endpoint, hints, rt};
     return open(oi, OpenSymbol::connect);
 }
 
@@ -35,5 +35,6 @@ auto Network::connect(const EndpointView& endpoint,
                       const SocketHints& hints,
                       bool is_verbose) -> SocketResultVector
 {
-    return connect(endpoint, hints, run(is_verbose));
+    const auto sr {run(is_verbose)};
+    return connect(endpoint, hints, sr.get());
 }

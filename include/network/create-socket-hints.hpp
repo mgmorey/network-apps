@@ -16,14 +16,14 @@
 #ifndef NETWORK_CREATE_SOCKET_HINTS_HPP
 #define NETWORK_CREATE_SOCKET_HINTS_HPP
 
-#include "network/sharedruntime.hpp"    // SharedRuntime
+#include "network/runtime.hpp"          // Runtime
 #include "network/sockethints.hpp"      // SocketHints
 #include "network/uniquesocket.hpp"     // UniqueSocket
 
 namespace Network
 {
     extern auto create_socket(const SocketHints& hints,
-                              const SharedRuntime& sr) -> UniqueSocket;
+                              const Runtime* rt) -> UniqueSocket;
     extern auto create_socket(const SocketHints& hints,
                               bool is_verbose = false) -> UniqueSocket;
 }

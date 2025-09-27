@@ -41,6 +41,7 @@ namespace
 {
     using Network::Error;
     using Network::OsError;
+    using Network::Runtime;
     using Network::SharedRuntime;
     using Network::SocketCore;
     using Network::family_null;
@@ -112,13 +113,13 @@ namespace
 
     auto test(handle_type handle,
               family_type family,
-              const SharedRuntime& sr,
+              const Runtime* rt,
               const std::string& expected_re) -> void
     {
         std::string actual_str;
 
         try {
-            const auto sc {SocketCore(handle, family, sr)};
+            const auto sc {SocketCore(handle, family, rt)};
             assert(sc.family() == family);
             assert(sc.handle() == handle);
             assert(sc.runtime() != nullptr);
@@ -133,10 +134,10 @@ namespace
         assert(std::regex_match(actual_str, expected_regex));
     }
 
-    auto test_failed_listen(const SharedRuntime& sr) -> void
+    auto test_failed_listen(const Runtime* rt) -> void
     {
         os_error_type actual_code {0};
-        const SocketCore sc {handle_high, AF_INET, sr};
+        const SocketCore sc {handle_high, AF_INET, rt};
 
         if (const auto error {listen(sc, 0)}) {
             print(error);
@@ -146,10 +147,10 @@ namespace
         assert(actual_code == expected_failed_listen_code);
     }
 
-    auto test_failed_shutdown(const SharedRuntime& sr) -> void
+    auto test_failed_shutdown(const Runtime* rt) -> void
     {
         os_error_type actual_code {0};
-        const SocketCore sc {handle_high, AF_INET, sr};
+        const SocketCore sc {handle_high, AF_INET, rt};
 
         if (const auto error {shutdown(sc, 0)}) {
             print(error);
@@ -166,23 +167,23 @@ namespace
         test(handle, family, nullptr, expected_runtime_pointer_re);
     }
 
-    auto test_null_socket_descriptor(const SharedRuntime& sr) -> void
+    auto test_null_socket_descriptor(const Runtime* rt) -> void
     {
         auto family {AF_INET};
-        test(handle_null, family, sr, expected_socket_descriptor_re);
+        test(handle_null, family, rt, expected_socket_descriptor_re);
     }
 
-    auto test_null_socket_domain_family(const SharedRuntime& sr) -> void
+    auto test_null_socket_domain_family(const Runtime* rt) -> void
     {
         auto handle {::socket(AF_INET, SOCK_STREAM, 0)};
-        test(handle, family_null, sr, expected_socket_domain_family_re);
+        test(handle, family_null, rt, expected_socket_domain_family_re);
     }
 
-    auto test_valid(const SharedRuntime& sr) -> void
+    auto test_valid(const Runtime* rt) -> void
     {
         auto family {AF_INET};
         auto handle {::socket(family, SOCK_STREAM, 0)};
-        test(handle, family, sr, expected_valid_re);
+        test(handle, family, rt, expected_valid_re);
     }
 }
 
@@ -190,13 +191,13 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        const auto rt {run(is_verbose)};
-        test_failed_listen(rt);
-        test_failed_shutdown(rt);
+        const auto sr {run(is_verbose)};
+        test_failed_listen(sr.get());
+        test_failed_shutdown(sr.get());
         test_null_runtime_pointer();
-        test_null_socket_descriptor(rt);
-        test_null_socket_domain_family(rt);
-        test_valid(rt);
+        test_null_socket_descriptor(sr.get());
+        test_null_socket_domain_family(sr.get());
+        test_valid(sr.get());
     }
     catch (const Error& error) {
         std::cerr << error.what()

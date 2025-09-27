@@ -20,7 +20,7 @@
 #include "network/run.hpp"                      // run()
 #include "network/runtime.hpp"                  // Runtime
 
-auto Network::get_hostname(const Runtime& rt) -> Hostname
+auto Network::get_hostname(const Runtime* rt) -> Hostname
 {
     const auto result {get_hostnameresult(rt)};
 
@@ -34,5 +34,5 @@ auto Network::get_hostname(const Runtime& rt) -> Hostname
 auto Network::get_hostname(bool is_verbose) -> Hostname
 {
     const auto sr {run(is_verbose)};
-    return get_hostname(*sr);
+    return get_hostname(sr.get());
 }
