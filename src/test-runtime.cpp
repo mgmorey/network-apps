@@ -197,8 +197,8 @@ namespace
 
     auto test(Runtime& rt) -> void
     {
-        assert(rt.version() == Version {});
-        assert(rt.high_version() == Version {});
+        assert(!static_cast<bool>(rt.version()));
+        assert(!static_cast<bool>(rt.high_version()));
         assert(rt.description().empty());
         assert(rt.system_status().empty());
         print(rt);
