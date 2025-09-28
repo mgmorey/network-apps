@@ -156,19 +156,19 @@ namespace
         }
     }
 
-    auto print(const Runtime* rt) -> void
+    auto print(const Runtime& rt) -> void
     {
         if (is_verbose) {
             std::cout << "    Version:\t\t"
-                      << rt->version()
+                      << rt.version()
                       << std::endl;
             std::cout << "    High Version:\t"
-                      << rt->high_version()
+                      << rt.high_version()
                       << std::endl;
             std::cout << "    Description:\t"
-                      << quote(rt->description())
+                      << quote(rt.description())
                       << std::endl;
-            std::cout << "    System Status:\t" << quote(rt->system_status())
+            std::cout << "    System Status:\t" << quote(rt.system_status())
                       << std::endl;
         }
         else {
@@ -195,24 +195,24 @@ namespace
         }
     }
 
-    auto test(Runtime* rt) -> void
+    auto test(Runtime& rt) -> void
     {
-        assert(rt->version() == Version {});
-        assert(rt->high_version() == Version {});
-        assert(rt->description().empty());
-        assert(rt->system_status().empty());
+        assert(rt.version() == Version {});
+        assert(rt.high_version() == Version {});
+        assert(rt.description().empty());
+        assert(rt.system_status().empty());
         print(rt);
-        assert(!rt->is_running());
-        rt->start();
+        assert(!rt.is_running());
+        rt.start();
         print(rt);
-        assert(rt->is_running());
+        assert(rt.is_running());
         const auto actual_str {to_string(rt)};
         const std::regex expected_regex {get_expected_re()};
         assert(std::regex_match(actual_str, expected_regex));
-        const auto error_code {rt->stop()};
+        const auto error_code {rt.stop()};
         assert(!error_code);
         print(rt);
-        assert(!rt->is_running());
+        assert(!rt.is_running());
     }
 
     auto test(ApiOptions ao, RuntimeScope rs) -> void
@@ -224,7 +224,7 @@ namespace
                   << std::endl;
         print(ao);
         auto sr {get_runtime(ao, rs)};
-        test(sr.get());
+        test(*sr);
     }
 
     auto test_inactive() -> void

@@ -156,7 +156,7 @@ namespace
                       << std::endl;
         }
         else {
-            std::cout << to_string(&rt) << std::endl;
+            std::cout << to_string(rt) << std::endl;
         }
     }
 
@@ -190,7 +190,7 @@ namespace
         sa.start();
         print(sa);
         assert(sa.is_running());
-        const auto actual_str {to_string(&sa)};
+        const auto actual_str {to_string(sa)};
         const std::regex expected_regex {get_expected_re()};
         assert(std::regex_match(actual_str, expected_regex));
         const auto error_code {sa.stop()};
