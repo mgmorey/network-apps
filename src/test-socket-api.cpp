@@ -181,8 +181,8 @@ namespace
 
     auto test(SocketApi& sa) -> void
     {
-        assert(sa.version() == Version {});
-        assert(sa.high_version() == Version {});
+        assert(!static_cast<bool>(sa.version()));
+        assert(!static_cast<bool>(sa.high_version()));
         assert(sa.description().empty());
         assert(sa.system_status().empty());
         print(sa);
