@@ -175,16 +175,16 @@ namespace
         }
     }
 
-    auto print(const Socket& sock, ByteSpan bs) -> void
+    auto print(const Socket& s, ByteSpan bs) -> void
     {
         std::cout << "Socket "
-                  << std::right << std::setw(handle_width) << sock
+                  << std::right << std::setw(handle_width) << s
                   << " bound to "
                   << Address(bs)
                   << std::endl;
     }
 
-    auto test(Socket& sock,
+    auto test(Socket& s,
               std::string_view path,
               const ErrorCodeSet& expected_codes,
               const std::string& expected_re) -> void
@@ -194,13 +194,13 @@ namespace
         try {
             OsError actual_result;
 
-            if (const auto result {sock.bind(path)}) {
+            if (const auto result {s.bind(path)}) {
                 print(result);
                 actual_result = result;
             }
             else {
-                const auto self {sock.get_sockname()};
-                print(sock, self);
+                const auto self {s.get_sockname()};
+                print(s, self);
                 assert(self == path);  // NOLINT
             }
 
@@ -221,7 +221,7 @@ namespace
         std::string actual_str;
 
         try {
-            const auto sock {create_socket(hints, is_verbose)};
+            static_cast<void>(create_socket(hints, is_verbose));
         }
         catch (const Error& error) {
             print(error);
@@ -236,14 +236,14 @@ namespace
               const ErrorCodeSet& expected_codes,
               const std::string& expected_re) -> void
     {
-        const auto sock {create_socket(socket_hints, is_verbose)};
-        test(*sock, path, expected_codes, expected_re);
+        const auto s {create_socket(socket_hints, is_verbose)};
+        test(*s, path, expected_codes, expected_re);
     }
 
     auto test_path_valid(const auto& path) -> void
     {
-        const auto sock {create_socket(socket_hints, is_verbose)};
-        test(*sock, path, {0}, {});
+        const auto s {create_socket(socket_hints, is_verbose)};
+        test(*s, path, {0}, {});
     }
 
     auto test_paths_invalid() -> void
@@ -276,8 +276,8 @@ namespace
         std::string actual_str;
 
         try {
-            const auto sock {create_unix_socket()};
-            static_cast<void>(sock->accept());
+            const auto s {create_unix_socket()};
+            static_cast<void>(s->accept());
         }
         catch (const Error& error) {
             print(error);
