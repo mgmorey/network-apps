@@ -123,7 +123,8 @@ namespace
         std::string actual_str;
 
         try {
-            static_cast<void>(get_hostname(is_verbose));
+            const auto hostname {get_hostname(is_verbose)};
+            std::cout << hostname << std::endl;
         }
         catch (const Error& error) {
             print(error);
