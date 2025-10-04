@@ -26,14 +26,16 @@ namespace Network
     {
         OpenInputs(const EndpointView& t_endpoint,
                    const SocketHints& t_hints,
-                   const Runtime* t_sr) :
-                m_endpoint(t_endpoint), m_hints(t_hints), m_sr(t_sr)
-        {
-        }
+                   const Runtime* t_rt);
 
-        const EndpointView& m_endpoint;  // NOLINT
-        const SocketHints& m_hints;  // NOLINT
-        const Runtime* m_sr;  // NOLINT
+        [[nodiscard]] auto endpoint() const -> const EndpointView&;
+        [[nodiscard]] auto hints() const -> const SocketHints&;
+        [[nodiscard]] auto runtime() const -> const Runtime*;
+
+    private:
+        const EndpointView& m_endpoint;
+        const SocketHints& m_hints;
+        const Runtime* m_rt;
     };
 }
 

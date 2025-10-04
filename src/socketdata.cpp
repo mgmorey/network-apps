@@ -23,8 +23,8 @@
 
 Network::SocketData::SocketData(handle_type t_handle,
                                 family_type t_family,
-                                const Runtime* t_sr) :
-    m_sc(t_handle, t_family, t_sr)
+                                const Runtime* t_rt) :
+    m_sc(t_handle, t_family, t_rt)
 {
 }
 
