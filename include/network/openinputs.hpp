@@ -29,19 +29,19 @@ namespace Network
                    const Runtime* t_rt);
 
         OpenInputs() noexcept = delete;
-        OpenInputs(const OpenInputs&) noexcept = delete;
-        OpenInputs(OpenInputs&&) noexcept = delete;
+        OpenInputs(const OpenInputs&) noexcept = default;
+        OpenInputs(OpenInputs&&) noexcept = default;
         ~OpenInputs() noexcept = default;
         auto operator=(const OpenInputs&) noexcept -> OpenInputs& = delete;
         auto operator=(OpenInputs&&) noexcept -> OpenInputs& = delete;
 
-        [[nodiscard]] auto endpoint() const -> const EndpointView&;
-        [[nodiscard]] auto hints() const -> const SocketHints&;
+        [[nodiscard]] auto endpoint() const -> EndpointView;
+        [[nodiscard]] auto hints() const -> SocketHints;
         [[nodiscard]] auto runtime() const -> const Runtime*;
 
     private:
-        const EndpointView& m_endpoint;
-        const SocketHints& m_hints;
+        const EndpointView m_endpoint;
+        const SocketHints m_hints;
         const Runtime* m_rt;
     };
 }

@@ -25,12 +25,12 @@ Network::OpenInputs::OpenInputs(const EndpointView& t_endpoint,
 {
 }
 
-auto Network::OpenInputs::endpoint() const -> const EndpointView&
+auto Network::OpenInputs::endpoint() const -> EndpointView
 {
     return m_endpoint;
 }
 
-auto Network::OpenInputs::hints() const -> const SocketHints&
+auto Network::OpenInputs::hints() const -> SocketHints
 {
     return m_hints;
 }
