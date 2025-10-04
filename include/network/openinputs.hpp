@@ -28,6 +28,13 @@ namespace Network
                    const SocketHints& t_hints,
                    const Runtime* t_rt);
 
+        OpenInputs() noexcept = delete;
+        OpenInputs(const OpenInputs&) noexcept = delete;
+        OpenInputs(OpenInputs&&) noexcept = delete;
+        ~OpenInputs() noexcept = default;
+        auto operator=(const OpenInputs&) noexcept -> OpenInputs& = delete;
+        auto operator=(OpenInputs&&) noexcept -> OpenInputs& = delete;
+
         [[nodiscard]] auto endpoint() const -> const EndpointView&;
         [[nodiscard]] auto hints() const -> const SocketHints&;
         [[nodiscard]] auto runtime() const -> const Runtime*;
