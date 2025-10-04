@@ -345,7 +345,7 @@ auto main(int argc, char* argv[]) -> int
         std::ranges::copy(args, std::back_inserter(hosts));
 
         if (hosts.empty()) {
-            hosts.emplace_back(get_hostname(sr.get()));
+            hosts.emplace_back(get_hostname(rt));
         }
 
         std::ranges::for_each(hosts, test_valid);

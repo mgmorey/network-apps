@@ -192,12 +192,13 @@ auto main(int argc, char* argv[]) -> int
     try {
         parse_arguments(argc, argv);
         const auto sr {run(is_verbose)};
-        test_failed_listen(sr.get());
-        test_failed_shutdown(sr.get());
+        const auto* rt {sr.get()};
+        test_failed_listen(rt);
+        test_failed_shutdown(rt);
         test_null_runtime_pointer();
-        test_null_socket_descriptor(sr.get());
-        test_null_socket_domain_family(sr.get());
-        test_valid(sr.get());
+        test_null_socket_descriptor(rt);
+        test_null_socket_domain_family(rt);
+        test_valid(rt);
     }
     catch (const Error& error) {
         std::cerr << error.what()
