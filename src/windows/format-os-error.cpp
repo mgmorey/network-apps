@@ -27,6 +27,7 @@
                             // SUBLANG_DEFAULT, ::FormatMessage(),
                             // ::LocalFree()
 
+#include <bit>          // std::bit_cast()
 #include <string>       // std::string, std::to_string()
 
 static auto format(DWORD error, LPTSTR& error_text) -> DWORD
@@ -37,7 +38,7 @@ static auto format(DWORD error, LPTSTR& error_text) -> DWORD
                            nullptr,
                            error,
                            MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                           reinterpret_cast<LPTSTR>(&error_text),  // NOLINT
+                           std::bit_cast<LPTSTR>(&error_text),
                            0,
                            nullptr);
 }
