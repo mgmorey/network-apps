@@ -69,11 +69,6 @@ auto Network::operator<<(std::ostream& os,
     static constexpr auto delim {", "};
     static constexpr auto tab {0};
 
-    if (address.empty()) {
-        os << "0x0";
-        return os;
-    }
-
     const auto family {address.family()};
     const auto prefix {::get_prefix(family)};
     const auto suffix {::get_suffix(family)};
