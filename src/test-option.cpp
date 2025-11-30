@@ -86,8 +86,7 @@ namespace
         }
     }
 
-    auto test_arguments(ArgumentSpan args,
-                        const char* argv0) -> void
+    auto test_arguments(ArgumentSpan args, const char* argv0) -> void
     {
         print(args);
         assert(std::string {args[0]} == argv0);
@@ -102,8 +101,7 @@ namespace
         assert(args.size() == 3);
     }
 
-    auto test_options(ArgumentSpan args,
-                      const char* argv0) -> void
+    auto test_options(ArgumentSpan args, const char* argv0) -> void
     {
         print(args, "Option");
         assert(std::string {args[0]} == "-f");
