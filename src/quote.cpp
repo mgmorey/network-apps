@@ -38,7 +38,7 @@ auto Network::quote(std::string_view sv) -> std::string
             }
 
             if (isprint(c) == 0) {
-                oss << '\\' << static_cast<unsigned>(c);
+                oss << "\\0" << static_cast<unsigned>(c);
             }
             else {
                 if (c == '"') {
