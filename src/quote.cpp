@@ -37,18 +37,15 @@ auto Network::quote(std::string_view sv) -> std::string
                 break;
             }
 
-            if (isprint(c) != 0) {
-                if (c == '"') {
-                    oss << '\\'
-                        << c;
-                }
-                else {
-                    oss << c;
-                }
+            if (isprint(c) == 0) {
+                oss << '\\' << static_cast<unsigned>(c);
             }
             else {
-                oss << '\\'
-                    << static_cast<unsigned>(c);
+                if (c == '"') {
+                    oss << '\\';
+                }
+
+                oss << c;
             }
         }
 
