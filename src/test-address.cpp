@@ -227,7 +227,7 @@ namespace
         previous_address = addr;
     }
 
-    auto test_empty() -> void
+    auto test_address_empty() -> void
     {
         const Address address {ByteString {}};
         assert(address.empty());
@@ -467,7 +467,7 @@ auto main(int argc, char* argv[]) -> int
 {
     try {
         parse_arguments(argc, argv);
-        test_empty();
+        test_address_empty();
         test_sa_invalid_length();
         test_sin6_invalid_family();
         test_sin_invalid_family();
