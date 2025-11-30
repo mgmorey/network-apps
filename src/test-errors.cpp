@@ -26,6 +26,7 @@
                                         // to_sa_length(), to_size(),
                                         // to_sun_length()
 #include "network/parse.hpp"            // parse()
+#include "network/quote.hpp"            // quote()
 
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iostream>     // std::cerr, std::cout, std::endl
@@ -47,6 +48,7 @@ namespace
     using Network::name_length_min;
     using Network::name_length_type;
     using Network::os_error_type;
+    using Network::quote;
     using Network::parse;
 #ifndef _WIN32
     using Network::path_length_max;
@@ -215,31 +217,12 @@ namespace
         test_os_error(max + 1, expected_os_error_re);
     }
 
-#ifndef _WIN32
-
-    auto test_path_length(auto value, const char* expected_re) -> void
+    auto test_quote() -> void
     {
-        std::string actual_str;
-
-        try {
-            static_cast<void>(to_path_length(value));
-        }
-        catch (const ValueError<length_type>& error) {
-            print(error);
-            actual_str = error.what();
-        }
-
-        const std::regex expected_regex {expected_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        const std::string string {"\"Hello!\"\n"};
+        const std::string quoted {quote(string)};
+        assert(quoted == "\"\\\"Hello!\\\"\\012\"");
     }
-
-    auto test_path_length() -> void
-    {
-        test_path_length(path_length_min - 1, expected_path_length_re);
-        test_path_length(path_length_max + 1, expected_path_length_re);
-    }
-
-#endif
 
     auto test_sa_length(auto value, const char* expected_re) -> void
     {
@@ -285,6 +268,28 @@ namespace
     }
 
 #ifndef _WIN32
+
+    auto test_path_length(auto value, const char* expected_re) -> void
+    {
+        std::string actual_str;
+
+        try {
+            static_cast<void>(to_path_length(value));
+        }
+        catch (const ValueError<length_type>& error) {
+            print(error);
+            actual_str = error.what();
+        }
+
+        const std::regex expected_regex {expected_re};
+        assert(std::regex_match(actual_str, expected_regex));
+    }
+
+    auto test_path_length() -> void
+    {
+        test_path_length(path_length_min - 1, expected_path_length_re);
+        test_path_length(path_length_max + 1, expected_path_length_re);
+    }
 
     auto test_sun_length(auto value, const char* expected_re) -> void
     {
@@ -368,12 +373,11 @@ auto main(int argc, char* argv[]) -> int
         test_handle();
         test_name_length();
         test_os_error();
-#ifndef _WIN32
-        test_path_length();
-#endif
+        test_quote();
         test_sa_length();
         test_std_size();
 #ifndef _WIN32
+        test_path_length();
         test_sun_length();
 #endif
         test_throw_error();
