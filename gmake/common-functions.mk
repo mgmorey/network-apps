@@ -183,8 +183,8 @@ endef
 
 # $(call run-program,PROGRAM-FILENAME,PROGRAM-ARGUMENTS)
 define run-program
-$(if $(filter .,$(output_dir)),,cd $(output_dir) && )\
-./$(1:$(binary_suffix)=) >$(1:$(binary_suffix)=$(log_suffix)) && \
+$(if $(filter .,$(output_dir)),,cd $(output_dir) && )			\
+./$(1:$(binary_suffix)=) >$(1:$(binary_suffix)=$(log_suffix)) &&	\
 ./$(1:$(binary_suffix)=) -v >$(1:$(binary_suffix)=$(log_suffix))
 endef
 
@@ -199,9 +199,9 @@ split-string = $(subst $1, ,$2)
 
 # $(call tag-dirs,INCLUDE-DIRS,SOURCE-DIRS)
 define tag-dirs
-ctags --output-format=etags $(filter -D%,$(CPPFLAGS)) \
-$(addsuffix /$(PROJECT_NAME)/*$(include_suffix),$1) \
-$(addsuffix /*$(source_suffix),$2)
+ctags --output-format=etags $(filter -D%,$(CPPFLAGS)) $(addsuffix	\
+/$(PROJECT_NAME)/*$(include_suffix),$1) $(addsuffix			\
+/*$(source_suffix),$2)
 endef
 
 # $(call to-upper,STRING)
