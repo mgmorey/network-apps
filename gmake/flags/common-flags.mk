@@ -100,7 +100,7 @@ CXXFLAGS += $(addprefix -W,$(warnings))
 CXXFLAGS += $(if $(with_shared_library),-fPIC,)
 
 # Add automatic variable initialization flag to CXXFLAGS
-CXXFLAGS += -ftrivial-auto-var-init=zero
+CXXFLAGS += -ftrivial-auto-var-init=pattern
 
 # Add pipe flag to CXXFLAGS
 CXXFLAGS += $(if $(filter gnu,$(as_family)),-pipe,)
