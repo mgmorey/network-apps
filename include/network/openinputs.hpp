@@ -35,7 +35,7 @@ namespace Network
         auto operator=(const OpenInputs&) noexcept -> OpenInputs& = delete;
         auto operator=(OpenInputs&&) noexcept -> OpenInputs& = delete;
 
-        [[nodiscard]] auto endpoint() const -> EndpointView;
+        [[nodiscard]] auto endpoint() const -> const EndpointView&;
         [[nodiscard]] auto hints() const -> SocketHints;
         [[nodiscard]] auto runtime() const -> const Runtime*;
 

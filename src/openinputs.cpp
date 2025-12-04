@@ -25,7 +25,7 @@ Network::OpenInputs::OpenInputs(const EndpointView& t_endpoint,
 {
 }
 
-auto Network::OpenInputs::endpoint() const -> EndpointView
+auto Network::OpenInputs::endpoint() const -> const EndpointView&
 {
     return m_endpoint;
 }
