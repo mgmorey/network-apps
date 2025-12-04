@@ -34,11 +34,7 @@ namespace Network
                                const SocketTemplate& sock) -> std::ostream&;
 
         // cppcheck-suppress noExplicitConstructor; NOLINTNEXTLINE
-        SocketTemplate(const addrinfo& t_ai) noexcept :
-            m_hints(t_ai),
-            m_host(t_ai)
-        {
-        }
+        SocketTemplate(const addrinfo& t_ai) noexcept;
 
         SocketTemplate() noexcept = default;
         SocketTemplate(const SocketTemplate&) noexcept = default;
@@ -49,15 +45,8 @@ namespace Network
         auto operator=(SocketTemplate&&) noexcept ->
             SocketTemplate& = default;
 
-        [[nodiscard]] auto hints() const noexcept -> const SocketHints&
-        {
-            return m_hints;
-        }
-
-        [[nodiscard]] auto address() const noexcept -> ByteSpan
-        {
-            return m_host.address();
-        }
+        [[nodiscard]] auto hints() const noexcept -> const SocketHints&;
+        [[nodiscard]] auto address() const noexcept -> ByteSpan;
 
     private:
         SocketHints m_hints;
