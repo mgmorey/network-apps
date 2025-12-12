@@ -124,7 +124,7 @@
 #include "network/symbol.hpp"                   // Symbol
 #include "network/textbuffer.hpp"               // TextBuffer
 #include "network/to-bytestring.hpp"            // to_bytestring()
-#include "network/to-handle.hpp"                // to_handle()
+#include "network/to-handle-type.hpp"           // to_handle_type()
 #include "network/to-name-length.hpp"           // to_name_length()
 #include "network/to-os-error.hpp"              // to_os_error()
 #ifndef _WIN32

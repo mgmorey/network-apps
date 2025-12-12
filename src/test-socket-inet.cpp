@@ -21,7 +21,7 @@
                                         // create_socket(),
                                         // family_type, handle_null,
                                         // handle_type, os_error_type,
-                                        // run(), to_handle()
+                                        // run(), to_handle_type()
 #include "network/parse.hpp"            // parse()
 
 #ifdef _WIN32
@@ -58,10 +58,13 @@ namespace
     using Network::os_error_type;
     using Network::parse;
     using Network::run;
-    using Network::to_handle;
+    using Network::to_handle_type;
 
     constexpr auto expected_accept_re {
         R"(Call to ::accept\(.+\) failed with error \d+: .+)"
+    };
+    constexpr auto expected_handle_re {
+        R"(Value (\d+|-\d+) is out of range \[-?\d+, \d+\] of handle_type)"
     };
     constexpr auto expected_peername_re {
         R"(Call to ::getpeername\(.+\) failed with error \d+: .+)"
@@ -123,7 +126,7 @@ namespace
         std::string actual_str;
 
         try {
-            assert(std::cmp_equal(to_handle(handle), handle));
+            assert(std::cmp_equal(to_handle_type(handle), handle));
         }
         catch (const Error& error) {
             print(error);
@@ -202,7 +205,7 @@ namespace
 
     auto test_handle_null() -> void
     {
-        test(handle_null, "");
+        test(handle_null, expected_handle_re);
     }
 
     auto test_handle_zero() -> void

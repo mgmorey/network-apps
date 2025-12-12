@@ -16,12 +16,10 @@
 #ifndef NETWORK_LIMITS_HPP
 #define NETWORK_LIMITS_HPP
 
+#include "network/handle-type-limits.hpp"       // handle_type_max,
+                                                // handle_type_min
 #include "network/name-length-limits.hpp"       // name_length_max,
                                                 // name_length_min
-#ifndef _WIN32
-#include "network/path-length-limits.hpp"       // path_length_max,
-                                                // path_length_min
-#endif
 #include "network/sa-length-limits.hpp"         // sa_length_max,
                                                 // sa_length_min
 #include "network/sin-length-limits.hpp"        // sin_length_max,
@@ -29,6 +27,8 @@
 #include "network/sin6-length-limits.hpp"       // sin6_length_max,
                                                 // sin6_length_min
 #ifndef _WIN32
+#include "network/path-length-limits.hpp"       // path_length_max,
+                                                // path_length_min
 #include "network/sun-length-limits.hpp"        // sun_length_max,
                                                 // sun_length_min
 #endif

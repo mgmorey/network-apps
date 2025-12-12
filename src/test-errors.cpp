@@ -19,7 +19,7 @@
                                         // get_os_error(),
                                         // reset_api_error(),
                                         // reset_os_error(),
-                                        // to_handle(),
+                                        // to_handle_type(),
                                         // to_name_length(),
                                         // to_os_error(),
                                         // to_path_length(),
@@ -42,6 +42,7 @@ namespace
     using Network::ValueError;
     using Network::get_api_error;
     using Network::get_os_error;
+    using Network::handle_null;
     using Network::handle_type;
     using Network::length_type;
     using Network::name_length_max;
@@ -66,7 +67,7 @@ namespace
     using Network::sun_length_max;
     using Network::sun_length_min;
 #endif
-    using Network::to_handle;
+    using Network::to_handle_type;
     using Network::to_name_length;
     using Network::to_os_error;
 #ifndef _WIN32
@@ -78,15 +79,9 @@ namespace
     using Network::to_sun_length;
 #endif
 
-#ifndef _WIN32
     constexpr auto expected_handle_re {
-        ""
+        R"(Value (\d+|-\d+) is out of range \[-?\d+, \d+\] of handle_type)"
     };
-#else
-    constexpr auto expected_handle_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of handle_type)"
-    };
-#endif
     constexpr auto expected_name_length_re {
         R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_length_type)"
     };
@@ -155,7 +150,7 @@ namespace
         std::string actual_str;
 
         try {
-            static_cast<void>(to_handle(value));
+            static_cast<void>(to_handle_type(value));
         }
         catch (const ValueError<handle_type>& error) {
             print(error);
@@ -168,7 +163,7 @@ namespace
 
     auto test_handle() -> void
     {
-        test_handle(-1, expected_handle_re);
+        test_handle(handle_null, expected_handle_re);
     }
 
     auto test_name_length(auto value, const char* expected_re) -> void

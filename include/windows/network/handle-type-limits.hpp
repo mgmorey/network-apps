@@ -13,18 +13,27 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef NETWORK_TO_HANDLE_HPP
-#define NETWORK_TO_HANDLE_HPP
+#ifndef WINDOWS_NETWORK_HANDLE_TYPE_LIMITS_HPP
+#define WINDOWS_NETWORK_HANDLE_TYPE_LIMITS_HPP
+
+#ifdef _WIN32
 
 #include "network/handle-type.hpp"      // handle_type
-#include "network/to-value.hpp"         // to_value()
+
+#include <limits>   // std::numeric_limits
 
 namespace Network
 {
-    auto to_handle(auto value) -> handle_type
+    static constexpr auto handle_type_max
     {
-        return to_value<handle_type>("handle_type", value);
-    }
+        std::numeric_limits<handle_type>::max() - 1
+    };
+    static constexpr auto handle_type_min
+    {
+        std::numeric_limits<handle_type>::min()
+    };
 }
+
+#endif
 
 #endif
