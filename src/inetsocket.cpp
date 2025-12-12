@@ -35,8 +35,8 @@
 
 #include <sys/types.h>      // ssize_t
 
-#include <optional>     // std::optional
 #include <string_view>  // std::string_view
+#include <utility>      // std::unreachable()
 
 Network::InetSocket::InetSocket(const SocketData& t_sd) : m_sd(t_sd)
 {
@@ -65,9 +65,8 @@ auto Network::InetSocket::get_name(Symbol t_symbol) const -> ByteSpan
         return nm;
     }
 
-    if (const auto symbol {to_namesymbol(t_symbol)}) {
-        nm = Network::get_name(core(), *symbol);
-    }
+    const auto symbol {to_namesymbol(t_symbol)};
+    nm = Network::get_name(core(), symbol);
 
     return nm;
 }
@@ -83,9 +82,9 @@ auto Network::InetSocket::open(ByteSpan t_bs, OpenSymbol t_symbol) -> OsError
         return error;
     }
 
-    if (const auto symbol {to_symbol(t_symbol)}) {
-        m_sd.name(*symbol).assign(t_bs.begin(), t_bs.end());
-    }
+    const auto symbol {to_symbol(t_symbol)};
+
+    m_sd.name(symbol).assign(t_bs.begin(), t_bs.end());
 
     return {};
 }
@@ -110,8 +109,7 @@ auto Network::InetSocket::core() const noexcept -> const SocketCore&
     return m_sd.core();
 }
 
-auto Network::InetSocket::to_namesymbol(Symbol symbol) noexcept ->
-    std::optional<NameSymbol>
+auto Network::InetSocket::to_namesymbol(Symbol symbol) noexcept -> NameSymbol
 {
     switch (symbol) {
     case Symbol::getpeername:
@@ -119,12 +117,11 @@ auto Network::InetSocket::to_namesymbol(Symbol symbol) noexcept ->
     case Symbol::getsockname:
         return NameSymbol::getsockname;
     default:
-        return {};
+        std::unreachable();
     }
 }
 
-auto Network::InetSocket::to_symbol(OpenSymbol symbol) noexcept ->
-    std::optional<Symbol>
+auto Network::InetSocket::to_symbol(OpenSymbol symbol) noexcept -> Symbol
 {
     switch (symbol) {
     case OpenSymbol::bind:
@@ -132,6 +129,6 @@ auto Network::InetSocket::to_symbol(OpenSymbol symbol) noexcept ->
     case OpenSymbol::connect:
         return Symbol::connect;
     default:
-        return {};
+        std::unreachable();
     }
 }

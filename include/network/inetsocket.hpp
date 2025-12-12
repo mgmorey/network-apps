@@ -30,7 +30,6 @@
 
 #include <sys/types.h>      // ssize_t
 
-#include <optional>     // std::optional
 #include <string_view>  // std::string_view
 
 namespace Network
@@ -60,10 +59,8 @@ namespace Network
     protected:
         [[nodiscard]] auto core() const noexcept -> const SocketCore&;
 
-        static auto to_namesymbol(Symbol symbol) noexcept ->
-            std::optional<NameSymbol>;
-        static auto to_symbol(OpenSymbol symbol) noexcept ->
-            std::optional<Symbol>;
+        static auto to_namesymbol(Symbol symbol) noexcept -> NameSymbol;
+        static auto to_symbol(OpenSymbol symbol) noexcept -> Symbol;
 
     private:
         const SocketData m_sd;
