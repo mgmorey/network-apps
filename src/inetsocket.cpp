@@ -65,9 +65,7 @@ auto Network::InetSocket::get_name(Symbol t_symbol) const -> ByteSpan
         return nm;
     }
 
-    const auto symbol {to_namesymbol(t_symbol)};
-    nm = Network::get_name(core(), symbol);
-
+    nm = Network::get_name(core(), to_namesymbol(t_symbol));
     return nm;
 }
 
@@ -82,10 +80,7 @@ auto Network::InetSocket::open(ByteSpan t_bs, OpenSymbol t_symbol) -> OsError
         return error;
     }
 
-    const auto symbol {to_symbol(t_symbol)};
-
-    m_sd.name(symbol).assign(t_bs.begin(), t_bs.end());
-
+    m_sd.name(to_symbol(t_symbol)).assign(t_bs.begin(), t_bs.end());
     return {};
 }
 
