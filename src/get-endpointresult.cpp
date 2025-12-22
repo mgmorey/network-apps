@@ -45,7 +45,7 @@ auto Network::get_endpointresult(CharSpan hostname,
                                  ByteSpan bs, int flags,
                                  const Runtime* rt) -> OsError
 {
-    const auto [sa, sa_length] {get_sa_span(bs)};
+    const auto [sa, salen] {get_sa_span(bs)};
     const std::string_view hostname_sv {hostname.data(), hostname.size()};
     const std::string_view service_sv {service.data(), service.size()};
 
@@ -54,7 +54,7 @@ auto Network::get_endpointresult(CharSpan hostname,
         std::cout << "Calling ::getnameinfo("
                   << to_string(bs)
                   << ", "
-                  << sa_length
+                  << salen
                   << ", "
                   << quote(hostname_sv)
                   << ", "
@@ -71,7 +71,7 @@ auto Network::get_endpointresult(CharSpan hostname,
     }
 
     if (const auto api_error {::getnameinfo(sa,
-                                            sa_length,
+                                            salen,
                                             hostname.data(),
                                             hostname.size(),
                                             service.data(),
@@ -83,7 +83,7 @@ auto Network::get_endpointresult(CharSpan hostname,
         oss << "Call to ::getnameinfo("
             << to_string(bs)
             << ", "
-            << sa_length
+            << salen
             << ", "
             << quote(hostname_sv)
             << ", "
@@ -108,7 +108,7 @@ auto Network::get_endpointresult(CharSpan hostname,
         std::cout << "Call to ::getnameinfo("
                   << to_string(bs)
                   << ", "
-                  << sa_length
+                  << salen
                   << ", "
                   << quote(hostname_sv)
                   << ", "
