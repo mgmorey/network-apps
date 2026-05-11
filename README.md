@@ -6,6 +6,8 @@ A cross-platform C++23 networking library and accompanying test suite.
 
 This repository contains a network library implementation plus test programs. It supports building with both the existing `GNUmakefile` and a new `CMakeLists.txt` for better portability across platforms and toolchains.
 
+The following examples assume the repository has been cloned to a directory named `network-apps`.
+
 ## Build Options
 
 ### GNU Make
@@ -13,7 +15,7 @@ This repository contains a network library implementation plus test programs. It
 The existing build system uses `gmake` and the provided `GNUmakefile`.
 
 ```sh
-cd /Users/mgmorey/git/network-apps
+cd network-apps
 gmake clean
 gmake all
 ```
@@ -23,7 +25,7 @@ gmake all
 A starter `CMakeLists.txt` has been added to support the core library and tests. You can build in a separate directory:
 
 ```sh
-cd /Users/mgmorey/git/network-apps
+cd network-apps
 mkdir -p build-cmake
 cd build-cmake
 cmake .. -DCMAKE_BUILD_TYPE=Default
@@ -37,14 +39,14 @@ With CMake, the project is integrated with CTest.
 - Run all tests:
 
 ```sh
-cd /Users/mgmorey/git/network-apps/build-cmake
+cd network-apps/build-cmake
 cmake --build . --target check
 ```
 
 - Run all tests in parallel:
 
 ```sh
-cd /Users/mgmorey/git/network-apps/build-cmake
+cd network-apps/build-cmake
 cmake --build . --target check-parallel
 ```
 
@@ -53,7 +55,7 @@ cmake --build . --target check-parallel
 The CMake build also includes a coverage target.
 
 ```sh
-cd /Users/mgmorey/git/network-apps/build-cmake
+cd network-apps/build-cmake
 cmake --build . --target coverage
 ```
 
