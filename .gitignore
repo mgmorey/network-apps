@@ -4,6 +4,9 @@
 # Apple macOS metadata
 .DS_Store
 
+# Code Coverage directory
+coverage/
+
 # Clang profile instrumentation data
 default.profraw
 
