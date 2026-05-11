@@ -66,7 +66,6 @@ If coverage is enabled, this generates:
 
 - The project is tested on multiple platforms, including Linux, macOS, Cygwin, and MinGW.
 - The CMake integration is intended as a portable alternative to the existing `GNUmakefile`.
-- The original `README` file still documents the cross-platform test matrix.
 
 ## Platform Support
 
