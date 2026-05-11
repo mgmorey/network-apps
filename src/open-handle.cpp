@@ -35,11 +35,11 @@
 
 auto Network::open(const SocketCore& sc, ByteSpan bs, OpenSymbol symbol) -> OsError
 {
-    const auto [sa, sa_length] {get_sa_span(bs)};
+    const auto [sa, salen] {get_sa_span(bs)};
     const auto handle {sc.handle()};
     const auto oh {get_openhandler(symbol)};
 
-    if (std::cmp_equal(sa_length, sa_length_min)) {
+    if (std::cmp_equal(salen, sa_length_min)) {
         throw AddressError {"Address payload length is zero: " +
                             to_string(bs)};
     }
@@ -53,7 +53,7 @@ auto Network::open(const SocketCore& sc, ByteSpan bs, OpenSymbol symbol) -> OsEr
                   << ", "
                   << to_string(bs)
                   << ", "
-                  << sa_length
+                  << salen
                   << ')'
                   << std::endl;
         // clang-format on
@@ -61,7 +61,7 @@ auto Network::open(const SocketCore& sc, ByteSpan bs, OpenSymbol symbol) -> OsEr
 
     reset_api_error();
 
-    if (oh.function()(handle, sa, sa_length) == socket_error) {
+    if (oh.function()(handle, sa, salen) == socket_error) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
@@ -73,7 +73,7 @@ auto Network::open(const SocketCore& sc, ByteSpan bs, OpenSymbol symbol) -> OsEr
             << ", "
             << to_string(bs)
             << ", "
-            << sa_length
+            << salen
             << ") failed with error "
             << api_error
             << ": "

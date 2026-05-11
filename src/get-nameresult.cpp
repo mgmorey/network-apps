@@ -37,7 +37,7 @@ auto Network::get_nameresult(const SocketCore& sc,
 {
     BinaryBuffer buffer;
     const std::span bs {buffer};
-    auto [sa, sa_length] {buffer.span()};
+    auto [sa, salen] {buffer.span()};
     const auto handle {sc.handle()};
     const auto is_verbose {sc.runtime()->is_verbose()};
     const auto nh {get_namehandler(symbol)};
@@ -51,7 +51,7 @@ auto Network::get_nameresult(const SocketCore& sc,
                   << ", "
                   << to_string(bs)
                   << ", "
-                  << sa_length
+                  << salen
                   << ')'
                   << std::endl;
         // clang-format on
@@ -59,7 +59,7 @@ auto Network::get_nameresult(const SocketCore& sc,
 
     reset_api_error();
 
-    if (nh.function()(handle, sa, &sa_length) == socket_error) {
+    if (nh.function()(handle, sa, &salen) == socket_error) {
         const auto api_error {get_api_error()};
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
@@ -71,7 +71,7 @@ auto Network::get_nameresult(const SocketCore& sc,
             << ", "
             << to_string(bs)
             << ", "
-            << sa_length
+            << salen
             << ") failed with error "
             << api_error
             << ": "
@@ -90,7 +90,7 @@ auto Network::get_nameresult(const SocketCore& sc,
                   << ", "
                   << str
                   << ", "
-                  << sa_length
+                  << salen
                   << ") returned data "
                   << str
                   << std::endl;
