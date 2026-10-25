@@ -35,6 +35,23 @@ cmake --build .
 On Linux and FreeBSD, the CMake build also creates the `unix-server` and
 `unix-client` example programs.
 
+## Installing and Packaging
+
+Install the library, public headers, test executables, and available Unix
+examples using CMake's install prefix:
+
+```sh
+cmake --install . --prefix /path/to/install
+```
+
+Create a `.tar.gz` package containing the installed files with:
+
+```sh
+cmake --build . --target package
+```
+
+The archive is written to the build directory.
+
 ## Running Tests
 
 With CMake, the project is integrated with CTest.

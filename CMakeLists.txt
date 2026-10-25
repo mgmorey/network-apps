@@ -298,6 +298,12 @@ elseif(WIN32)
     target_link_libraries(network PRIVATE ws2_32)
 endif()
 
+if(APPLE)
+    set(NETWORK_INSTALL_RPATH "@loader_path/../lib")
+elseif(UNIX)
+    set(NETWORK_INSTALL_RPATH "$ORIGIN/../lib")
+endif()
+
 # ============================================================================
 # Create Test Executables
 # ============================================================================
@@ -325,6 +331,11 @@ function(add_test_executable test_name test_source)
         target_link_libraries(${test_name} PRIVATE ws2_32)
     endif()
     target_link_libraries(${test_name} PRIVATE network)
+    if(UNIX)
+        set_target_properties(${test_name} PROPERTIES
+            INSTALL_RPATH "${NETWORK_INSTALL_RPATH}"
+        )
+    endif()
     add_test(NAME ${test_name} COMMAND ${test_name})
     set_tests_properties(${test_name} PROPERTIES LABELS "unit")
 endfunction()
@@ -359,6 +370,9 @@ foreach(program_source IN LISTS UNIX_PROGRAM_SOURCES)
         ${PROJECT_SOURCE_DIR}/include/unix
     )
     target_link_libraries(${program_name} PRIVATE network)
+    set_target_properties(${program_name} PROPERTIES
+        INSTALL_RPATH "${NETWORK_INSTALL_RPATH}"
+    )
 endforeach()
 
 # Convenience target for running all tests
@@ -516,6 +530,16 @@ install(TARGETS network
     RUNTIME DESTINATION bin
 )
 
+install(TARGETS ${TEST_EXECUTABLES}
+    RUNTIME DESTINATION bin
+)
+
+if(UNIX_PROGRAM_SOURCES)
+    install(TARGETS unix-client unix-server
+        RUNTIME DESTINATION bin
+    )
+endif()
+
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/network
     DESTINATION include
     FILES_MATCHING PATTERN "*.hpp"
@@ -532,6 +556,16 @@ elseif(UNIX)
         FILES_MATCHING PATTERN "*.hpp"
     )
 endif()
+
+# ============================================================================
+# Package
+# ============================================================================
+
+set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-${PROJECT_VERSION}")
+set(CPACK_GENERATOR TGZ)
+include(CPack)
 
 # ============================================================================
 # Print Configuration Summary
