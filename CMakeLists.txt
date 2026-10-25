@@ -213,13 +213,20 @@ set(LIBRARY_UNIX_SOURCES
     src/unix/write.cpp
 )
 
-# Windows-specific sources (in src/windows/)
+# Windows-specific native sources (in src/windows/)
 set(LIBRARY_WINDOWS_SOURCES
-    # Placeholder for future Windows support
-    # src/windows/apistate.cpp
-    # src/windows/read.cpp
-    # src/windows/write.cpp
-    # ... etc
+    src/windows/apistate.cpp
+    src/windows/create-socket-socketdata.cpp
+    src/windows/format-ai-error.cpp
+    src/windows/format-os-error.cpp
+    src/windows/get-api-error.cpp
+    src/windows/get-os-error.cpp
+    src/windows/read.cpp
+    src/windows/set-api-error.cpp
+    src/windows/set-os-error.cpp
+    src/windows/start.cpp
+    src/windows/stop.cpp
+    src/windows/write.cpp
 )
 
 # Test sources (common)
@@ -279,6 +286,7 @@ elseif(WIN32)
     target_include_directories(network PRIVATE
         ${PROJECT_SOURCE_DIR}/include/windows
     )
+    target_link_libraries(network PRIVATE ws2_32)
 endif()
 
 # ============================================================================
@@ -289,8 +297,11 @@ enable_testing()
 include(CTest)
 
 # Helper function to create test executable
+set(TEST_EXECUTABLES)
+
 function(add_test_executable test_name test_source)
     add_executable(${test_name} ${test_source})
+    set(TEST_EXECUTABLES ${TEST_EXECUTABLES} ${test_name} PARENT_SCOPE)
     target_include_directories(${test_name} PRIVATE
         ${PROJECT_SOURCE_DIR}/include
     )
@@ -302,6 +313,7 @@ function(add_test_executable test_name test_source)
         target_include_directories(${test_name} PRIVATE
             ${PROJECT_SOURCE_DIR}/include/windows
         )
+        target_link_libraries(${test_name} PRIVATE ws2_32)
     endif()
     target_link_libraries(${test_name} PRIVATE network)
     add_test(NAME ${test_name} COMMAND ${test_name})
@@ -350,24 +362,51 @@ add_custom_target(check-parallel
 
 if(WITH_COVERAGE)
     find_program(GCOVR_PATH gcovr REQUIRED)
-    
+
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        find_program(GCOV_PATH
+            NAMES
+                gcov-${CMAKE_CXX_COMPILER_VERSION}
+                gcov
+            REQUIRED
+        )
+        set(GCOVR_GCOV_EXECUTABLE ${GCOV_PATH})
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        find_program(LLVM_COV_PATH
+            NAMES llvm-cov
+            REQUIRED
+        )
+        set(GCOVR_GCOV_EXECUTABLE "${LLVM_COV_PATH} gcov")
+    else()
+        message(FATAL_ERROR
+            "Coverage is not configured for ${CMAKE_CXX_COMPILER_ID}"
+        )
+    endif()
+
     add_custom_target(coverage
         COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
         COMMAND ${GCOVR_PATH}
+            --root=${PROJECT_SOURCE_DIR}
+            --object-directory=${PROJECT_BINARY_DIR}
             --exclude-unreachable-branches
-            --gcov-executable='llvm-cov gcov'
+            --gcov-executable=${GCOVR_GCOV_EXECUTABLE}
             --json
             --output=coverage.json
+            ${PROJECT_BINARY_DIR}
+        COMMAND ${CMAKE_COMMAND} -E make_directory coverage
         COMMAND ${GCOVR_PATH}
+            --root=${PROJECT_SOURCE_DIR}
+            --object-directory=${PROJECT_BINARY_DIR}
             --exclude-unreachable-branches
-            --gcov-executable='llvm-cov gcov'
+            --gcov-executable=${GCOVR_GCOV_EXECUTABLE}
             --html-details
             --html-theme=github.dark-green
             --html-title='NETWORK Code Coverage Report'
             --json-add-tracefile=coverage.json
             --output=coverage/coverage.html
+            ${PROJECT_BINARY_DIR}
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-        DEPENDS network
+        DEPENDS ${TEST_EXECUTABLES}
         COMMENT "Run tests and generate code coverage report"
     )
 endif()
@@ -377,6 +416,7 @@ endif()
 # ============================================================================
 
 install(TARGETS network
+    ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin
 )
@@ -385,6 +425,18 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/network
     DESTINATION include
     FILES_MATCHING PATTERN "*.hpp"
 )
+
+if(WIN32)
+    install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/windows/network
+        DESTINATION include/windows
+        FILES_MATCHING PATTERN "*.hpp"
+    )
+elseif(UNIX)
+    install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/unix/network
+        DESTINATION include/unix
+        FILES_MATCHING PATTERN "*.hpp"
+    )
+endif()
 
 # ============================================================================
 # Print Configuration Summary

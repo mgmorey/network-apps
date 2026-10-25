@@ -68,6 +68,9 @@ If coverage is enabled, this generates:
 
 - The project is tested on multiple platforms, including Linux, macOS, Cygwin, and MinGW.
 - The CMake integration is intended as a portable alternative to the existing `GNUmakefile`.
+On Windows, the CMake configuration targets the MinGW/MSYS port and uses its
+Windows-specific sources and WinSock library; it does not require Microsoft
+Visual Studio.
 
 ## Platform Support
 
