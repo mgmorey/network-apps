@@ -10,12 +10,47 @@ project(network
 # Build Configuration
 # ============================================================================
 
-# Default to Debug build type if not specified
+# Default to the Make build type if not specified.
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Default CACHE STRING "Build type" FORCE)
 endif()
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
+    Debug Default Minimal Release Small RelWithDebInfo MinSizeRel
+)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+option(WITH_COVERAGE "Enable code coverage instrumentation" OFF)
+set(WITH_SANITIZE "" CACHE STRING "Sanitizers to enable (e.g. address,undefined)")
+set_property(CACHE WITH_SANITIZE PROPERTY STRINGS "" address undefined address,undefined)
+if(WITH_SANITIZE STREQUAL "ON")
+    set(WITH_SANITIZE address CACHE STRING
+        "Sanitizers to enable (e.g. address,undefined)" FORCE
+    )
+elseif(WITH_SANITIZE STREQUAL "OFF")
+    set(WITH_SANITIZE "" CACHE STRING
+        "Sanitizers to enable (e.g. address,undefined)" FORCE
+    )
+endif()
+set(USING_STDLIB "" CACHE STRING "C++ standard library (libc++ or libstdc++)")
+set_property(CACHE USING_STDLIB PROPERTY STRINGS "" libc++ libstdc++)
+set(USING_LINKER "" CACHE STRING "Linker to select when using Clang")
+set(USING_GDBDWARF "" CACHE STRING "DWARF debug information version (2-5)")
+set_property(CACHE USING_GDBDWARF PROPERTY STRINGS "" 2 3 4 5)
+set(WITH_FORTIFY_SOURCE "3" CACHE STRING "Fortify source level (0-3)")
+set_property(CACHE WITH_FORTIFY_SOURCE PROPERTY STRINGS 0 1 2 3)
+option(WITH_BACKTRACE "Enable libstdc++ debug-mode backtraces" OFF)
+option(WITH_LTO "Enable link-time optimization" OFF)
+option(WITH_LISTINGS "Generate assembler listings when supported" OFF)
+option(WITH_LOADMAPS "Generate linker map files" OFF)
+if(NOT WITH_FORTIFY_SOURCE STREQUAL "" AND
+   NOT WITH_FORTIFY_SOURCE MATCHES "^[0-3]$")
+    message(FATAL_ERROR "WITH_FORTIFY_SOURCE must be empty or between 0 and 3")
+endif()
+if(NOT USING_GDBDWARF STREQUAL "" AND
+   NOT USING_GDBDWARF MATCHES "^[2-5]$")
+    message(FATAL_ERROR "USING_GDBDWARF must be empty or between 2 and 5")
+endif()
 
 # ============================================================================
 # C++ Standard and Flags
@@ -29,36 +64,148 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Compiler Flags
 # ============================================================================
 
-# Common flags
-add_compile_options(
-    -Wall
-    -Wextra
-    -Wpedantic
-)
+if(NOT CMAKE_CXX_COMPILER_ID MATCHES "^(GNU|Clang|AppleClang)$")
+    message(FATAL_ERROR
+        "This project currently requires a GCC- or Clang-compatible compiler"
+    )
+endif()
 
-# Platform-specific flags
+include(CheckCXXCompilerFlag)
+
+add_compile_options(-Wall -Werror -Wextra -Wshadow -Wsign-conversion)
+if(NOT APPLE)
+    add_compile_options(-Wpedantic)
+endif()
+
 if(APPLE)
     add_compile_options(-fno-common)
 endif()
 
-# Build type specific flags
+if(USING_STDLIB STREQUAL "")
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        set(NETWORK_STDLIB libstdc++)
+    elseif(APPLE)
+        set(NETWORK_STDLIB libc++)
+    else()
+        set(NETWORK_STDLIB libstdc++)
+    endif()
+else()
+    set(NETWORK_STDLIB ${USING_STDLIB})
+endif()
+
+if(NOT NETWORK_STDLIB MATCHES "^(libc\\+\\+|libstdc\\+\\+)$")
+    message(FATAL_ERROR
+        "USING_STDLIB must be empty, libc++, or libstdc++"
+    )
+endif()
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    if(NOT USING_STDLIB STREQUAL "")
+        add_compile_options(-stdlib=${NETWORK_STDLIB})
+        string(REGEX REPLACE "^lib" "" NETWORK_STDLIB_LINK ${NETWORK_STDLIB})
+        link_libraries(${NETWORK_STDLIB_LINK})
+    endif()
+elseif(NOT NETWORK_STDLIB STREQUAL "libstdc++")
+    message(FATAL_ERROR "GCC supports libstdc++ only")
+endif()
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_compile_options(-g -O0)
+    if(APPLE)
+        add_compile_options(-g3 -Og)
+    else()
+        add_compile_options(-ggdb -Og)
+    endif()
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    add_compile_options(-O3)
+    add_compile_options(-O2 -UNDEBUG)
+elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    add_compile_options(-O2 -g -UNDEBUG)
+elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+    add_compile_options(-Os -UNDEBUG)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Minimal")
-    add_compile_options(-O1)
+    add_compile_options(-O1 -fno-omit-frame-pointer)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Small")
     add_compile_options(-Os)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Default")
     add_compile_options(-g)
 endif()
 
+if(USING_GDBDWARF AND
+   (CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "Default"))
+    set(NETWORK_DWARF_CHECK NETWORK_HAS_DWARF_${USING_GDBDWARF})
+    check_cxx_compiler_flag("-gdwarf-${USING_GDBDWARF}"
+        ${NETWORK_DWARF_CHECK}
+    )
+    if(NOT ${NETWORK_DWARF_CHECK})
+        message(FATAL_ERROR
+            "Compiler does not support DWARF version ${USING_GDBDWARF}"
+        )
+    endif()
+    add_compile_options(-gdwarf-${USING_GDBDWARF})
+endif()
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    add_compile_options(-pipe)
+endif()
+
+check_cxx_compiler_flag(
+    -ftrivial-auto-var-init=pattern
+    NETWORK_HAS_TRIVIAL_AUTO_VAR_INIT
+)
+if(NETWORK_HAS_TRIVIAL_AUTO_VAR_INIT)
+    add_compile_options(-ftrivial-auto-var-init=pattern)
+endif()
+
+if(NETWORK_STDLIB STREQUAL "libstdc++")
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "Default")
+        add_compile_definitions(_GLIBCXX_DEBUG)
+        if(WITH_BACKTRACE)
+            add_compile_definitions(_GLIBCXX_DEBUG_BACKTRACE)
+            link_libraries(stdc++exp)
+        endif()
+    elseif(NOT WITH_FORTIFY_SOURCE STREQUAL "")
+        add_compile_options(
+            -U_FORTIFY_SOURCE
+            -D_FORTIFY_SOURCE=${WITH_FORTIFY_SOURCE}
+        )
+    endif()
+elseif(NOT WITH_FORTIFY_SOURCE STREQUAL "")
+    add_compile_options(
+        -U_FORTIFY_SOURCE
+        -D_FORTIFY_SOURCE=${WITH_FORTIFY_SOURCE}
+    )
+endif()
+
+if(USING_LINKER)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        add_link_options(-fuse-ld=${USING_LINKER})
+    else()
+        message(FATAL_ERROR "USING_LINKER is supported only with Clang")
+    endif()
+endif()
+
+if(WITH_LTO)
+    include(CheckIPOSupported)
+    check_ipo_supported(RESULT NETWORK_IPO_SUPPORTED OUTPUT NETWORK_IPO_ERROR)
+    if(NOT NETWORK_IPO_SUPPORTED)
+        message(FATAL_ERROR "LTO is not supported: ${NETWORK_IPO_ERROR}")
+    endif()
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+endif()
+
+if(WITH_BACKTRACE)
+    if(NOT NETWORK_STDLIB STREQUAL "libstdc++")
+        message(FATAL_ERROR "WITH_BACKTRACE requires libstdc++")
+    elseif(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" AND
+           NOT CMAKE_BUILD_TYPE STREQUAL "Default")
+        message(FATAL_ERROR
+            "WITH_BACKTRACE requires a Debug or Default build"
+        )
+    endif()
+endif()
+
 # ============================================================================
 # Coverage Support
 # ============================================================================
-
-option(WITH_COVERAGE "Enable code coverage instrumentation" ON)
 
 if(WITH_COVERAGE AND (CMAKE_BUILD_TYPE STREQUAL "Default" OR CMAKE_BUILD_TYPE STREQUAL "Debug"))
     add_compile_options(--coverage)
@@ -70,15 +217,37 @@ endif()
 # Sanitizers
 # ============================================================================
 
-option(WITH_SANITIZE "Enable address sanitizer" ON)
-
-if(WITH_SANITIZE AND CMAKE_BUILD_TYPE STREQUAL "Default")
-    add_compile_options(
-        -fsanitize=address
-        -fno-omit-frame-pointer
-        -fno-optimize-sibling-calls
+if(WITH_SANITIZE)
+    include(CheckCXXSourceCompiles)
+    string(MAKE_C_IDENTIFIER "${WITH_SANITIZE}" NETWORK_SANITIZER_ID)
+    set(NETWORK_SANITIZER_CHECK
+        NETWORK_HAS_SANITIZER_${NETWORK_SANITIZER_ID}
     )
-    add_link_options(-fsanitize=address)
+    set(NETWORK_SAVED_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS}")
+    set(NETWORK_SAVED_REQUIRED_LINK_OPTIONS "${CMAKE_REQUIRED_LINK_OPTIONS}")
+    string(APPEND CMAKE_REQUIRED_FLAGS " -fsanitize=${WITH_SANITIZE}")
+    list(APPEND CMAKE_REQUIRED_LINK_OPTIONS "-fsanitize=${WITH_SANITIZE}")
+    check_cxx_source_compiles(
+        "int main() { return 0; }"
+        ${NETWORK_SANITIZER_CHECK}
+    )
+    set(CMAKE_REQUIRED_FLAGS "${NETWORK_SAVED_REQUIRED_FLAGS}")
+    set(CMAKE_REQUIRED_LINK_OPTIONS "${NETWORK_SAVED_REQUIRED_LINK_OPTIONS}")
+    if(NOT ${NETWORK_SANITIZER_CHECK})
+        message(FATAL_ERROR
+            "Compiler does not support sanitizer: ${WITH_SANITIZE}"
+        )
+    endif()
+    add_compile_options(
+        -fsanitize=${WITH_SANITIZE}
+        -fno-omit-frame-pointer
+    )
+    add_link_options(-fsanitize=${WITH_SANITIZE})
+    if(CMAKE_BUILD_TYPE STREQUAL "Release" OR
+       CMAKE_BUILD_TYPE STREQUAL "Minimal" OR
+       CMAKE_BUILD_TYPE STREQUAL "Small")
+        add_compile_options(-fno-optimize-sibling-calls)
+    endif()
 endif()
 
 # ============================================================================
@@ -274,7 +443,47 @@ elseif(WIN32)
     list(APPEND NETWORK_SOURCES ${LIBRARY_WINDOWS_SOURCES})
 endif()
 
+function(network_enable_link_map target_name)
+    if(WITH_LOADMAPS)
+        if(APPLE)
+            target_link_options(${target_name} PRIVATE
+                "LINKER:-map,${PROJECT_BINARY_DIR}/${target_name}.map"
+            )
+        else()
+            target_link_options(${target_name} PRIVATE
+                "LINKER:-Map,${PROJECT_BINARY_DIR}/${target_name}.map"
+            )
+        endif()
+    endif()
+endfunction()
+
+if(WITH_LISTINGS)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND NOT APPLE)
+        file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/listings)
+        set(LISTING_SOURCES
+            ${NETWORK_SOURCES}
+            ${TEST_COMMON_SOURCES}
+            ${UNIX_PROGRAM_SOURCES}
+        )
+        if(UNIX)
+            list(APPEND LISTING_SOURCES ${TEST_UNIX_SOURCES})
+        endif()
+        foreach(source IN LISTS LISTING_SOURCES)
+            get_filename_component(source_name ${source} NAME_WE)
+            set_source_files_properties(${source} PROPERTIES
+                COMPILE_OPTIONS
+                    "-Wa,-adghln=${PROJECT_BINARY_DIR}/listings/${source_name}.lst"
+            )
+        endforeach()
+    else()
+        message(STATUS
+            "Assembler listings require GCC with GNU assembler; listings are disabled"
+        )
+    endif()
+endif()
+
 add_library(network SHARED ${NETWORK_SOURCES})
+network_enable_link_map(network)
 
 # Set library properties
 set_target_properties(network PROPERTIES
@@ -331,6 +540,7 @@ function(add_test_executable test_name test_source)
         target_link_libraries(${test_name} PRIVATE ws2_32)
     endif()
     target_link_libraries(${test_name} PRIVATE network)
+    network_enable_link_map(${test_name})
     if(UNIX)
         set_target_properties(${test_name} PROPERTIES
             INSTALL_RPATH "${NETWORK_INSTALL_RPATH}"
@@ -370,6 +580,7 @@ foreach(program_source IN LISTS UNIX_PROGRAM_SOURCES)
         ${PROJECT_SOURCE_DIR}/include/unix
     )
     target_link_libraries(${program_name} PRIVATE network)
+    network_enable_link_map(${program_name})
     set_target_properties(${program_name} PROPERTIES
         INSTALL_RPATH "${NETWORK_INSTALL_RPATH}"
     )
@@ -393,7 +604,8 @@ add_custom_target(check-parallel
 # Coverage Target (Optional)
 # ============================================================================
 
-if(WITH_COVERAGE)
+if(WITH_COVERAGE AND
+   (CMAKE_BUILD_TYPE STREQUAL "Default" OR CMAKE_BUILD_TYPE STREQUAL "Debug"))
     find_program(GCOVR_PATH gcovr REQUIRED)
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -442,6 +654,8 @@ if(WITH_COVERAGE)
         DEPENDS ${TEST_EXECUTABLES}
         COMMENT "Run tests and generate code coverage report"
     )
+elseif(WITH_COVERAGE)
+    message(STATUS "Coverage is supported only for Default and Debug builds")
 endif()
 
 # ============================================================================
@@ -575,7 +789,15 @@ message(STATUS "")
 message(STATUS "=== ${PROJECT_NAME} Build Configuration ===")
 message(STATUS "Build Type:     ${CMAKE_BUILD_TYPE}")
 message(STATUS "C++ Standard:   ${CMAKE_CXX_STANDARD}")
+message(STATUS "C++ Library:    ${NETWORK_STDLIB}")
 message(STATUS "Coverage:       ${WITH_COVERAGE}")
 message(STATUS "Sanitizers:     ${WITH_SANITIZE}")
+message(STATUS "LTO:            ${WITH_LTO}")
+message(STATUS "Linker:         ${USING_LINKER}")
+message(STATUS "DWARF:          ${USING_GDBDWARF}")
+message(STATUS "Fortify:        ${WITH_FORTIFY_SOURCE}")
+message(STATUS "Backtraces:     ${WITH_BACKTRACE}")
+message(STATUS "Listings:       ${WITH_LISTINGS}")
+message(STATUS "Linker maps:    ${WITH_LOADMAPS}")
 message(STATUS "Install Prefix: ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "")

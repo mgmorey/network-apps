@@ -22,7 +22,8 @@ gmake all
 
 ### CMake
 
-A starter `CMakeLists.txt` has been added to support the core library and tests. You can build in a separate directory:
+The CMake build supports the core library, tests, and platform-specific
+utilities. You can build in a separate directory:
 
 ```sh
 cd network-apps
@@ -31,6 +32,34 @@ cd build-cmake
 cmake .. -DCMAKE_BUILD_TYPE=Default
 cmake --build .
 ```
+
+CMake supports `Debug`, `Default`, `Minimal`, `Release`, `Small`,
+`RelWithDebInfo`, and `MinSizeRel` build types. Compiler selection uses
+CMake's standard `CMAKE_CXX_COMPILER` setting. The following options provide
+Make-like control over instrumentation and toolchain settings:
+
+```sh
+cmake .. \
+  -DCMAKE_BUILD_TYPE=Debug \
+  -DWITH_COVERAGE=ON \
+  -DWITH_SANITIZE=address,undefined \
+  -DWITH_LTO=ON \
+  -DWITH_LOADMAPS=ON
+```
+
+`WITH_SANITIZE` accepts sanitizer names supported by the selected compiler.
+Leave it empty to disable sanitizers.
+`USING_STDLIB` may be left empty to use the compiler default, or set to
+`libc++` or `libstdc++`. For example, select Clang and a specific standard
+library or linker with `-DCMAKE_CXX_COMPILER=clang++`,
+`-DUSING_STDLIB=libc++`, and `-DUSING_LINKER=lld`. `WITH_FORTIFY_SOURCE`
+accepts levels 0 through 3 (or an empty value to disable Fortify); set
+`WITH_BACKTRACE=ON` for libstdc++ debug-mode backtraces and
+`USING_GDBDWARF` to 2 through 5 to choose the debug information format in
+`Default` or `Debug` builds. Coverage is off by default and is available for
+`Default` and `Debug` builds. LTO and linker maps are opt-in. Assembler
+listings are also opt-in, require GCC with GNU assembler, and are written to
+the build directory's `listings/` folder.
 
 On Linux and FreeBSD, the CMake build also creates the `unix-server` and
 `unix-client` example programs.
