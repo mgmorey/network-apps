@@ -32,6 +32,9 @@ cmake .. -DCMAKE_BUILD_TYPE=Default
 cmake --build .
 ```
 
+On Linux and FreeBSD, the CMake build also creates the `unix-server` and
+`unix-client` example programs.
+
 ## Running Tests
 
 With CMake, the project is integrated with CTest.
@@ -48,6 +51,17 @@ cmake --build . --target check
 ```sh
 cd network-apps/build-cmake
 cmake --build . --target check-parallel
+```
+
+## Static Analysis
+
+If `cppcheck` is available when CMake is configured, the `analyze` target is
+enabled. The `tidy` target is enabled when `clang-tidy` is available and the
+CMake generator exports a compile commands database:
+
+```sh
+cmake --build . --target analyze
+cmake --build . --target tidy
 ```
 
 ## Coverage

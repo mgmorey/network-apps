@@ -251,6 +251,15 @@ set(TEST_UNIX_SOURCES
     src/unix/test-socket-unix.cpp
 )
 
+# Unix example programs are enabled on the same platforms as the Make build.
+set(UNIX_PROGRAM_SOURCES)
+if(CMAKE_SYSTEM_NAME MATCHES "^(Linux|FreeBSD)$")
+    set(UNIX_PROGRAM_SOURCES
+        src/unix/unix-client.cpp
+        src/unix/unix-server.cpp
+    )
+endif()
+
 # ============================================================================
 # Build the Shared Library
 # ============================================================================
@@ -342,6 +351,16 @@ if(UNIX)
     set_tests_properties(test-socket-unix PROPERTIES LABELS "unit;unix")
 endif()
 
+foreach(program_source IN LISTS UNIX_PROGRAM_SOURCES)
+    get_filename_component(program_name ${program_source} NAME_WE)
+    add_executable(${program_name} ${program_source})
+    target_include_directories(${program_name} PRIVATE
+        ${PROJECT_SOURCE_DIR}/include
+        ${PROJECT_SOURCE_DIR}/include/unix
+    )
+    target_link_libraries(${program_name} PRIVATE network)
+endforeach()
+
 # Convenience target for running all tests
 add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
@@ -409,6 +428,82 @@ if(WITH_COVERAGE)
         DEPENDS ${TEST_EXECUTABLES}
         COMMENT "Run tests and generate code coverage report"
     )
+endif()
+
+# ============================================================================
+# Static Analysis Targets (Optional)
+# ============================================================================
+
+set(ANALYSIS_SOURCES ${NETWORK_SOURCES} ${TEST_COMMON_SOURCES})
+if(UNIX)
+    list(APPEND ANALYSIS_SOURCES ${TEST_UNIX_SOURCES})
+    set(PLATFORM_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include/unix)
+elseif(WIN32)
+    set(PLATFORM_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include/windows)
+endif()
+list(APPEND ANALYSIS_SOURCES ${UNIX_PROGRAM_SOURCES})
+
+find_program(CPPCHECK_PATH cppcheck)
+if(CPPCHECK_PATH)
+    add_custom_target(analyze
+        COMMAND ${CMAKE_COMMAND} -E make_directory
+            ${PROJECT_BINARY_DIR}/cppcheck
+        COMMAND ${CPPCHECK_PATH}
+            --check-level=exhaustive
+            --checkers-report=${PROJECT_BINARY_DIR}/cppcheck.log
+            --cppcheck-build-dir=${PROJECT_BINARY_DIR}/cppcheck
+            --enable=all
+            --inline-suppr
+            --quiet
+            --std=c++23
+            --suppress=missingIncludeSystem
+            -I${PROJECT_SOURCE_DIR}/include
+            -I${PLATFORM_INCLUDE_DIR}
+            ${ANALYSIS_SOURCES}
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+        COMMENT "Run cppcheck"
+        VERBATIM
+    )
+else()
+    message(STATUS "cppcheck not found; analyze target is disabled")
+endif()
+
+find_program(CLANG_TIDY_PATH NAMES clang-tidy)
+if(CLANG_TIDY_PATH AND CMAKE_GENERATOR MATCHES "Ninja|Makefiles")
+    set(CLANG_TIDY_EXTRA_ARGS)
+    if(APPLE)
+        find_program(XCRUN_PATH xcrun)
+        if(XCRUN_PATH)
+            execute_process(
+                COMMAND ${XCRUN_PATH} --show-sdk-path
+                OUTPUT_VARIABLE APPLE_SDK_PATH
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                COMMAND_ERROR_IS_FATAL ANY
+            )
+            list(APPEND CLANG_TIDY_EXTRA_ARGS
+                --extra-arg-before=-isysroot
+                --extra-arg-before=${APPLE_SDK_PATH}
+            )
+        endif()
+    endif()
+
+    add_custom_target(tidy
+        COMMAND ${CLANG_TIDY_PATH}
+            --config-file=${PROJECT_SOURCE_DIR}/.clang-tidy
+            --header-filter=.*
+            ${CLANG_TIDY_EXTRA_ARGS}
+            -p ${PROJECT_BINARY_DIR}
+            ${ANALYSIS_SOURCES}
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+        COMMENT "Run clang-tidy"
+        VERBATIM
+    )
+elseif(CLANG_TIDY_PATH)
+    message(STATUS
+        "clang-tidy requires a compile commands database; tidy target is disabled for this generator"
+    )
+else()
+    message(STATUS "clang-tidy not found; tidy target is disabled")
 endif()
 
 # ============================================================================
