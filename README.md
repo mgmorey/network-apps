@@ -81,6 +81,28 @@ cmake --build . --target package
 
 The archive is written to the build directory.
 
+## Maintenance and Developer Targets
+
+The CMake build provides equivalents for common Make maintenance targets:
+
+```sh
+cmake --build . --target assembly
+cmake --build . --target compile-flags
+cmake --build . --target sizes
+cmake --build . --target tags
+cmake --build . --target distclean
+```
+
+`assembly` writes per-source `.s` files under `assembly/`; `compile-flags`
+writes `compile_flags.txt`; and `sizes` writes built library and executable
+sizes to `sizes.txt`, preserving the previous report as `sizes.txt~`. The
+`tags` target is available when ctags is installed. Source-count targets are
+also available: `count-source-files`,
+`count-library-common-source-files`, `count-library-source-files`,
+`count-test-source-files`, and `count-unix-source-files`. CMake's built-in
+`clean` target removes compiled outputs; `distclean` additionally removes
+generated reports and developer artifacts.
+
 ## Running Tests
 
 With CMake, the project is integrated with CTest.

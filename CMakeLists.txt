@@ -586,6 +586,148 @@ foreach(program_source IN LISTS UNIX_PROGRAM_SOURCES)
     )
 endforeach()
 
+# ============================================================================
+# Maintenance and Developer Targets
+# ============================================================================
+
+set(PROJECT_SOURCES ${NETWORK_SOURCES} ${TEST_COMMON_SOURCES})
+if(UNIX)
+    list(APPEND PROJECT_SOURCES ${TEST_UNIX_SOURCES})
+endif()
+list(APPEND PROJECT_SOURCES ${UNIX_PROGRAM_SOURCES})
+
+set(LIBRARY_SOURCES ${NETWORK_SOURCES})
+set(TEST_SOURCES ${TEST_COMMON_SOURCES})
+if(UNIX)
+    list(APPEND TEST_SOURCES ${TEST_UNIX_SOURCES})
+endif()
+set(UNIX_SOURCES ${UNIX_PROGRAM_SOURCES})
+
+function(add_source_count_target target_name)
+    set(source_list ${ARGN})
+    list(LENGTH source_list source_count)
+    add_custom_target(${target_name}
+        COMMAND ${CMAKE_COMMAND} -E echo ${source_count}
+        VERBATIM
+    )
+endfunction()
+
+add_source_count_target(count-library-common-source-files
+    ${LIBRARY_COMMON_SOURCES}
+)
+add_source_count_target(count-library-source-files ${LIBRARY_SOURCES})
+add_source_count_target(count-source-files ${PROJECT_SOURCES})
+add_source_count_target(count-test-source-files ${TEST_SOURCES})
+add_source_count_target(count-unix-source-files ${UNIX_SOURCES})
+
+get_directory_property(NETWORK_COMPILE_OPTIONS COMPILE_OPTIONS)
+get_directory_property(NETWORK_COMPILE_DEFINITIONS COMPILE_DEFINITIONS)
+get_target_property(NETWORK_INCLUDE_DIRECTORIES network INCLUDE_DIRECTORIES)
+string(TOUPPER "${CMAKE_BUILD_TYPE}" NETWORK_BUILD_TYPE_UPPER)
+set(NETWORK_CONFIG_FLAGS
+    "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${NETWORK_BUILD_TYPE_UPPER}}"
+)
+separate_arguments(NETWORK_CONFIG_FLAGS_LIST NATIVE_COMMAND
+    "${NETWORK_CONFIG_FLAGS} ${CMAKE_CXX_COMPILER_ARG1}"
+)
+set(NETWORK_COMPILE_FLAGS ${NETWORK_CONFIG_FLAGS_LIST} ${NETWORK_COMPILE_OPTIONS})
+if(UNIX)
+    list(APPEND NETWORK_COMPILE_FLAGS -fPIC)
+endif()
+if(APPLE AND CMAKE_OSX_ARCHITECTURES)
+    foreach(architecture IN LISTS CMAKE_OSX_ARCHITECTURES)
+        list(APPEND NETWORK_COMPILE_FLAGS -arch ${architecture})
+    endforeach()
+endif()
+if(APPLE AND CMAKE_OSX_SYSROOT)
+    list(APPEND NETWORK_COMPILE_FLAGS -isysroot ${CMAKE_OSX_SYSROOT})
+endif()
+foreach(definition IN LISTS NETWORK_COMPILE_DEFINITIONS)
+    list(APPEND NETWORK_COMPILE_FLAGS "-D${definition}")
+endforeach()
+foreach(include_directory IN LISTS NETWORK_INCLUDE_DIRECTORIES)
+    list(APPEND NETWORK_COMPILE_FLAGS "-I${include_directory}")
+endforeach()
+list(APPEND NETWORK_COMPILE_FLAGS "-std=c++${CMAKE_CXX_STANDARD}")
+list(JOIN NETWORK_COMPILE_FLAGS " " NETWORK_COMPILE_FLAGS_TEXT)
+file(GENERATE
+    OUTPUT "${PROJECT_BINARY_DIR}/compile_flags.txt"
+    CONTENT "${CMAKE_CXX_COMPILER} ${NETWORK_COMPILE_FLAGS_TEXT}\n"
+)
+add_custom_target(compile-flags
+    DEPENDS "${PROJECT_BINARY_DIR}/compile_flags.txt"
+)
+
+set(ASSEMBLY_OUTPUTS)
+foreach(source IN LISTS PROJECT_SOURCES)
+    string(REPLACE "/" "_" assembly_name "${source}")
+    set(assembly_output "${PROJECT_BINARY_DIR}/assembly/${assembly_name}.s")
+    add_custom_command(
+        OUTPUT "${assembly_output}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory
+            "${PROJECT_BINARY_DIR}/assembly"
+        COMMAND ${CMAKE_CXX_COMPILER}
+            ${NETWORK_COMPILE_FLAGS}
+            -S "${PROJECT_SOURCE_DIR}/${source}"
+            -o "${assembly_output}"
+        DEPENDS "${PROJECT_SOURCE_DIR}/${source}"
+        VERBATIM
+    )
+    list(APPEND ASSEMBLY_OUTPUTS "${assembly_output}")
+endforeach()
+add_custom_target(assembly DEPENDS ${ASSEMBLY_OUTPUTS})
+
+find_program(CTAGS_PATH NAMES ctags universal-ctags)
+if(CTAGS_PATH)
+    set(TAG_INPUTS
+        ${PROJECT_SOURCE_DIR}/include/network
+        ${PROJECT_SOURCE_DIR}/src
+    )
+    if(UNIX)
+        list(APPEND TAG_INPUTS
+            ${PROJECT_SOURCE_DIR}/include/unix/network
+            ${PROJECT_SOURCE_DIR}/src/unix
+        )
+    elseif(WIN32)
+        list(APPEND TAG_INPUTS ${PROJECT_SOURCE_DIR}/include/windows/network)
+    endif()
+    add_custom_target(tags
+        COMMAND ${CTAGS_PATH}
+            --output-format=etags
+            -f ${PROJECT_BINARY_DIR}/TAGS
+            ${TAG_INPUTS}
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+        COMMENT "Generate Emacs TAGS"
+        VERBATIM
+    )
+else()
+    message(STATUS "ctags not found; tags target is disabled")
+endif()
+
+find_program(SIZE_PATH NAMES llvm-size size)
+if(SIZE_PATH)
+    set(SIZE_TARGETS network ${TEST_EXECUTABLES})
+    if(UNIX_PROGRAM_SOURCES)
+        list(APPEND SIZE_TARGETS unix-client unix-server)
+    endif()
+    set(SIZE_COMMAND_ARGS)
+    foreach(target_name IN LISTS SIZE_TARGETS)
+        list(APPEND SIZE_COMMAND_ARGS $<TARGET_FILE:${target_name}>)
+    endforeach()
+    add_custom_target(sizes
+        COMMAND ${CMAKE_COMMAND}
+            "-DSIZE_TOOL=${SIZE_PATH}"
+            "-DSIZE_FILES=${SIZE_COMMAND_ARGS}"
+            "-DREPORT_PATH=${PROJECT_BINARY_DIR}/sizes.txt"
+            -P "${PROJECT_SOURCE_DIR}/cmake/ReportSizes.cmake"
+        DEPENDS ${SIZE_TARGETS}
+        COMMENT "Write executable and library sizes to sizes.txt"
+        VERBATIM
+    )
+else()
+    message(STATUS "size utility not found; sizes target is disabled")
+endif()
+
 # Convenience target for running all tests
 add_custom_target(check
     COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
@@ -742,6 +884,24 @@ install(TARGETS network
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin
+)
+
+# Remove extra generated artifacts not covered by the generator's clean target.
+add_custom_target(distclean
+    COMMAND ${CMAKE_COMMAND} -E rm -rf
+        "${PROJECT_BINARY_DIR}/assembly"
+        "${PROJECT_BINARY_DIR}/cppcheck"
+        "${PROJECT_BINARY_DIR}/coverage"
+    COMMAND ${CMAKE_COMMAND} -E rm -f
+        "${PROJECT_BINARY_DIR}/TAGS"
+        "${PROJECT_BINARY_DIR}/compile_flags.txt"
+        "${PROJECT_BINARY_DIR}/coverage.json"
+        "${PROJECT_BINARY_DIR}/cppcheck.log"
+        "${PROJECT_BINARY_DIR}/network.map"
+        "${PROJECT_BINARY_DIR}/sizes.txt"
+        "${PROJECT_BINARY_DIR}/sizes.txt~"
+        "${PROJECT_BINARY_DIR}/network-${PROJECT_VERSION}.tar.gz"
+    COMMENT "Remove generated developer artifacts"
 )
 
 install(TARGETS ${TEST_EXECUTABLES}
