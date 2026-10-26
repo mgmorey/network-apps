@@ -39,21 +39,61 @@ CMake supports `Debug`, `Default`, `Minimal`, `Release`, `Small`,
 CMake's standard `CMAKE_CXX_COMPILER` setting. The following options provide
 Make-like control over instrumentation and toolchain settings:
 
-For Visual Studio 2022 (generator `Visual Studio 17 2022`), configure and
-build the Debug configuration with MSVC:
+### Visual Studio and MSVC
+
+Install Visual Studio with the **Desktop development with C++** workload,
+including an MSVC toolset and Windows SDK. CMake presets provide separate
+build directories for Visual Studio 2022 and 2026; use the preset matching
+the version installed on the machine. List the available presets with:
 
 ```sh
-cmake -S . -B build-vs -G "Visual Studio 17 2022" -A x64 \
-  -DCMAKE_BUILD_TYPE=Debug
-cmake --build build-vs --config Debug --parallel
-ctest --test-dir build-vs -C Debug --output-on-failure
+cmake --list-presets
 ```
 
+For Visual Studio 2022, configure, build, and test with:
+
+```sh
+cmake --preset vs2022-x64-debug
+cmake --build --preset vs2022-x64-debug --parallel
+ctest --preset vs2022-x64-debug
+```
+
+For Visual Studio 2026, replace `vs2022-x64-debug` with
+`vs2026-x64-debug`. The CMake version must recognize the selected Visual
+Studio generator. In VS Code, run **CMake: Select Configure Preset**, choose
+the matching Visual Studio preset, then use the CMake Tools build and test
+commands. This avoids relying on an implicit compiler or generator selection.
+
 Visual Studio's multi-configuration generator selects the configuration at
-build time with `--config`. The project uses the MSVC standard library and
-WinSock on Windows. GCC/Clang-specific options such as coverage,
-`WITH_SANITIZE`, Fortify Source, and DWARF selection are not available with
-MSVC.
+build time. The project uses the MSVC standard library and WinSock on Windows.
+GCC/Clang-specific options such as coverage, `WITH_SANITIZE`, Fortify Source,
+and DWARF selection are not available with MSVC.
+
+The GNU Make build profiles are compiler flag recipes, not CMake
+configurations. With a single-configuration generator such as Ninja, CMake's
+`CMAKE_BUILD_TYPE` can select the project's `Default`, `Debug`, `Minimal`,
+`Release`, or `Small` flags. Visual Studio ignores `CMAKE_BUILD_TYPE` and uses
+its configuration selected at build time. The closest MSVC configurations
+are approximate and do not reproduce the GNU/Clang flags exactly:
+
+| GNU Make profile | GNU/Clang behavior | Closest Visual Studio configuration |
+|------------------|--------------------|-------------------------------------|
+| `Default` | Debug symbols, no optimization by default | `Debug` |
+| `Debug` | `-Og` and debug symbols | `Debug` |
+| `Minimal` | `-O1`, preserve frame pointers | `MinSizeRel` |
+| `Release` | `-O2`, keep assertions enabled | `Release` |
+| `Small` | `-Os` | `MinSizeRel` |
+
+For example, build the size-oriented `Minimal`/`Small` approximations with
+`cmake --build <build-directory> --config MinSizeRel`. MSVC's optimization,
+debug-runtime, and assertion behavior can differ; notably, the Make `Release`
+profile explicitly keeps assertions enabled. The Visual Studio presets in
+`CMakePresets.json` currently define `Debug` only. CMake presets are a
+cross-platform format, but these presets use Visual Studio generators and
+therefore require Windows and the corresponding Visual Studio installation.
+Other platforms can use separate presets with Ninja or another available
+generator; compiler-specific flags and supported options still vary by
+toolchain.
 
 ```sh
 cmake -S /path/to/network-apps \
@@ -164,25 +204,28 @@ If coverage is enabled, this generates:
 
 ## Notes
 
-- The project is tested on multiple platforms, including Linux, macOS, Cygwin, MinGW, and Visual Studio 2022.
+- The project is tested on multiple platforms, including Linux, macOS, Cygwin, MinGW, and Visual Studio.
 - The CMake integration is intended as a portable alternative to the existing `GNUmakefile`.
-On Windows, CMake supports both MinGW/MSYS and Visual Studio 2022 with
-MSVC, using the Windows-specific sources and WinSock library.
+On Windows, CMake supports MinGW/MSYS and Visual Studio with MSVC, using the
+Windows-specific sources and WinSock library.
 
 ## Platform Support
 
-This project has been tested on the following platforms:
+This project has been tested on the following platforms and toolchains. The
+Visual Studio 2026 row records a successful CMake configure and build, with all
+12 CTest tests passing.
 
-| OS Family | Distro / Environment | OS Version (Port) | GCC | Clang |
-|-----------|----------------------|-------------------|-----|-------|
-| GNU/Linux | Debian | 13 (x86_64) | 14.2.0 | 19.1.7 |
-| GNU/Linux | Fedora | 42 (x86_64) | 15.2.1 | 20.1.8 |
-| GNU/Linux | Oracle | 9.6 (x86_64) | 14.2.1 | 19.1.7 |
-| GNU/Linux | Oracle | 10.0 (x86_64) | 14.2.1 | 19.1.7 |
-| GNU/Linux | openSUSE Tumbleweed | 20250914 (x86_64) | 15.2.0 | 21.1.2 |
-| Unix | Apple macOS | 26.0 (arm64) | N/A | 21.1.8 |
-| Windows | Cygwin | 10.0 (amd64) | 16.0.0 | 21.1.4 |
-| Windows | MinGW | 10.0 (amd64) | 15.1.0 | 21.1.5 |
+| OS Family | Distro / Environment | OS Version (Port) | GCC | Clang | MSVC |
+|-----------|----------------------|-------------------|-----|-------|-------|
+| GNU/Linux | Debian | 13 (x86_64) | 14.2.0 | 19.1.7 | N/A |
+| GNU/Linux | Fedora | 42 (x86_64) | 15.2.1 | 20.1.8 | N/A |
+| GNU/Linux | Oracle | 9.6 (x86_64) | 14.2.1 | 19.1.7 | N/A |
+| GNU/Linux | Oracle | 10.0 (x86_64) | 14.2.1 | 19.1.7 | N/A |
+| GNU/Linux | openSUSE Tumbleweed | 20250914 (x86_64) | 15.2.0 | 21.1.2 | N/A |
+| Unix | Apple macOS | 26.0 (arm64) | N/A | 21.1.8 | N/A |
+| Windows | Cygwin | 10.0 (amd64) | 16.0.0 | 21.1.4 | N/A |
+| Windows | MinGW | 10.0 (amd64) | 15.1.0 | 21.1.5 | N/A |
+| Windows | Visual Studio 2026 Professional | Windows (x64) | N/A | N/A | 19.51.36256.0 |
 
 The various OS ports have been tested on the following processors:
 

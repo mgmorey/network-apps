@@ -24,6 +24,7 @@ default.profraw
 *.css
 *.html
 *.json
+!CMakePresets.json
 
 # GNU debugger
 .gdb_history
