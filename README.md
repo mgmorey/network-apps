@@ -223,7 +223,7 @@ Visual Studio 2026 row records a successful CMake configure and build, with all
 | GNU/Linux | Oracle | 10.0 (x86_64) | 14.2.1 | 19.1.7 | N/A |
 | GNU/Linux | openSUSE Tumbleweed | 20250914 (x86_64) | 15.2.0 | 21.1.2 | N/A |
 | Unix | Apple macOS | 26.0 (arm64) | N/A | 21.1.8 | N/A |
-| Windows | Cygwin | 10.0 (amd64) | 16.0.0 | 21.1.4 | N/A |
+| Windows | Cygwin | 10.0 (amd64) | 16.0.0 | 21.1.8 | N/A |
 | Windows | MinGW | 10.0 (amd64) | 15.1.0 | 21.1.5 | N/A |
 | Windows | Visual Studio 2026 Professional | Windows (x64) | N/A | N/A | 19.51.36256.0 |
 
