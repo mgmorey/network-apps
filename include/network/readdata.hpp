@@ -16,14 +16,14 @@
 #ifndef NETWORK_READDATA_HPP
 #define NETWORK_READDATA_HPP
 
-#include <sys/types.h>      // ssize_t
+#include "network/ssize-type.hpp"       // ssize_type
 
 #include <string>       // std::string
 #include <utility>      // std::pair
 
 namespace Network
 {
-    using ReadData = std::pair<std::string, ssize_t>;
+    using ReadData = std::pair<std::string, ssize_type>;
 }
 
 #endif

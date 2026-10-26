@@ -24,6 +24,7 @@
                                         // os_error_type, run(),
                                         // string_null
 #include "network/parse.hpp"            // parse()
+#include "test-environment.hpp"         // test_has_environment_variable
 
 #ifdef _WIN32
 #include <winsock2.h>       // AF_INET, AF_INET6, PF_INET, PF_INET6,
@@ -205,7 +206,7 @@ auto main(int argc, char* argv[]) -> int
         const auto sr {run(is_verbose)};
         const auto hostname {get_hostname(sr.get())};
 
-        if (getenv("http_proxy") == nullptr) {
+        if (!test_has_environment_variable("http_proxy")) {
             test_connect_valid(endpoint, socket_hints, hostname);
         }
     }

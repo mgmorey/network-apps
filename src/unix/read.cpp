@@ -26,14 +26,14 @@
 #include "network/socketcore.hpp"       // SocketCore
 #include "network/to-os-error.hpp"      // to_os_error()
 
-#include <sys/types.h>      // ssize_t
+
 #include <unistd.h>         // ::read()
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
-auto Network::read(const SocketCore& sc, CharSpan cs) -> ssize_t
+auto Network::read(const SocketCore& sc, CharSpan cs) -> ssize_type
 {
     const std::string_view sv {cs.data(), cs.size()};
     const auto handle {sc.handle()};

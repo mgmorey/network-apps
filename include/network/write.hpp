@@ -16,15 +16,14 @@
 #ifndef NETWORK_WRITE_HPP
 #define NETWORK_WRITE_HPP
 
-#include "network/socketcore.hpp"       // SocketCore
-
-#include <sys/types.h>      // ssize_t
+#include "network/socketcore.hpp"        // SocketCore
+#include "network/ssize-type.hpp"        // ssize_type
 
 #include <string_view>  // std::string_view
 
 namespace Network
 {
-    extern auto write(const SocketCore& sc, std::string_view sv) -> ssize_t;
+    extern auto write(const SocketCore& sc, std::string_view sv) -> ssize_type;
 }
 
 #endif

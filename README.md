@@ -39,6 +39,22 @@ CMake supports `Debug`, `Default`, `Minimal`, `Release`, `Small`,
 CMake's standard `CMAKE_CXX_COMPILER` setting. The following options provide
 Make-like control over instrumentation and toolchain settings:
 
+For Visual Studio 2022 (generator `Visual Studio 17 2022`), configure and
+build the Debug configuration with MSVC:
+
+```sh
+cmake -S . -B build-vs -G "Visual Studio 17 2022" -A x64 \
+  -DCMAKE_BUILD_TYPE=Debug
+cmake --build build-vs --config Debug --parallel
+ctest --test-dir build-vs -C Debug --output-on-failure
+```
+
+Visual Studio's multi-configuration generator selects the configuration at
+build time with `--config`. The project uses the MSVC standard library and
+WinSock on Windows. GCC/Clang-specific options such as coverage,
+`WITH_SANITIZE`, Fortify Source, and DWARF selection are not available with
+MSVC.
+
 ```sh
 cmake -S /path/to/network-apps \
   -B /path/to/network-apps/build-cmake \
@@ -148,11 +164,10 @@ If coverage is enabled, this generates:
 
 ## Notes
 
-- The project is tested on multiple platforms, including Linux, macOS, Cygwin, and MinGW.
+- The project is tested on multiple platforms, including Linux, macOS, Cygwin, MinGW, and Visual Studio 2022.
 - The CMake integration is intended as a portable alternative to the existing `GNUmakefile`.
-On Windows, the CMake configuration targets the MinGW/MSYS port and uses its
-Windows-specific sources and WinSock library; it does not require Microsoft
-Visual Studio.
+On Windows, CMake supports both MinGW/MSYS and Visual Studio 2022 with
+MSVC, using the Windows-specific sources and WinSock library.
 
 ## Platform Support
 

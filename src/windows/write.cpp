@@ -25,14 +25,13 @@
 #include "network/socketcore.hpp"       // SocketCore
 #include "network/to-os-error.hpp"      // to_os_error()
 
-#include <sys/types.h>      // ssize_t
 #include <winsock2.h>       // ::send()
 
 #include <iostream>     // std::cout, std::endl
 #include <sstream>      // std::ostringstream
 #include <string_view>  // std::string_view
 
-auto Network::write(const SocketCore& sc, std::string_view sv) -> ssize_t
+auto Network::write(const SocketCore& sc, std::string_view sv) -> ssize_type
 {
     const auto handle {sc.handle()};
 

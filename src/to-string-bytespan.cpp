@@ -30,7 +30,7 @@ auto Network::to_string(ByteSpan bs) -> std::string
     try {
         oss << Address(bs);
     }
-    catch (const LogicError& error) {
+    catch (const LogicError&) {
         oss << "0x";
 
         if (bs.empty()) {

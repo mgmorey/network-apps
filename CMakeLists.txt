@@ -10,9 +10,14 @@ project(network
 # Build Configuration
 # ============================================================================
 
-# Default to the Make build type if not specified.
+# Default to Debug for multi-configuration generators and the Make build type
+# for single-configuration generators.
 if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Default CACHE STRING "Build type" FORCE)
+    if(CMAKE_CONFIGURATION_TYPES)
+        set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
+    else()
+        set(CMAKE_BUILD_TYPE Default CACHE STRING "Build type" FORCE)
+    endif()
 endif()
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
     Debug Default Minimal Release Small RelWithDebInfo MinSizeRel
@@ -64,42 +69,54 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Compiler Flags
 # ============================================================================
 
-if(NOT CMAKE_CXX_COMPILER_ID MATCHES "^(GNU|Clang|AppleClang)$")
+if(NOT CMAKE_CXX_COMPILER_ID MATCHES "^(GNU|Clang|AppleClang|MSVC)$")
     message(FATAL_ERROR
-        "This project currently requires a GCC- or Clang-compatible compiler"
+        "This project requires GCC, Clang, or Microsoft Visual C++"
     )
 endif()
 
 include(CheckCXXCompilerFlag)
 
-add_compile_options(-Wall -Werror -Wextra -Wshadow -Wsign-conversion)
-if(NOT APPLE)
-    add_compile_options(-Wpedantic)
-endif()
-
-if(APPLE)
-    add_compile_options(-fno-common)
+if(MSVC)
+    add_compile_options(/W4 /WX /permissive- /Zc:__cplusplus)
+    add_compile_definitions(NOMINMAX)
+else()
+    add_compile_options(-Wall -Werror -Wextra -Wshadow -Wsign-conversion)
+    if(NOT APPLE)
+        add_compile_options(-Wpedantic)
+    endif()
+    if(APPLE)
+        add_compile_options(-fno-common)
+    endif()
 endif()
 
 if(USING_STDLIB STREQUAL "")
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    if(MSVC)
+        set(NETWORK_STDLIB "MSVC")
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         set(NETWORK_STDLIB libstdc++)
     elseif(APPLE)
         set(NETWORK_STDLIB libc++)
     else()
         set(NETWORK_STDLIB libstdc++)
     endif()
+elseif(MSVC)
+    message(FATAL_ERROR
+        "USING_STDLIB is not supported with Microsoft Visual C++; use the MSVC standard library"
+    )
 else()
     set(NETWORK_STDLIB ${USING_STDLIB})
 endif()
 
-if(NOT NETWORK_STDLIB MATCHES "^(libc\\+\\+|libstdc\\+\\+)$")
+if(NOT MSVC AND NOT NETWORK_STDLIB MATCHES "^(libc\\+\\+|libstdc\\+\\+)$")
     message(FATAL_ERROR
         "USING_STDLIB must be empty, libc++, or libstdc++"
     )
 endif()
 
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+if(MSVC)
+    # The Visual Studio generator supplies the MSVC standard library and runtime.
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     if(NOT USING_STDLIB STREQUAL "")
         add_compile_options(-stdlib=${NETWORK_STDLIB})
         string(REGEX REPLACE "^lib" "" NETWORK_STDLIB_LINK ${NETWORK_STDLIB})
@@ -109,26 +126,31 @@ elseif(NOT NETWORK_STDLIB STREQUAL "libstdc++")
     message(FATAL_ERROR "GCC supports libstdc++ only")
 endif()
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    if(APPLE)
-        add_compile_options(-g3 -Og)
-    else()
-        add_compile_options(-ggdb -Og)
+if(NOT MSVC)
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        if(APPLE)
+            add_compile_options(-g3 -Og)
+        else()
+            add_compile_options(-ggdb -Og)
+        endif()
+    elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+        add_compile_options(-O2 -UNDEBUG)
+    elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+        add_compile_options(-O2 -g -UNDEBUG)
+    elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+        add_compile_options(-Os -UNDEBUG)
+    elseif(CMAKE_BUILD_TYPE STREQUAL "Minimal")
+        add_compile_options(-O1 -fno-omit-frame-pointer)
+    elseif(CMAKE_BUILD_TYPE STREQUAL "Small")
+        add_compile_options(-Os)
+    elseif(CMAKE_BUILD_TYPE STREQUAL "Default")
+        add_compile_options(-g)
     endif()
-elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    add_compile_options(-O2 -UNDEBUG)
-elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-    add_compile_options(-O2 -g -UNDEBUG)
-elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-    add_compile_options(-Os -UNDEBUG)
-elseif(CMAKE_BUILD_TYPE STREQUAL "Minimal")
-    add_compile_options(-O1 -fno-omit-frame-pointer)
-elseif(CMAKE_BUILD_TYPE STREQUAL "Small")
-    add_compile_options(-Os)
-elseif(CMAKE_BUILD_TYPE STREQUAL "Default")
-    add_compile_options(-g)
 endif()
 
+if(MSVC AND USING_GDBDWARF)
+    message(FATAL_ERROR "USING_GDBDWARF is not supported with MSVC")
+endif()
 if(USING_GDBDWARF AND
    (CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "Default"))
     set(NETWORK_DWARF_CHECK NETWORK_HAS_DWARF_${USING_GDBDWARF})
@@ -147,15 +169,21 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-pipe)
 endif()
 
-check_cxx_compiler_flag(
-    -ftrivial-auto-var-init=pattern
-    NETWORK_HAS_TRIVIAL_AUTO_VAR_INIT
-)
-if(NETWORK_HAS_TRIVIAL_AUTO_VAR_INIT)
-    add_compile_options(-ftrivial-auto-var-init=pattern)
+if(NOT MSVC)
+    check_cxx_compiler_flag(
+        -ftrivial-auto-var-init=pattern
+        NETWORK_HAS_TRIVIAL_AUTO_VAR_INIT
+    )
+    if(NETWORK_HAS_TRIVIAL_AUTO_VAR_INIT)
+        add_compile_options(-ftrivial-auto-var-init=pattern)
+    endif()
 endif()
 
-if(NETWORK_STDLIB STREQUAL "libstdc++")
+if(MSVC)
+    if(NOT WITH_FORTIFY_SOURCE STREQUAL "")
+        message(STATUS "Fortify Source is not supported with MSVC; ignoring WITH_FORTIFY_SOURCE")
+    endif()
+elseif(NETWORK_STDLIB STREQUAL "libstdc++")
     if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "Default")
         add_compile_definitions(_GLIBCXX_DEBUG)
         if(WITH_BACKTRACE)
@@ -207,6 +235,10 @@ endif()
 # Coverage Support
 # ============================================================================
 
+if(MSVC AND WITH_COVERAGE)
+    message(FATAL_ERROR "WITH_COVERAGE is not supported with MSVC")
+endif()
+
 if(WITH_COVERAGE AND (CMAKE_BUILD_TYPE STREQUAL "Default" OR CMAKE_BUILD_TYPE STREQUAL "Debug"))
     add_compile_options(--coverage)
     add_link_options(--coverage)
@@ -218,6 +250,11 @@ endif()
 # ============================================================================
 
 if(WITH_SANITIZE)
+    if(MSVC)
+        message(FATAL_ERROR
+            "WITH_SANITIZE currently requires GCC or Clang; it is not supported with MSVC"
+        )
+    endif()
     include(CheckCXXSourceCompiles)
     string(MAKE_C_IDENTIFIER "${WITH_SANITIZE}" NETWORK_SANITIZER_ID)
     set(NETWORK_SANITIZER_CHECK
@@ -449,6 +486,10 @@ function(network_enable_link_map target_name)
             target_link_options(${target_name} PRIVATE
                 "LINKER:-map,${PROJECT_BINARY_DIR}/${target_name}.map"
             )
+        elseif(MSVC)
+            target_link_options(${target_name} PRIVATE
+                "/MAP:${PROJECT_BINARY_DIR}/${target_name}.map"
+            )
         else()
             target_link_options(${target_name} PRIVATE
                 "LINKER:-Map,${PROJECT_BINARY_DIR}/${target_name}.map"
@@ -490,6 +531,9 @@ set_target_properties(network PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION 0
 )
+if(WIN32)
+    set_target_properties(network PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
 
 # Set include directories for the library
 target_include_directories(network PRIVATE
@@ -659,23 +703,27 @@ add_custom_target(compile-flags
 )
 
 set(ASSEMBLY_OUTPUTS)
-foreach(source IN LISTS PROJECT_SOURCES)
-    string(REPLACE "/" "_" assembly_name "${source}")
-    set(assembly_output "${PROJECT_BINARY_DIR}/assembly/${assembly_name}.s")
-    add_custom_command(
-        OUTPUT "${assembly_output}"
-        COMMAND ${CMAKE_COMMAND} -E make_directory
-            "${PROJECT_BINARY_DIR}/assembly"
-        COMMAND ${CMAKE_CXX_COMPILER}
-            ${NETWORK_COMPILE_FLAGS}
-            -S "${PROJECT_SOURCE_DIR}/${source}"
-            -o "${assembly_output}"
-        DEPENDS "${PROJECT_SOURCE_DIR}/${source}"
-        VERBATIM
-    )
-    list(APPEND ASSEMBLY_OUTPUTS "${assembly_output}")
-endforeach()
-add_custom_target(assembly DEPENDS ${ASSEMBLY_OUTPUTS})
+if(NOT MSVC)
+    foreach(source IN LISTS PROJECT_SOURCES)
+        string(REPLACE "/" "_" assembly_name "${source}")
+        set(assembly_output "${PROJECT_BINARY_DIR}/assembly/${assembly_name}.s")
+        add_custom_command(
+            OUTPUT "${assembly_output}"
+            COMMAND ${CMAKE_COMMAND} -E make_directory
+                "${PROJECT_BINARY_DIR}/assembly"
+            COMMAND ${CMAKE_CXX_COMPILER}
+                ${NETWORK_COMPILE_FLAGS}
+                -S "${PROJECT_SOURCE_DIR}/${source}"
+                -o "${assembly_output}"
+            DEPENDS "${PROJECT_SOURCE_DIR}/${source}"
+            VERBATIM
+        )
+        list(APPEND ASSEMBLY_OUTPUTS "${assembly_output}")
+    endforeach()
+    add_custom_target(assembly DEPENDS ${ASSEMBLY_OUTPUTS})
+else()
+    message(STATUS "assembly target is not available with MSVC")
+endif()
 
 find_program(CTAGS_PATH NAMES ctags universal-ctags)
 if(CTAGS_PATH)

@@ -22,10 +22,9 @@
 #include "network/handle-type.hpp"      // handle_type
 #include "network/opensymbol.hpp"       // OpenSymbol
 #include "network/oserror.hpp"          // OsError
+#include "network/ssize-type.hpp"       // ssize_type
 #include "network/symbol.hpp"           // Symbol
 #include "network/to-bytestring.hpp"    // to_bytestring()
-
-#include <sys/types.h>      // ssize_t
 
 #include <ostream>      // std::ostream
 #include <string_view>  // std::string_view
@@ -50,10 +49,10 @@ namespace Network
         [[nodiscard]] virtual auto listen(int t_backlog) const -> OsError = 0;
         [[nodiscard]] virtual auto open(ByteSpan t_bs, OpenSymbol t_symbol) ->
             OsError = 0;
-        [[nodiscard]] virtual auto read(CharSpan t_cs) const -> ssize_t = 0;
+        [[nodiscard]] virtual auto read(CharSpan t_cs) const -> ssize_type = 0;
         [[nodiscard]] virtual auto shutdown(int t_how) const -> OsError = 0;
         [[nodiscard]] virtual auto write(std::string_view t_sv) const ->
-            ssize_t = 0;
+            ssize_type = 0;
 
         [[nodiscard]] auto bind(auto t_peer) -> OsError
         {

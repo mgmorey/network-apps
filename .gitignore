@@ -1,6 +1,9 @@
 # Aider
 .aider*
 
+# CMake build directories
+/build-vs/
+
 # Apple macOS metadata
 .DS_Store
 

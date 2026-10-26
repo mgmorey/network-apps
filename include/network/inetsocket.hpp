@@ -26,9 +26,8 @@
 #include "network/socket.hpp"           // Socket
 #include "network/socketcore.hpp"       // SocketCore
 #include "network/socketdata.hpp"       // SocketData
+#include "network/ssize-type.hpp"       // ssize_type
 #include "network/symbol.hpp"           // Symbol
-
-#include <sys/types.h>      // ssize_t
 
 #include <string_view>  // std::string_view
 
@@ -52,9 +51,9 @@ namespace Network
         [[nodiscard]] auto listen(int t_backlog) const -> OsError final;
         [[nodiscard]] auto open(ByteSpan t_bs, OpenSymbol t_symbol) ->
             OsError override;
-        [[nodiscard]] auto read(CharSpan t_cs) const -> ssize_t final;
+        [[nodiscard]] auto read(CharSpan t_cs) const -> ssize_type final;
         [[nodiscard]] auto shutdown(int t_how) const -> OsError final;
-        [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_t final;
+        [[nodiscard]] auto write(std::string_view t_sv) const -> ssize_type final;
 
     protected:
         [[nodiscard]] auto core() const noexcept -> const SocketCore&;

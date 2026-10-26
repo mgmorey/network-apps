@@ -18,7 +18,7 @@
 
 #include <algorithm>    // std::ranges::transform()
 #include <cstdlib>      // std::free(), std::size_t
-#include <cstring>      // ::strdup()
+#include <cstring>      // ::_strdup(), ::strdup()
 #include <iterator>     // std::back_inserter()
 #include <string>       // std::string
 #include <vector>       // std::vector
@@ -28,7 +28,11 @@ Network::ArgumentData::ArgumentData(const std::vector<std::string>& data)
     std::ranges::transform(data,
                            std::back_inserter(m_args),
                            [&](const std::string& arg) -> char* {
+#ifdef _MSC_VER
+                               return ::_strdup(arg.c_str());  // NOLINT
+#else
                                return ::strdup(arg.c_str());  // NOLINT
+#endif
                            });
 }
 

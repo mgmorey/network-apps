@@ -33,8 +33,6 @@
 #include "network/symbol.hpp"                   // Symbol
 #include "network/write.hpp"                    // write()
 
-#include <sys/types.h>      // ssize_t
-
 #include <string_view>  // std::string_view
 #include <utility>      // std::unreachable()
 
@@ -47,7 +45,7 @@ Network::InetSocket::~InetSocket() noexcept
     static_cast<void>(Network::close(core()));
 }
 
-Network::InetSocket::operator handle_type() const noexcept
+Network::InetSocket::operator Network::handle_type() const noexcept
 {
     return core().handle();
 }
@@ -84,7 +82,7 @@ auto Network::InetSocket::open(ByteSpan t_bs, OpenSymbol t_symbol) -> OsError
     return {};
 }
 
-auto Network::InetSocket::read(CharSpan t_cs) const -> ssize_t
+auto Network::InetSocket::read(CharSpan t_cs) const -> ssize_type
 {
     return Network::read(core(), t_cs);
 }
@@ -94,7 +92,7 @@ auto Network::InetSocket::shutdown(int t_how) const -> OsError
     return Network::shutdown(core(), t_how);
 }
 
-auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_t
+auto Network::InetSocket::write(std::string_view t_sv) const -> ssize_type
 {
     return Network::write(core(), t_sv);
 }
