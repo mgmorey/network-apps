@@ -30,6 +30,11 @@
 auto Network::to_string(const in_addr& addr) noexcept -> std::string
 {
     TextBuffer buffer {INET_ADDRSTRLEN};
-    ::inet_ntop(AF_INET, &addr, buffer.data(), buffer.size());
+#ifdef _WIN32
+    const auto buffer_size = buffer.size();
+#else
+    const auto buffer_size = static_cast<socklen_t>(buffer.size());
+#endif
+    ::inet_ntop(AF_INET, &addr, buffer.data(), buffer_size);
     return buffer;
 }

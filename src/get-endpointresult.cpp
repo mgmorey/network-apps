@@ -48,6 +48,13 @@ auto Network::get_endpointresult(CharSpan hostname,
     const auto [sa, salen] {get_sa_span(bs)};
     const std::string_view hostname_sv {hostname.data(), hostname.size()};
     const std::string_view service_sv {service.data(), service.size()};
+#ifdef _WIN32
+    const auto hostname_size = static_cast<DWORD>(hostname.size());
+    const auto service_size = static_cast<DWORD>(service.size());
+#else
+    const auto hostname_size = static_cast<socklen_t>(hostname.size());
+    const auto service_size = static_cast<socklen_t>(service.size());
+#endif
 
     if (rt->is_verbose()) {
         // clang-format off
@@ -73,9 +80,9 @@ auto Network::get_endpointresult(CharSpan hostname,
     if (const auto api_error {::getnameinfo(sa,
                                             salen,
                                             hostname.data(),
-                                            hostname.size(),
+                                            hostname_size,
                                             service.data(),
-                                            service.size(),
+                                            service_size,
                                             flags)}) {
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
