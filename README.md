@@ -6,7 +6,9 @@ A cross-platform C++23 networking library and accompanying test suite.
 
 This repository contains a network library implementation plus test programs. It supports building with both the existing `GNUmakefile` and a new `CMakeLists.txt` for better portability across platforms and toolchains.
 
-The following examples assume the repository has been cloned to a directory named `network-apps`.
+Replace `/path/to/network-apps` in the examples with the repository's
+location. CMake commands specify source and build directories explicitly, so
+they can be run without changing directories.
 
 ## Build Options
 
@@ -26,11 +28,10 @@ The CMake build supports the core library, tests, and platform-specific
 utilities. You can build in a separate directory:
 
 ```sh
-cd network-apps
-mkdir -p build-cmake
-cd build-cmake
-cmake .. -DCMAKE_BUILD_TYPE=Default
-cmake --build .
+cmake -S /path/to/network-apps \
+  -B /path/to/network-apps/build-cmake \
+  -DCMAKE_BUILD_TYPE=Default
+cmake --build /path/to/network-apps/build-cmake
 ```
 
 CMake supports `Debug`, `Default`, `Minimal`, `Release`, `Small`,
@@ -39,7 +40,8 @@ CMake's standard `CMAKE_CXX_COMPILER` setting. The following options provide
 Make-like control over instrumentation and toolchain settings:
 
 ```sh
-cmake .. \
+cmake -S /path/to/network-apps \
+  -B /path/to/network-apps/build-cmake \
   -DCMAKE_BUILD_TYPE=Debug \
   -DWITH_COVERAGE=ON \
   -DWITH_SANITIZE=address,undefined \
@@ -70,13 +72,14 @@ Install the library, public headers, test executables, and available Unix
 examples using CMake's install prefix:
 
 ```sh
-cmake --install . --prefix /path/to/install
+cmake --install /path/to/network-apps/build-cmake \
+  --prefix /path/to/install
 ```
 
 Create a `.tar.gz` package containing the installed files with:
 
 ```sh
-cmake --build . --target package
+cmake --build /path/to/network-apps/build-cmake --target package
 ```
 
 The archive is written to the build directory.
@@ -86,11 +89,11 @@ The archive is written to the build directory.
 The CMake build provides equivalents for common Make maintenance targets:
 
 ```sh
-cmake --build . --target assembly
-cmake --build . --target compile-flags
-cmake --build . --target sizes
-cmake --build . --target tags
-cmake --build . --target distclean
+cmake --build /path/to/network-apps/build-cmake --target assembly
+cmake --build /path/to/network-apps/build-cmake --target compile-flags
+cmake --build /path/to/network-apps/build-cmake --target sizes
+cmake --build /path/to/network-apps/build-cmake --target tags
+cmake --build /path/to/network-apps/build-cmake --target distclean
 ```
 
 `assembly` writes per-source `.s` files under `assembly/`; `compile-flags`
@@ -110,15 +113,13 @@ With CMake, the project is integrated with CTest.
 - Run all tests:
 
 ```sh
-cd network-apps/build-cmake
-cmake --build . --target check
+cmake --build /path/to/network-apps/build-cmake --target check
 ```
 
 - Run all tests in parallel:
 
 ```sh
-cd network-apps/build-cmake
-cmake --build . --target check-parallel
+cmake --build /path/to/network-apps/build-cmake --target check-parallel
 ```
 
 ## Static Analysis
@@ -128,8 +129,8 @@ enabled. The `tidy` target is enabled when `clang-tidy` is available and the
 CMake generator exports a compile commands database:
 
 ```sh
-cmake --build . --target analyze
-cmake --build . --target tidy
+cmake --build /path/to/network-apps/build-cmake --target analyze
+cmake --build /path/to/network-apps/build-cmake --target tidy
 ```
 
 ## Coverage
@@ -137,8 +138,7 @@ cmake --build . --target tidy
 The CMake build also includes a coverage target.
 
 ```sh
-cd network-apps/build-cmake
-cmake --build . --target coverage
+cmake --build /path/to/network-apps/build-cmake --target coverage
 ```
 
 If coverage is enabled, this generates:
