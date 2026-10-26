@@ -220,7 +220,6 @@ Visual Studio 2026 row records a successful CMake configure and build, with all
 | GNU/Linux | Debian | 13 (x86_64) | 14.2.0 | 19.1.7 | N/A |
 | GNU/Linux | Fedora | 42 (x86_64) | 15.2.1 | 20.1.8 | N/A |
 | GNU/Linux | Oracle | 9.8 (x86_64) | 14.2.1 | 21.1.8 | N/A |
-| GNU/Linux | Oracle | 10.0 (x86_64) | 14.2.1 | 19.1.7 | N/A |
 | GNU/Linux | openSUSE Tumbleweed | 20261024 (x86_64) | 16.2.1 | 23.1.3 | N/A |
 | Unix | Apple macOS | 26.0 (arm64) | N/A | 21.1.8 | N/A |
 | Windows | Cygwin | 10.0 (amd64) | 16.0.0 | 21.1.8 | N/A |
