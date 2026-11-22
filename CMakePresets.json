@@ -1,11 +1,71 @@
 {
-  "version": 2,
+  "version": 3,
   "cmakeMinimumRequired": {
     "major": 3,
     "minor": 20,
     "patch": 0
   },
   "configurePresets": [
+    {
+      "name": "macos-base",
+      "hidden": true,
+      "generator": "Unix Makefiles",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      }
+    },
+    {
+      "name": "macos-arm64-default",
+      "inherits": "macos-base",
+      "displayName": "macOS arm64 Default",
+      "binaryDir": "${sourceDir}/build-cmake/macos-arm64-default",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Default",
+        "CMAKE_OSX_ARCHITECTURES": "arm64"
+      }
+    },
+    {
+      "name": "macos-arm64-debug",
+      "inherits": "macos-base",
+      "displayName": "macOS arm64 Debug",
+      "binaryDir": "${sourceDir}/build-cmake/macos-arm64-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_OSX_ARCHITECTURES": "arm64"
+      }
+    },
+    {
+      "name": "macos-arm64-minimal",
+      "inherits": "macos-base",
+      "displayName": "macOS arm64 Minimal",
+      "binaryDir": "${sourceDir}/build-cmake/macos-arm64-minimal",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Minimal",
+        "CMAKE_OSX_ARCHITECTURES": "arm64"
+      }
+    },
+    {
+      "name": "macos-arm64-release",
+      "inherits": "macos-base",
+      "displayName": "macOS arm64 Release",
+      "binaryDir": "${sourceDir}/build-cmake/macos-arm64-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_OSX_ARCHITECTURES": "arm64"
+      }
+    },
+    {
+      "name": "macos-arm64-small",
+      "inherits": "macos-base",
+      "displayName": "macOS arm64 Small",
+      "binaryDir": "${sourceDir}/build-cmake/macos-arm64-small",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Small",
+        "CMAKE_OSX_ARCHITECTURES": "arm64"
+      }
+    },
     {
       "name": "vs2022-x64-debug",
       "displayName": "Visual Studio 2022 x64 Debug",
@@ -29,6 +89,31 @@
   ],
   "buildPresets": [
     {
+      "name": "macos-arm64-default",
+      "configurePreset": "macos-arm64-default",
+      "configuration": "Default"
+    },
+    {
+      "name": "macos-arm64-debug",
+      "configurePreset": "macos-arm64-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "macos-arm64-minimal",
+      "configurePreset": "macos-arm64-minimal",
+      "configuration": "Minimal"
+    },
+    {
+      "name": "macos-arm64-release",
+      "configurePreset": "macos-arm64-release",
+      "configuration": "Release"
+    },
+    {
+      "name": "macos-arm64-small",
+      "configurePreset": "macos-arm64-small",
+      "configuration": "Small"
+    },
+    {
       "name": "vs2022-x64-debug",
       "configurePreset": "vs2022-x64-debug",
       "configuration": "Debug"
@@ -40,6 +125,46 @@
     }
   ],
   "testPresets": [
+    {
+      "name": "macos-arm64-default",
+      "configurePreset": "macos-arm64-default",
+      "configuration": "Default",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "macos-arm64-debug",
+      "configurePreset": "macos-arm64-debug",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "macos-arm64-minimal",
+      "configurePreset": "macos-arm64-minimal",
+      "configuration": "Minimal",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "macos-arm64-release",
+      "configurePreset": "macos-arm64-release",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "macos-arm64-small",
+      "configurePreset": "macos-arm64-small",
+      "configuration": "Small",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
     {
       "name": "vs2022-x64-debug",
       "configurePreset": "vs2022-x64-debug",

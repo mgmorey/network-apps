@@ -39,6 +39,31 @@ CMake supports `Debug`, `Default`, `Minimal`, `Release`, `Small`,
 CMake's standard `CMAKE_CXX_COMPILER` setting. The following options provide
 Make-like control over instrumentation and toolchain settings:
 
+### macOS
+
+On Apple silicon, use the macOS preset to configure for arm64 with Apple
+Clang and the Unix Makefiles generator:
+
+```sh
+cmake --preset macos-arm64-debug
+cmake --build --preset macos-arm64-debug --parallel
+ctest --preset macos-arm64-debug
+```
+
+The preset writes build files to
+`build-cmake/macos-arm64-debug`. Additional ARM64 presets cover the supported
+build profiles:
+
+| Preset | Architecture | Build type |
+|--------|--------------|------------|
+| `macos-arm64-default` | arm64 | Default |
+| `macos-arm64-debug` | arm64 | Debug |
+| `macos-arm64-minimal` | arm64 | Minimal |
+| `macos-arm64-release` | arm64 | Release |
+| `macos-arm64-small` | arm64 | Small |
+
+Each preset has matching configure, build, and test preset names.
+
 ### Visual Studio and MSVC
 
 Install Visual Studio with the **Desktop development with C++** workload,
