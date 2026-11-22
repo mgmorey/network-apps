@@ -137,7 +137,7 @@ test-socket-data.cpp test-socket-inet.cpp
 
 test_unix_sources = test-socket-pair.cpp test-socket-unix.cpp
 
-unix_sources = unix-server.cpp unix-client.cpp
+unix_example_sources = unix-server.cpp unix-client.cpp
 
 sizes = sizes.txt sizes.txt~
 
@@ -151,10 +151,11 @@ package = $(output_prefix)$(library_stem).tar.gz
 
 # Define variables for computed file lists
 
-sources = $(library_sources) $(test_sources) $(if $(is_posix),$(unix_sources),)
+sources = $(library_sources) $(test_sources)				\
+$(if $(is_posix),$(unix_example_sources),)
 library_sources = $(library_common_sources) $(library_native_sources)	\
 $(if $(filter unix,$(api)),$(library_unix_sources),)
-program_sources = $(test_sources) $(if $(is_posix),$(unix_sources),)
+program_sources = $(test_sources) $(if $(is_posix),$(unix_example_sources),)
 test_sources = $(test_common_sources) $(if $(filter	\
 unix,$(api)),$(test_unix_sources),)
 
@@ -165,9 +166,10 @@ objects = $(call get-objects-from-sources,$(sources))
 library_objects = $(call get-objects-from-sources,$(library_sources))
 program_objects = $(call get-objects-from-sources,$(program_sources))
 
-programs = $(test_programs) $(if $(is_posix),$(unix_programs),)
+programs = $(test_programs) $(unix_programs)
 test_programs = $(call get-programs-from-sources,$(test_sources))
-unix_programs = $(call get-programs-from-sources,$(unix_sources))
+unix_programs = $(if $(is_posix),\
+$(call get-programs-from-sources,$(unix_example_sources)),)
 
 library_aliases = $(addprefix $(output_prefix)$(library_stem),$(alias_suffixes))
 libraries = $(if $(with_shared_library),$(library_aliases)	\
@@ -180,7 +182,7 @@ listings = $(objects:$(object_suffix)=.lst)
 mapfiles = $(programs:$(binary_suffix)=.map) $(library_mapfile)
 stackdumps = $(programs:$(binary_suffix)=.stackdump)
 
-logfiles = $(test_logfiles) $(if $(is_posix),$(unix_logfiles),)
+logfiles = $(test_logfiles) $(unix_logfiles)
 test_logfiles = $(test_programs:$(binary_suffix)=$(log_suffix))
 unix_logfiles = $(unix_programs:$(binary_suffix)=$(log_suffix))
 
@@ -220,7 +222,7 @@ LINK$(object_suffix) = $(if $(CXX),$(CXX),c++) $(sort $(LDFLAGS))
 
 # Set virtual paths
 vpath %$(include_suffix) $(include_dirs:/.=)
-vpath %$(source_suffix) $(source_dirs:/.=)
+vpath %$(source_suffix) $(source_dirs:/.=) examples/unix
 
 # Define pseudotargets
 
@@ -279,12 +281,23 @@ count-test-source-files: $(test_sources)
 	@printf '%s\n' $(words $^)
 
 .PHONY: count-unix-source-files
-count-unix-source-files: $(unix_sources)
+count-unix-source-files: $(unix_example_sources)
 	@printf '%s\n' $(words $^)
 
 .PHONY: distclean
 distclean:
 	$(call clean-all,$(artifacts))
+
+.PHONY: examples run-examples
+ifneq "$(is_posix)" ""
+examples: $(unix_programs)
+
+run-examples: $(unix_programs)
+	cd $(output_dir) && $(CURDIR)/script/run-programs -v $(^F)
+else
+examples run-examples:
+	@printf '%s\n' "Unix socket examples are supported on Linux and FreeBSD"
+endif
 
 .PHONY: gcovr-html
 gcovr-html: $(coverage_html)
@@ -323,7 +336,7 @@ sizes: sizes.txt
 tags: TAGS
 
 .PHONY: test
-test: $(logfiles)
+test: $(test_logfiles)
 
 ifneq "$(TIDY)" ""
 .PHONY: tidy
@@ -342,7 +355,7 @@ $(coverage_html): $(coverage_json)
 	$(generate-code-coverage-report)
 	ln -sf $@ .
 
-$(coverage_json): $(logfiles)
+$(coverage_json): $(test_logfiles)
 	$(generate-code-coverage-report)
 
 $(library_aliases): $(shared_library)
@@ -367,7 +380,7 @@ sizes.txt: $(if $(with_shared_library),$(shared_library) $(objects)) $(programs)
 	size $(sort $^) >$@
 
 TAGS:
-	$(call tag-dirs,$(include_dirs:/.=),$(source_dirs:/.=))
+	$(call tag-dirs,$(include_dirs:/.=),$(source_dirs:/.=) examples/unix)
 
 $(assemblies): | $(object_dir)
 

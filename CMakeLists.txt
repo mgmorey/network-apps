@@ -6,6 +6,9 @@ project(network
     LANGUAGES CXX
 )
 
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+
 # ============================================================================
 # Build Configuration
 # ============================================================================
@@ -457,12 +460,12 @@ set(TEST_UNIX_SOURCES
     src/unix/test-socket-unix.cpp
 )
 
-# Unix example programs are enabled on the same platforms as the Make build.
-set(UNIX_PROGRAM_SOURCES)
+# Unix socket examples are available on Linux and FreeBSD.
+set(UNIX_EXAMPLE_SOURCES)
 if(CMAKE_SYSTEM_NAME MATCHES "^(Linux|FreeBSD)$")
-    set(UNIX_PROGRAM_SOURCES
-        src/unix/unix-client.cpp
-        src/unix/unix-server.cpp
+    set(UNIX_EXAMPLE_SOURCES
+        examples/unix/unix-client.cpp
+        examples/unix/unix-server.cpp
     )
 endif()
 
@@ -504,7 +507,7 @@ if(WITH_LISTINGS)
         set(LISTING_SOURCES
             ${NETWORK_SOURCES}
             ${TEST_COMMON_SOURCES}
-            ${UNIX_PROGRAM_SOURCES}
+            ${UNIX_EXAMPLE_SOURCES}
         )
         if(UNIX)
             list(APPEND LISTING_SOURCES ${TEST_UNIX_SOURCES})
@@ -524,6 +527,8 @@ if(WITH_LISTINGS)
 endif()
 
 add_library(network SHARED ${NETWORK_SOURCES})
+add_library(network::network ALIAS network)
+target_compile_features(network PUBLIC cxx_std_23)
 network_enable_link_map(network)
 
 # Set library properties
@@ -536,17 +541,20 @@ if(WIN32)
 endif()
 
 # Set include directories for the library
-target_include_directories(network PRIVATE
-    ${PROJECT_SOURCE_DIR}/include
+target_include_directories(network PUBLIC
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>"
+    "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
 if(UNIX)
-    target_include_directories(network PRIVATE
-        ${PROJECT_SOURCE_DIR}/include/unix
+    target_include_directories(network PUBLIC
+        "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/unix>"
+        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/unix>"
     )
 elseif(WIN32)
-    target_include_directories(network PRIVATE
-        ${PROJECT_SOURCE_DIR}/include/windows
+    target_include_directories(network PUBLIC
+        "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/windows>"
+        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/windows>"
     )
     target_link_libraries(network PRIVATE ws2_32)
 endif()
@@ -616,19 +624,29 @@ if(UNIX)
     set_tests_properties(test-socket-unix PROPERTIES LABELS "unit;unix")
 endif()
 
-foreach(program_source IN LISTS UNIX_PROGRAM_SOURCES)
-    get_filename_component(program_name ${program_source} NAME_WE)
-    add_executable(${program_name} ${program_source})
-    target_include_directories(${program_name} PRIVATE
+foreach(example_source IN LISTS UNIX_EXAMPLE_SOURCES)
+    get_filename_component(example_name ${example_source} NAME_WE)
+    add_executable(${example_name} ${example_source})
+    target_include_directories(${example_name} PRIVATE
         ${PROJECT_SOURCE_DIR}/include
         ${PROJECT_SOURCE_DIR}/include/unix
     )
-    target_link_libraries(${program_name} PRIVATE network)
-    network_enable_link_map(${program_name})
-    set_target_properties(${program_name} PROPERTIES
-        INSTALL_RPATH "${NETWORK_INSTALL_RPATH}"
-    )
+    target_link_libraries(${example_name} PRIVATE network)
+    network_enable_link_map(${example_name})
 endforeach()
+if(UNIX_EXAMPLE_SOURCES)
+    add_custom_target(examples DEPENDS unix-client unix-server)
+    add_custom_target(run-examples
+        COMMAND ${PROJECT_SOURCE_DIR}/script/run-programs
+            -v
+            unix-server unix-client
+        DEPENDS unix-client unix-server
+        WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+        COMMENT "Run Unix socket examples"
+        USES_TERMINAL
+        VERBATIM
+    )
+endif()
 
 # ============================================================================
 # Maintenance and Developer Targets
@@ -638,14 +656,14 @@ set(PROJECT_SOURCES ${NETWORK_SOURCES} ${TEST_COMMON_SOURCES})
 if(UNIX)
     list(APPEND PROJECT_SOURCES ${TEST_UNIX_SOURCES})
 endif()
-list(APPEND PROJECT_SOURCES ${UNIX_PROGRAM_SOURCES})
+list(APPEND PROJECT_SOURCES ${UNIX_EXAMPLE_SOURCES})
 
 set(LIBRARY_SOURCES ${NETWORK_SOURCES})
 set(TEST_SOURCES ${TEST_COMMON_SOURCES})
 if(UNIX)
     list(APPEND TEST_SOURCES ${TEST_UNIX_SOURCES})
 endif()
-set(UNIX_SOURCES ${UNIX_PROGRAM_SOURCES})
+set(UNIX_SOURCES ${UNIX_EXAMPLE_SOURCES})
 
 function(add_source_count_target target_name)
     set(source_list ${ARGN})
@@ -736,6 +754,9 @@ if(CTAGS_PATH)
             ${PROJECT_SOURCE_DIR}/include/unix/network
             ${PROJECT_SOURCE_DIR}/src/unix
         )
+        if(UNIX_EXAMPLE_SOURCES)
+            list(APPEND TAG_INPUTS ${PROJECT_SOURCE_DIR}/examples/unix)
+        endif()
     elseif(WIN32)
         list(APPEND TAG_INPUTS ${PROJECT_SOURCE_DIR}/include/windows/network)
     endif()
@@ -755,7 +776,7 @@ endif()
 find_program(SIZE_PATH NAMES llvm-size size)
 if(SIZE_PATH)
     set(SIZE_TARGETS network ${TEST_EXECUTABLES})
-    if(UNIX_PROGRAM_SOURCES)
+    if(UNIX_EXAMPLE_SOURCES)
         list(APPEND SIZE_TARGETS unix-client unix-server)
     endif()
     set(SIZE_COMMAND_ARGS)
@@ -859,7 +880,7 @@ if(UNIX)
 elseif(WIN32)
     set(PLATFORM_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include/windows)
 endif()
-list(APPEND ANALYSIS_SOURCES ${UNIX_PROGRAM_SOURCES})
+list(APPEND ANALYSIS_SOURCES ${UNIX_EXAMPLE_SOURCES})
 
 find_program(CPPCHECK_PATH cppcheck)
 if(CPPCHECK_PATH)
@@ -929,9 +950,34 @@ endif()
 # ============================================================================
 
 install(TARGETS network
-    ARCHIVE DESTINATION lib
-    LIBRARY DESTINATION lib
-    RUNTIME DESTINATION bin
+    EXPORT networkTargets
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+install(EXPORT networkTargets
+    FILE networkTargets.cmake
+    NAMESPACE network::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/network
+)
+
+configure_package_config_file(
+    "${PROJECT_SOURCE_DIR}/cmake/networkConfig.cmake.in"
+    "${PROJECT_BINARY_DIR}/networkConfig.cmake"
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/network
+)
+
+write_basic_package_version_file(
+    "${PROJECT_BINARY_DIR}/networkConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+install(FILES
+    "${PROJECT_BINARY_DIR}/networkConfig.cmake"
+    "${PROJECT_BINARY_DIR}/networkConfigVersion.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/network
 )
 
 # Remove extra generated artifacts not covered by the generator's clean target.
@@ -955,12 +1001,6 @@ add_custom_target(distclean
 install(TARGETS ${TEST_EXECUTABLES}
     RUNTIME DESTINATION bin
 )
-
-if(UNIX_PROGRAM_SOURCES)
-    install(TARGETS unix-client unix-server
-        RUNTIME DESTINATION bin
-    )
-endif()
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/network
     DESTINATION include

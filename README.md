@@ -144,13 +144,43 @@ accepts levels 0 through 3 (or an empty value to disable Fortify); set
 listings are also opt-in, require GCC with GNU assembler, and are written to
 the build directory's `listings/` folder.
 
-On Linux and FreeBSD, the CMake build also creates the `unix-server` and
-`unix-client` example programs.
+## Examples
+
+On Linux and FreeBSD, the project builds a Unix-domain sequenced-packet
+client/server example pair:
+
+```sh
+cmake --build /path/to/network-apps/build-cmake --target examples
+```
+
+Start the server in one terminal:
+
+```sh
+/path/to/network-apps/build-cmake/unix-server
+```
+
+Then send a sequence of integers from another terminal; the client prints
+their sum:
+
+```sh
+/path/to/network-apps/build-cmake/unix-client 1 2 3
+```
+
+Send `DOWN` to stop the server:
+
+```sh
+/path/to/network-apps/build-cmake/unix-client DOWN
+```
+
+Use `cmake --build /path/to/network-apps/build-cmake --target run-examples`
+to run the paired example as a smoke test. With GNU Make, use `gmake examples`
+to build the programs or `gmake run-examples` to run that smoke test. Examples
+are not installed with the library.
 
 ## Installing and Packaging
 
-Install the library, public headers, test executables, and available Unix
-examples using CMake's install prefix:
+Install the library, public headers, and test executables using CMake's
+install prefix:
 
 ```sh
 cmake --install /path/to/network-apps/build-cmake \
