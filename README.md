@@ -177,6 +177,16 @@ to run the paired example as a smoke test. With GNU Make, use `gmake examples`
 to build the programs or `gmake run-examples` to run that smoke test. Examples
 are not installed with the library.
 
+Additional examples:
+
+- `resolve-host [hostname]` resolves a host and prints addresses.
+- `runtime-info` prints networking runtime version and status.
+- `tcp-loopback` binds, connects, and exchanges messages over local TCP.
+
+Build all examples with `cmake --build <build-directory> --target examples`;
+run the cross-platform smoke examples with
+`cmake --build <build-directory> --target run-examples`.
+
 ## Tests
 
 Test targets use GoogleTest when available. CMake first searches for an

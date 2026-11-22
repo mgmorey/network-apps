@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.hpp"           // assert()
+#include "network/gtest.hpp"
 #include "network/network.hpp"          // ApiOptions, Error,
                                         // FailMode, Runtime,
                                         // SocketApi, Version, run()
@@ -114,23 +114,6 @@ namespace
         return result;
     }
 
-    auto parse_arguments(int argc, char** argv) -> void
-    {
-        [[maybe_unused]] const auto [args, options] {parse(argc, argv, "v")};
-
-        if (options.contains('?')) {
-            std::cerr << "Usage: "
-                      << *argv
-                      << " [-v]"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-        }
-
-        if (options.contains('v')) {
-            is_verbose = true;
-        }
-    }
-
     auto print(const Error& error) -> void
     {
         if (is_verbose) {
@@ -181,22 +164,22 @@ namespace
 
     auto test(SocketApi& sa) -> void
     {
-        assert(!static_cast<bool>(sa.version()));
-        assert(!static_cast<bool>(sa.high_version()));
-        assert(sa.description().empty());
-        assert(sa.system_status().empty());
+        EXPECT_FALSE(static_cast<bool>(sa.version()));
+        EXPECT_FALSE(static_cast<bool>(sa.high_version()));
+        EXPECT_TRUE(sa.description().empty());
+        EXPECT_TRUE(sa.system_status().empty());
         print(sa);
-        assert(!sa.is_running());
+        EXPECT_FALSE(sa.is_running());
         sa.start();
         print(sa);
-        assert(sa.is_running());
+        EXPECT_TRUE(sa.is_running());
         const auto actual_str {to_string(sa)};
         const std::regex expected_regex {get_expected_re()};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
         const auto error_code {sa.stop()};
-        assert(!error_code);
+        EXPECT_EQ(error_code, 0);
         print(sa);
-        assert(!sa.is_running());
+        EXPECT_FALSE(sa.is_running());
     }
 
     auto test(ApiOptions ao, Version version) -> void
@@ -221,8 +204,8 @@ namespace
             actual_str = error.what();
         }
 
-        assert(actual_str.empty());
-        assert(error_code == expected_code_stopped);
+        EXPECT_TRUE(actual_str.empty());
+        EXPECT_EQ(error_code, expected_code_stopped);
     }
 
     auto test_version(Version version) -> void
@@ -239,7 +222,7 @@ namespace
             actual_str = error.what();
         }
 
-        assert(actual_str == expected_str);
+        EXPECT_EQ(actual_str, expected_str);
     }
 
     auto test_versions() -> void
@@ -253,15 +236,8 @@ namespace
     }
 }
 
-auto main(int argc, char* argv[]) -> int
+TEST(SocketApi, VersionsAndInactive)
 {
-    try {
-        parse_arguments(argc, argv);
-        test_versions();
-        test_inactive();
-    }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
+    test_versions();
+    test_inactive();
 }

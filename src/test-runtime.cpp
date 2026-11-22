@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.hpp"           // assert()
+#include "network/gtest.hpp"
 #include "network/network.hpp"          // ApiOptions, Error,
                                         // FailMode, Runtime,
                                         // RuntimeScope, Version,
@@ -130,23 +130,6 @@ namespace
         return result;
     }
 
-    auto parse_arguments(int argc, char** argv) -> void
-    {
-        [[maybe_unused]] const auto [args, options] {parse(argc, argv, "v")};
-
-        if (options.contains('?')) {
-            std::cerr << "Usage: "
-                      << *argv
-                      << " [-v]"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-        }
-
-        if (options.contains('v')) {
-            is_verbose = true;
-        }
-    }
-
     auto print(const Error& error) -> void
     {
         if (is_verbose) {
@@ -197,22 +180,22 @@ namespace
 
     auto test(Runtime& rt) -> void
     {
-        assert(!static_cast<bool>(rt.version()));
-        assert(!static_cast<bool>(rt.high_version()));
-        assert(rt.description().empty());
-        assert(rt.system_status().empty());
+        EXPECT_FALSE(static_cast<bool>(rt.version()));
+        EXPECT_FALSE(static_cast<bool>(rt.high_version()));
+        EXPECT_TRUE(rt.description().empty());
+        EXPECT_TRUE(rt.system_status().empty());
         print(rt);
-        assert(!rt.is_running());
+        EXPECT_FALSE(rt.is_running());
         rt.start();
         print(rt);
-        assert(rt.is_running());
+        EXPECT_TRUE(rt.is_running());
         const auto actual_str {to_string(rt)};
         const std::regex expected_regex {get_expected_re()};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
         const auto error_code {rt.stop()};
-        assert(!error_code);
+        EXPECT_EQ(error_code, 0);
         print(rt);
-        assert(!rt.is_running());
+        EXPECT_FALSE(rt.is_running());
     }
 
     auto test(ApiOptions ao, RuntimeScope rs) -> void
@@ -241,8 +224,8 @@ namespace
             actual_str = error.what();
         }
 
-        assert(actual_str.empty());
-        assert(error_code == expected_code_stopped);
+        EXPECT_TRUE(actual_str.empty());
+        EXPECT_EQ(error_code, expected_code_stopped);
     }
 
     auto test_version(RuntimeScope rs, Version version) -> void
@@ -259,7 +242,7 @@ namespace
             actual_str = error.what();
         }
 
-        assert(actual_str == expected_str);
+        EXPECT_EQ(actual_str, expected_str);
     }
 
     auto test_versions(RuntimeScope rs) -> void
@@ -273,16 +256,9 @@ namespace
     }
 }
 
-auto main(int argc, char* argv[]) -> int
+TEST(Runtime, SharedAndGlobalScopes)
 {
-    try {
-        parse_arguments(argc, argv);
-        test_versions(RuntimeScope::shared);
-        test_versions(RuntimeScope::global);
-        test_inactive();
-    }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
+    test_versions(RuntimeScope::shared);
+    test_versions(RuntimeScope::global);
+    test_inactive();
 }

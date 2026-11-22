@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.hpp"           // assert()
+#include "network/gtest.hpp"
 #include "network/network.hpp"          // Address, ByteString,
                                         // EndpointView, Error,
                                         // Hostname, HostnameView,
@@ -149,7 +149,7 @@ namespace
                  << peer
                  << std::endl;
             // clang-format on
-            assert(host.text() == peer.text());
+            EXPECT_EQ(host.text(), peer.text());
         }
 
     private:
@@ -157,28 +157,6 @@ namespace
         HostnameView m_hostname;
         std::ostream& m_os;
     };
-
-    auto parse_arguments(int argc, char** argv) -> EndpointView
-    {
-        const auto [operands, options] {parse(argc, argv, "v")};
-
-        if (options.contains('?')) {
-            std::cerr << "Usage: "
-                      << *argv
-                      << " [-v]"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-        }
-
-        if (options.contains('v')) {
-            is_verbose = true;
-        }
-
-        return {
-            !operands.empty() ? operands[0] : remotehost,
-            operands.size() > 1 ? operands[1] : service
-        };
-    }
 
     auto test_connect(const EndpointView& endpoint,
                       const SocketHints& hints,
@@ -199,19 +177,12 @@ namespace
     }
 }
 
-auto main(int argc, char* argv[]) -> int
+TEST(Connect, RemoteHost)
 {
-    try {
-        const auto endpoint {parse_arguments(argc, argv)};
-        const auto sr {run(is_verbose)};
-        const auto hostname {get_hostname(sr.get())};
-
-        if (!test_has_environment_variable("http_proxy")) {
-            test_connect_valid(endpoint, socket_hints, hostname);
-        }
-    }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
+    const EndpointView endpoint {remotehost, service};
+    const auto sr {run(false)};
+    const auto hostname {get_hostname(sr.get())};
+    if (!test_has_environment_variable("http_proxy")) {
+        test_connect_valid(endpoint, socket_hints, hostname);
     }
 }

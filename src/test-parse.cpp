@@ -19,7 +19,7 @@
                                                 // std::span
 #include "network/to-size.hpp"                  // to_size()
 
-#include <gtest/gtest.h>
+#include "network/gtest.hpp"
 
 #include <cstring>      // std::strlen()
 #include <span>         // std::span

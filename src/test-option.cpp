@@ -15,7 +15,7 @@
 
 #include "network/argumentdata.hpp"     // ArgumentData
 #include "network/argumentspan.hpp"     // ArgumentSpan, std::span
-#include "network/assert.hpp"           // assert()
+#include "network/gtest.hpp"
 #include "network/error.hpp"            // Error
 #include "network/get-option.hpp"       // get_optarg(), get_optind(),
                                         // get_option()
@@ -67,7 +67,7 @@ namespace
         }
 
         const auto length {static_cast<int>(std::strlen(optstring))};
-        assert(get_optind() == optind_begin + length);
+        EXPECT_EQ(get_optind(), optind_begin + length);
         static_cast<void>(get_optopt());
     }
 
@@ -89,54 +89,47 @@ namespace
     auto test_arguments(ArgumentSpan args, const char* argv0) -> void
     {
         print(args);
-        assert(std::string {args[0]} == argv0);
+        EXPECT_EQ(std::string {args[0]}, argv0);
     }
 
     auto test_operands(ArgumentSpan args) -> void
     {
         print(args, "Operand");
-        assert(std::string {args[0]} == "one");
-        assert(std::string {args[1]} == "two");
-        assert(std::string {args[2]} == "three");
-        assert(args.size() == 3);
+        EXPECT_EQ(std::string {args[0]}, "one");
+        EXPECT_EQ(std::string {args[1]}, "two");
+        EXPECT_EQ(std::string {args[2]}, "three");
+        EXPECT_EQ(args.size(), 3);
     }
 
     auto test_options(ArgumentSpan args, const char* argv0) -> void
     {
         print(args, "Option");
-        assert(std::string {args[0]} == "-f");
-        assert(std::string {args[1]} == argv0);
-        assert(std::string {args[2]} == "-v");
-        assert(args.size() == 3);
+        EXPECT_EQ(std::string {args[0]}, "-f");
+        EXPECT_EQ(std::string {args[1]}, argv0);
+        EXPECT_EQ(std::string {args[2]}, "-v");
+        EXPECT_EQ(args.size(), 3);
     }
 
-    auto test_arguments(int argc, char** argv) -> void
+    auto test_arguments(const char* argv0) -> void
     {
-        assert(argc > 0);
-        assert(*argv != nullptr);
-        assert(get_opterr() == 1);
-        ArgumentData data {get_strings(*argv)};
+        ASSERT_NE(argv0, nullptr);
+        EXPECT_EQ(get_opterr(), 1);
+        ArgumentData data {get_strings(argv0)};
         const std::span args {data.data(), data.size()};
         std::string filename;
         bool is_verbose {false};
         parse_arguments(filename, is_verbose, args);
-        test_arguments(args, *argv);
+        test_arguments(args, argv0);
         auto options {args.subspan(1, to_size(get_optind()) - 1)};
-        test_options(options, *argv);
+        test_options(options, argv0);
         auto operands {args.subspan(to_size(get_optind()))};
         test_operands(operands);
-        assert(filename == *argv);
-        assert(is_verbose);
+        EXPECT_EQ(filename, argv0);
+        EXPECT_TRUE(is_verbose);
     }
 }
 
-auto main(int argc, char* argv[]) -> int
+TEST(Option, ArgumentsOptionsAndOperands)
 {
-    try {
-        test_arguments(argc, argv);
-    }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
+    test_arguments("test-option");
 }

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.hpp"           // assert()
+#include "network/gtest.hpp"
 #include "network/inetsocket.hpp"       // InetSocket
 #include "network/network.hpp"          // Error, InetSocket, Socket,
                                         // SocketData, SocketHints,
@@ -84,23 +84,6 @@ namespace
         return create_socket(hints, is_verbose);
     }
 
-    auto parse_arguments(int argc, char** argv) -> void
-    {
-        [[maybe_unused]] const auto [args, options] {parse(argc, argv, "v")};
-
-        if (options.contains('?')) {
-            std::cerr << "Usage: "
-                      << *argv
-                      << " [-v]"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-        }
-
-        if (options.contains('v')) {
-            is_verbose = true;
-        }
-    }
-
     auto print(const Error& error) -> void
     {
         if (is_verbose) {
@@ -113,12 +96,12 @@ namespace
     auto test(const Socket& s) -> void
     {
         const handle_type handle {s};
-        assert(static_cast<handle_type>(s) != handle_null);
-        assert(std::cmp_equal(static_cast<handle_type>(s), handle));
+        EXPECT_NE(static_cast<handle_type>(s), handle_null);
+        EXPECT_TRUE(std::cmp_equal(static_cast<handle_type>(s), handle));
         const auto str {std::to_string(static_cast<handle_type>(s))};
         std::ostringstream oss;
         oss << s;
-        assert(oss.str() == str);
+        EXPECT_EQ(oss.str(), str);
     }
 
     auto test(handle_type handle, const std::string& expected_re) -> void
@@ -126,7 +109,7 @@ namespace
         std::string actual_str;
 
         try {
-            assert(std::cmp_equal(to_handle_type(handle), handle));
+            EXPECT_TRUE(std::cmp_equal(to_handle_type(handle), handle));
         }
         catch (const Error& error) {
             print(error);
@@ -134,11 +117,11 @@ namespace
         }
 
         if (expected_re.empty()) {
-            assert(actual_str.empty());
+            EXPECT_TRUE(actual_str.empty());
         }
         else {
             const std::regex expected_regex {expected_re};
-            assert(std::regex_match(actual_str, expected_regex));
+            EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
         }
     }
 
@@ -160,11 +143,11 @@ namespace
         }
 
         if (expected_re.empty()) {
-            assert(actual_str.empty());
+            EXPECT_TRUE(actual_str.empty());
         }
         else {
             const std::regex expected_regex {expected_re};
-            assert(std::regex_match(actual_str, expected_regex));
+            EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
         }
     }
 
@@ -183,7 +166,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test(const SocketHints& hints,
@@ -200,7 +183,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_handle_null() -> void
@@ -227,7 +210,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_accept_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_inet_peername() -> void
@@ -244,7 +227,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_peername_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_inet_socket(const Runtime* rt) -> void
@@ -286,24 +269,17 @@ namespace
     }
 }
 
-auto main(int argc, char* argv[]) -> int
+TEST(SocketInet, HandleCreationAndErrors)
 {
-    try {
-        parse_arguments(argc, argv);
-        const auto sr {run(is_verbose)};
-        test_handle_null();
-        test_handle_zero();
-        test_inet_accept();
-        test_inet_peername();
-        test_inet_socket(sr.get());
-        test_socket_family_invalid();
-        test_socket_handle_invalid();
-        test_socket_protocol_invalid();
-        test_socket_socktype_invalid();
-        test_valid();
-    }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
+    const auto sr {run(false)};
+    test_handle_null();
+    test_handle_zero();
+    test_inet_accept();
+    test_inet_peername();
+    test_inet_socket(sr.get());
+    test_socket_family_invalid();
+    test_socket_handle_invalid();
+    test_socket_protocol_invalid();
+    test_socket_socktype_invalid();
+    test_valid();
 }

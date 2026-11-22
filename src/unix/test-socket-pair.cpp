@@ -15,7 +15,7 @@
 
 #ifndef _WIN32
 
-#include "network/assert.hpp"           // assert()
+#include "network/gtest.hpp"
 #include "network/network.hpp"          // Address, ByteString, Error,
                                         // LogicError, OsError,
                                         // Pathname, Socket,
@@ -61,23 +61,6 @@ namespace
 
     auto is_verbose {false};  // NOLINT
 
-    auto parse_arguments(int argc, char** argv) -> void
-    {
-        [[maybe_unused]] const auto [args, options] {parse(argc, argv, "v")};
-
-        if (options.contains('?')) {
-            std::cerr << "Usage: "
-                      << *argv
-                      << " [-v]"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-        }
-
-        if (options.contains('v')) {
-            is_verbose = true;
-        }
-    }
-
     auto print(const Error& error) -> void
     {
         if (is_verbose) {
@@ -108,7 +91,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_socketpair_invalid_protocol() -> void
@@ -130,18 +113,11 @@ namespace
     }
 }
 
-auto main(int argc, char* argv[]) -> int
+TEST(SocketPair, InvalidAndValidHints)
 {
-    try {
-        parse_arguments(argc, argv);
-        test_socketpair_invalid_socktype();
-        test_socketpair_invalid_protocol();
-        test_socketpair_valid();
-    }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
+    test_socketpair_invalid_socktype();
+    test_socketpair_invalid_protocol();
+    test_socketpair_valid();
 }
 
 #endif

@@ -15,7 +15,7 @@
 
 #ifndef _WIN32
 
-#include "network/assert.hpp"           // assert()
+#include "network/gtest.hpp"
 #include "network/network.hpp"          // Address, ByteString, Error,
                                         // LogicError, OsError,
                                         // Pathname, Socket,
@@ -141,23 +141,6 @@ namespace
         return pathnames;
     }
 
-    auto parse_arguments(int argc, char** argv) -> void
-    {
-        [[maybe_unused]] const auto [args, options] {parse(argc, argv, "v")};
-
-        if (options.contains('?')) {
-            std::cerr << "Usage: "
-                      << *argv
-                      << " [-v]"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-        }
-
-        if (options.contains('v')) {
-            is_verbose = true;
-        }
-    }
-
     auto print(const Error& error) -> void
     {
         if (is_verbose) {
@@ -201,10 +184,10 @@ namespace
             else {
                 const auto self {s.get_sockname()};
                 print(s, self);
-                assert(self == path);  // NOLINT
+                EXPECT_TRUE(self == path);
             }
 
-            assert(expected_codes.contains(actual_result.number()));
+            EXPECT_TRUE(expected_codes.contains(actual_result.number()));
         }
         catch (const LogicError& error) {
             print(error);
@@ -212,7 +195,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test(const SocketHints& hints,
@@ -229,7 +212,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test(std::string_view path,
@@ -285,7 +268,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_accept_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_unix_invalid_protocol() -> void
@@ -307,21 +290,14 @@ namespace
     }
 }
 
-auto main(int argc, char* argv[]) -> int
+TEST(SocketUnix, PathsAndSocketCreation)
 {
-    try {
-        parse_arguments(argc, argv);
-        test_paths_invalid();
-        test_paths_valid();
-        test_unix_invalid_socktype();
-        test_unix_invalid_protocol();
-        test_unix_accept();
-        test_unix_valid();
-    }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
+    test_paths_invalid();
+    test_paths_valid();
+    test_unix_invalid_socktype();
+    test_unix_invalid_protocol();
+    test_unix_accept();
+    test_unix_valid();
 }
 
 #endif

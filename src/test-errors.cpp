@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.hpp"           // assert()
+#include "network/gtest.hpp"
 #include "network/network.hpp"          // Error, RuntimeError,
                                         // get_api_error(),
                                         // get_os_error(),
@@ -107,23 +107,6 @@ namespace
 
     auto is_verbose {false};  // NOLINT
 
-    auto parse_arguments(int argc, char** argv) -> void
-    {
-        [[maybe_unused]] const auto [args, options] {parse(argc, argv, "v")};
-
-        if (options.contains('?')) {
-            std::cerr << "Usage: "
-                      << *argv
-                      << " [-v]"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-        }
-
-        if (options.contains('v')) {
-            is_verbose = true;
-        }
-    }
-
     auto print(const Error& error) -> void
     {
         if (is_verbose) {
@@ -136,13 +119,13 @@ namespace
     auto test_get_api_error() -> void
     {
         reset_api_error();
-        assert(get_api_error() == 0);
+        EXPECT_EQ(get_api_error(), 0);
     }
 
     auto test_get_os_error() -> void
     {
         reset_os_error();
-        assert(get_os_error() == 0);
+        EXPECT_EQ(get_os_error(), 0);
     }
 
     auto test_handle(auto value, const char* expected_re) -> void
@@ -158,7 +141,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_handle() -> void
@@ -179,7 +162,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_name_length() -> void
@@ -201,7 +184,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_os_error() -> void
@@ -216,7 +199,7 @@ namespace
     {
         const std::string string {"\"Hello!\"\n"};
         const std::string quoted {quote(string)};
-        assert(quoted == "\"\\\"Hello!\\\"\\012\"");
+        EXPECT_EQ(quoted, "\"\\\"Hello!\\\"\\012\"");
     }
 
     auto test_sa_length(auto value, const char* expected_re) -> void
@@ -232,7 +215,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_sa_length() -> void
@@ -254,7 +237,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_std_size() -> void
@@ -277,7 +260,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_path_length() -> void
@@ -299,7 +282,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_sun_length() -> void
@@ -323,7 +306,7 @@ namespace
             actual = error.what();
         }
 
-        assert(actual == expected);
+        EXPECT_EQ(actual, expected);
     }
 
     auto test_throw_logic_error() -> void
@@ -339,7 +322,7 @@ namespace
             actual = error.what();
         }
 
-        assert(actual == expected);
+        EXPECT_EQ(actual, expected);
     }
 
     auto test_throw_runtime_error() -> void
@@ -355,32 +338,25 @@ namespace
             actual = error.what();
         }
 
-        assert(actual == expected);
+        EXPECT_EQ(actual, expected);
     }
 }
 
-auto main(int argc, char* argv[]) -> int
+TEST(Errors, ConversionsAndExceptions)
 {
-    try {
-        parse_arguments(argc, argv);
-        test_get_api_error();
-        test_get_os_error();
-        test_handle();
-        test_name_length();
-        test_os_error();
-        test_quote();
-        test_sa_length();
-        test_std_size();
+    test_get_api_error();
+    test_get_os_error();
+    test_handle();
+    test_name_length();
+    test_os_error();
+    test_quote();
+    test_sa_length();
+    test_std_size();
 #ifndef _WIN32
-        test_path_length();
-        test_sun_length();
+    test_path_length();
+    test_sun_length();
 #endif
-        test_throw_error();
-        test_throw_logic_error();
-        test_throw_runtime_error();
-    }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
+    test_throw_error();
+    test_throw_logic_error();
+    test_throw_runtime_error();
 }

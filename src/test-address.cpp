@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.hpp"           // assert()
+#include "network/gtest.hpp"
 #include "network/network.hpp"          // Address, ByteSpan, Error,
                                         // Hostname, SocketFamily,
                                         // SocketHints, SocketHost,
@@ -149,23 +149,6 @@ namespace
 
 #endif
 
-    auto parse_arguments(int argc, char** argv) -> void
-    {
-        [[maybe_unused]] const auto [args, options] {parse(argc, argv, "v")};
-
-        if (options.contains('?')) {
-            std::cerr << "Usage: "
-                      << *argv
-                      << " [-v]"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-        }
-
-        if (options.contains('v')) {
-            is_verbose = true;
-        }
-    }
-
     auto print(ByteSpan bs) -> void
     {
         const Address address {bs};
@@ -205,14 +188,14 @@ namespace
 
     auto test(ByteSpan bs) -> void
     {
-        assert(!bs.empty());
+        EXPECT_FALSE(bs.empty());
         const auto size {bs.size()};
         const Address address {bs};
-        assert(!address.empty());
+        EXPECT_FALSE(address.empty());
         const auto family {address.family()};
         const auto [size_min, size_max] {SocketLimits(family).limits()};
-        assert(size_min <= size);
-        assert(size <= size_max);
+        EXPECT_LE(size_min, size);
+        EXPECT_LE(size, size_max);
 #ifdef HAVE_SOCKADDR_SA_LEN
         static_cast<void>(address.length());
 #endif
@@ -223,16 +206,16 @@ namespace
         const auto text {address.text()};
         static_cast<void>(text);
         ByteString addr {bs.begin(), bs.end()};
-        assert(ByteString {address} == addr);
+        EXPECT_EQ(ByteString {address}, addr);
         previous_address = addr;
     }
 
     auto test_address_empty() -> void
     {
         const Address address {ByteString {}};
-        assert(address.empty());
-        assert(address.port() == 0);
-        assert(address.text() == string_null);
+        EXPECT_TRUE(address.empty());
+        EXPECT_EQ(address.port(), 0);
+        EXPECT_EQ(address.text(), string_null);
     }
 
     auto test_sa(const sockaddr& sa, std::size_t sa_len,
@@ -250,7 +233,7 @@ namespace
         }
 
         if (!expected_re.empty()) {
-            assert(std::regex_match(actual_str, expected_regex));
+            EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
         }
 
         actual_str.clear();
@@ -264,7 +247,7 @@ namespace
         }
 
         if (!expected_re.empty()) {
-            assert(std::regex_match(actual_str, expected_regex));
+            EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
         }
     }
 
@@ -288,7 +271,7 @@ namespace
             actual_str = error.what();
         }
 
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
 
         if (sin.sin_family == AF_INET) {
             actual_str.clear();
@@ -301,7 +284,7 @@ namespace
                 actual_str = error.what();
             }
 
-            assert(std::regex_match(actual_str, expected_regex));
+            EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
         }
     }
 
@@ -331,7 +314,7 @@ namespace
             actual_str = error.what();
         }
 
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
 
         if (sin6.sin6_family == AF_INET6) {
             actual_str.clear();
@@ -344,7 +327,7 @@ namespace
                 actual_str = error.what();
             }
 
-            assert(std::regex_match(actual_str, expected_regex));
+            EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
         }
     }
 
@@ -376,7 +359,7 @@ namespace
             actual_str = error.what();
         }
 
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_path_invalid_length() -> void
@@ -399,7 +382,7 @@ namespace
             actual_str = error.what();
         }
 
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
 
         if (sun.sun_family == af_unix) {
             actual_str.clear();
@@ -412,7 +395,7 @@ namespace
                 actual_str = error.what();
             }
 
-            assert(std::regex_match(actual_str, expected_regex));
+            EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
         }
     }
 
@@ -463,26 +446,19 @@ namespace
     }
 }
 
-auto main(int argc, char* argv[]) -> int
+TEST(Address, ValidationAndLookup)
 {
-    try {
-        parse_arguments(argc, argv);
-        test_address_empty();
-        test_sa_invalid_length();
-        test_sin6_invalid_family();
-        test_sin_invalid_family();
+    test_address_empty();
+    test_sa_invalid_length();
+    test_sin6_invalid_family();
+    test_sin_invalid_family();
 #ifndef _WIN32
-        test_path_invalid_length();
-        test_sun_invalid_family();
-        test_sun_valid_path_large();
-        test_sun_valid_path_small();
+    test_path_invalid_length();
+    test_sun_invalid_family();
+    test_sun_valid_path_large();
+    test_sun_valid_path_small();
 #endif
-        test_sin_valid();
-        test_sin6_valid();
-        test();
-    }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
+    test_sin_valid();
+    test_sin6_valid();
+    test();
 }

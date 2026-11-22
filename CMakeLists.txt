@@ -461,6 +461,13 @@ set(TEST_UNIX_SOURCES
 )
 
 # Unix socket examples are available on Linux and FreeBSD.
+# Examples that use only portable networking APIs.
+set(COMMON_EXAMPLE_SOURCES
+    examples/resolve-host.cpp
+    examples/runtime-info.cpp
+    examples/tcp-loopback.cpp
+)
+
 set(UNIX_EXAMPLE_SOURCES)
 if(CMAKE_SYSTEM_NAME MATCHES "^(Linux|FreeBSD)$")
     set(UNIX_EXAMPLE_SOURCES
@@ -507,6 +514,7 @@ if(WITH_LISTINGS)
         set(LISTING_SOURCES
             ${NETWORK_SOURCES}
             ${TEST_COMMON_SOURCES}
+            ${COMMON_EXAMPLE_SOURCES}
             ${UNIX_EXAMPLE_SOURCES}
         )
         if(UNIX)
@@ -638,13 +646,26 @@ add_test_executable(test-socket-api src/test-socket-api.cpp)
 add_test_executable(test-socket-data src/test-socket-data.cpp)
 add_test_executable(test-socket-inet src/test-socket-inet.cpp)
 target_link_libraries(test-parse PRIVATE GTest::gtest_main)
+target_link_libraries(test-address PRIVATE GTest::gtest_main)
+target_link_libraries(test-errors PRIVATE GTest::gtest_main)
+target_link_libraries(test-hostname PRIVATE GTest::gtest_main)
+target_link_libraries(test-runtime PRIVATE GTest::gtest_main)
+target_link_libraries(test-socket-api PRIVATE GTest::gtest_main)
+target_link_libraries(test-socket-data PRIVATE GTest::gtest_main)
+target_link_libraries(test-bind PRIVATE GTest::gtest_main)
+target_link_libraries(test-connect PRIVATE GTest::gtest_main)
+target_link_libraries(test-host PRIVATE GTest::gtest_main)
+target_link_libraries(test-option PRIVATE GTest::gtest_main)
+target_link_libraries(test-socket-inet PRIVATE GTest::gtest_main)
 
 # Unix-specific tests
 if(UNIX)
     add_test_executable(test-socket-pair src/unix/test-socket-pair.cpp)
     set_tests_properties(test-socket-pair PROPERTIES LABELS "unit;unix")
+    target_link_libraries(test-socket-pair PRIVATE GTest::gtest_main)
     add_test_executable(test-socket-unix src/unix/test-socket-unix.cpp)
     set_tests_properties(test-socket-unix PROPERTIES LABELS "unit;unix")
+    target_link_libraries(test-socket-unix PRIVATE GTest::gtest_main)
 endif()
 
 foreach(example_source IN LISTS UNIX_EXAMPLE_SOURCES)
@@ -657,13 +678,38 @@ foreach(example_source IN LISTS UNIX_EXAMPLE_SOURCES)
     target_link_libraries(${example_name} PRIVATE network)
     network_enable_link_map(${example_name})
 endforeach()
+
+foreach(example_source IN LISTS COMMON_EXAMPLE_SOURCES)
+    get_filename_component(example_name ${example_source} NAME_WE)
+    add_executable(${example_name} ${example_source})
+    target_include_directories(${example_name} PRIVATE
+        ${PROJECT_SOURCE_DIR}/include
+    )
+    if(UNIX)
+        target_include_directories(${example_name} PRIVATE
+            ${PROJECT_SOURCE_DIR}/include/unix
+        )
+    elseif(WIN32)
+        target_include_directories(${example_name} PRIVATE
+            ${PROJECT_SOURCE_DIR}/include/windows
+        )
+        target_link_libraries(${example_name} PRIVATE ws2_32)
+    endif()
+    target_link_libraries(${example_name} PRIVATE network)
+    network_enable_link_map(${example_name})
+endforeach()
+
+set(EXAMPLE_TARGETS resolve-host runtime-info tcp-loopback)
 if(UNIX_EXAMPLE_SOURCES)
-    add_custom_target(examples DEPENDS unix-client unix-server)
+    list(APPEND EXAMPLE_TARGETS unix-client unix-server)
+endif()
+add_custom_target(examples DEPENDS ${EXAMPLE_TARGETS})
+if(EXAMPLE_TARGETS)
     add_custom_target(run-examples
-        COMMAND ${PROJECT_SOURCE_DIR}/script/run-programs
-            -v
-            unix-server unix-client
-        DEPENDS unix-client unix-server
+        COMMAND $<TARGET_FILE:resolve-host> localhost
+        COMMAND $<TARGET_FILE:runtime-info>
+        COMMAND $<TARGET_FILE:tcp-loopback>
+        DEPENDS ${EXAMPLE_TARGETS}
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         COMMENT "Run Unix socket examples"
         USES_TERMINAL
@@ -676,6 +722,7 @@ endif()
 # ============================================================================
 
 set(PROJECT_SOURCES ${NETWORK_SOURCES} ${TEST_COMMON_SOURCES})
+list(APPEND PROJECT_SOURCES ${COMMON_EXAMPLE_SOURCES})
 if(UNIX)
     list(APPEND PROJECT_SOURCES ${TEST_UNIX_SOURCES})
 endif()
@@ -798,7 +845,8 @@ endif()
 
 find_program(SIZE_PATH NAMES llvm-size size)
 if(SIZE_PATH)
-    set(SIZE_TARGETS network ${TEST_EXECUTABLES})
+    set(SIZE_TARGETS network ${TEST_EXECUTABLES}
+        resolve-host runtime-info tcp-loopback)
     if(UNIX_EXAMPLE_SOURCES)
         list(APPEND SIZE_TARGETS unix-client unix-server)
     endif()
@@ -896,7 +944,11 @@ endif()
 # Static Analysis Targets (Optional)
 # ============================================================================
 
-set(ANALYSIS_SOURCES ${NETWORK_SOURCES} ${TEST_COMMON_SOURCES})
+set(ANALYSIS_SOURCES
+    ${NETWORK_SOURCES}
+    ${TEST_COMMON_SOURCES}
+    ${COMMON_EXAMPLE_SOURCES}
+)
 if(UNIX)
     list(APPEND ANALYSIS_SOURCES ${TEST_UNIX_SOURCES})
     set(PLATFORM_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include/unix)

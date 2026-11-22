@@ -138,6 +138,7 @@ test-socket-data.cpp test-socket-inet.cpp
 test_unix_sources = test-socket-pair.cpp test-socket-unix.cpp
 
 unix_example_sources = unix-server.cpp unix-client.cpp
+common_example_sources = resolve-host.cpp runtime-info.cpp tcp-loopback.cpp
 
 sizes = sizes.txt sizes.txt~
 
@@ -151,11 +152,12 @@ package = $(output_prefix)$(library_stem).tar.gz
 
 # Define variables for computed file lists
 
-sources = $(library_sources) $(test_sources)				\
+sources = $(library_sources) $(test_sources) $(common_example_sources)	\
 $(if $(is_posix),$(unix_example_sources),)
 library_sources = $(library_common_sources) $(library_native_sources)	\
 $(if $(filter unix,$(api)),$(library_unix_sources),)
-program_sources = $(test_sources) $(if $(is_posix),$(unix_example_sources),)
+program_sources = $(test_sources) $(common_example_sources)		\
+$(if $(is_posix),$(unix_example_sources),)
 test_sources = $(test_common_sources) $(if $(filter	\
 unix,$(api)),$(test_unix_sources),)
 
@@ -166,8 +168,9 @@ objects = $(call get-objects-from-sources,$(sources))
 library_objects = $(call get-objects-from-sources,$(library_sources))
 program_objects = $(call get-objects-from-sources,$(program_sources))
 
-programs = $(test_programs) $(unix_programs)
+programs = $(test_programs) $(common_programs) $(unix_programs)
 test_programs = $(call get-programs-from-sources,$(test_sources))
+common_programs = $(call get-programs-from-sources,$(common_example_sources))
 unix_programs = $(if $(is_posix),\
 $(call get-programs-from-sources,$(unix_example_sources)),)
 
@@ -222,7 +225,7 @@ LINK$(object_suffix) = $(if $(CXX),$(CXX),c++) $(sort $(LDFLAGS))
 
 # Set virtual paths
 vpath %$(include_suffix) $(include_dirs:/.=)
-vpath %$(source_suffix) $(source_dirs:/.=) examples/unix
+vpath %$(source_suffix) $(source_dirs:/.=) examples examples/unix
 
 # Define pseudotargets
 
@@ -290,13 +293,15 @@ distclean:
 
 .PHONY: examples run-examples
 ifneq "$(is_posix)" ""
-examples: $(unix_programs)
+examples: $(common_programs) $(unix_programs)
 
-run-examples: $(unix_programs)
-	cd $(output_dir) && $(CURDIR)/script/run-programs -v $(^F)
+run-examples: $(common_programs) $(unix_programs)
+	cd $(output_dir) && ./runtime-info && ./resolve-host localhost && ./tcp-loopback && $(CURDIR)/script/run-programs -v $(^F)
 else
-examples run-examples:
-	@printf '%s\n' "Unix socket examples are supported on Linux and FreeBSD"
+examples: $(common_programs)
+
+run-examples: $(common_programs)
+	cd $(output_dir) && ./runtime-info && ./resolve-host localhost && ./tcp-loopback
 endif
 
 .PHONY: gcovr-html

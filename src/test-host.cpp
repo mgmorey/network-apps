@@ -14,7 +14,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/argumentspan.hpp"     // ArgumentSpan
-#include "network/assert.hpp"           // assert()
+#include "network/gtest.hpp"
 #include "network/network.hpp"          // Address, ByteSpan,
                                         // ByteString, Endpoint,
                                         // Error, HostnameView,
@@ -195,25 +195,6 @@ namespace
         return to_bytestring(&sin, sizeof sin);
     }
 
-    auto parse_arguments(int argc, char** argv) -> ArgumentSpan
-    {
-        const auto [operands, options] {parse(argc, argv, "v")};
-
-        if (options.contains('?')) {
-            std::cerr << "Usage: "
-                      << *argv
-                      << " [-v]"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-        }
-
-        if (options.contains('v')) {
-            is_verbose = true;
-        }
-
-        return operands;
-    }
-
     auto print(const Error& error) -> void
     {
         if (is_verbose) {
@@ -256,7 +237,7 @@ namespace
             print(hosts);
         }
 
-        assert(expected_codes.contains(actual_code));
+        EXPECT_TRUE(expected_codes.contains(actual_code));
     }
 
     auto test_get_endpoint_invalid_flag(const Runtime* rt) -> void
@@ -273,7 +254,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_getnameinfo_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_get_endpointresult_invalid_flag(const Runtime* rt) -> void
@@ -288,7 +269,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_getnameinfo_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_invalid_family() -> void
@@ -327,31 +308,16 @@ namespace
     }
 }
 
-auto main(int argc, char* argv[]) -> int
+TEST(Host, EndpointResolution)
 {
-    try {
-        const auto args {parse_arguments(argc, argv)};
-        const auto sr {run(is_verbose)};
-        const auto* rt {sr.get()};
-        test_get_endpoint_invalid_flag(rt);
-        test_get_endpointresult_invalid_flag(rt);
-        test_invalid_family();
-        test_invalid_socktype();
+    const auto sr {run(false)};
+    const auto* rt {sr.get()};
+    test_get_endpoint_invalid_flag(rt);
+    test_get_endpointresult_invalid_flag(rt);
+    test_invalid_family();
+    test_invalid_socktype();
 #if !defined(__CYGWIN__) && !defined(_WIN32)
-        test_invalid_protocol();
+    test_invalid_protocol();
 #endif
-
-        StringList hosts;
-        std::ranges::copy(args, std::back_inserter(hosts));
-
-        if (hosts.empty()) {
-            hosts.emplace_back(get_hostname(rt));
-        }
-
-        std::ranges::for_each(hosts, test_valid);
-    }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
+    test_valid(get_hostname(rt));
 }

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.hpp"           // assert()
+#include "network/gtest.hpp"
 #include "network/network.hpp"          // Error, Hostname, OsError,
                                         // Runtime, get_hostname(),
                                         // get_hostnameresult(), run()
@@ -57,23 +57,6 @@ namespace
 
     auto is_verbose {false};  // NOLINT
 
-    auto parse_arguments(int argc, char** argv) -> void
-    {
-        [[maybe_unused]] const auto [args, options] {parse(argc, argv, "v")};
-
-        if (options.contains('?')) {
-            std::cerr << "Usage: "
-                      << *argv
-                      << " [-v]"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-        }
-
-        if (options.contains('v')) {
-            is_verbose = true;
-        }
-    }
-
     auto print(const Error& error) -> void
     {
         if (is_verbose) {
@@ -102,7 +85,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_gethostname_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_get_hostnameresult_valid(const Runtime* rt) -> void
@@ -115,7 +98,7 @@ namespace
             actual_str = result.error().string();
         }
 
-        assert(actual_str.empty());
+        EXPECT_TRUE(actual_str.empty());
     }
 
     auto test_get_hostname_valid() -> void
@@ -131,22 +114,15 @@ namespace
             actual_str = error.what();
         }
 
-        assert(actual_str.empty());
+        EXPECT_TRUE(actual_str.empty());
     }
 }
 
-auto main(int argc, char* argv[]) -> int
+TEST(Hostname, ResultAndLocalHostname)
 {
-    try {
-        parse_arguments(argc, argv);
-        const auto sr {run(is_verbose)};
-        const auto* rt {sr.get()};
-        test_get_hostnameresult_overflow(rt);
-        test_get_hostnameresult_valid(rt);
-        test_get_hostname_valid();
-    }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
+    const auto sr {run(false)};
+    const auto* rt {sr.get()};
+    test_get_hostnameresult_overflow(rt);
+    test_get_hostnameresult_valid(rt);
+    test_get_hostname_valid();
 }

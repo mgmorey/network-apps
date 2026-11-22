@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.hpp"           // assert()
+#include "network/gtest.hpp"
 #include "network/network.hpp"          // Error, OsError, SocketCore,
                                         // close(), family_null,
                                         // family_type, handle_null,
@@ -77,23 +77,6 @@ namespace
 
     auto is_verbose {false}; // NOLINT
 
-    auto parse_arguments(int argc, char** argv) -> void
-    {
-        [[maybe_unused]] const auto [args, options] {parse(argc, argv, "v")};
-
-        if (options.contains('?')) {
-            std::cerr << "Usage: "
-                      << *argv
-                      << " [-v]"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-        }
-
-        if (options.contains('v')) {
-            is_verbose = true;
-        }
-    }
-
     auto print(const Error& error) -> void
     {
         if (is_verbose) {
@@ -120,10 +103,10 @@ namespace
 
         try {
             const auto sc {SocketCore(handle, family, rt)};
-            assert(sc.family() == family);
-            assert(sc.handle() == handle);
-            assert(sc.runtime() != nullptr);
-            assert(sc.runtime()->is_verbose() == is_verbose);
+            EXPECT_EQ(sc.family(), family);
+            EXPECT_EQ(sc.handle(), handle);
+            ASSERT_NE(sc.runtime(), nullptr);
+            EXPECT_EQ(sc.runtime()->is_verbose(), is_verbose);
         }
         catch (const Error& error) {
             print(error);
@@ -131,7 +114,7 @@ namespace
         }
 
         const std::regex expected_regex {expected_re};
-        assert(std::regex_match(actual_str, expected_regex));
+        EXPECT_TRUE(std::regex_match(actual_str, expected_regex));
     }
 
     auto test_failed_listen(const Runtime* rt) -> void
@@ -144,7 +127,7 @@ namespace
             actual_code = error.number();
         }
 
-        assert(actual_code == expected_failed_listen_code);
+        EXPECT_EQ(actual_code, expected_failed_listen_code);
     }
 
     auto test_failed_shutdown(const Runtime* rt) -> void
@@ -157,7 +140,7 @@ namespace
             actual_code = error.number();
         }
 
-        assert(actual_code == expected_failed_shutdown_code);
+        EXPECT_EQ(actual_code, expected_failed_shutdown_code);
     }
 
     auto test_null_runtime_pointer() -> void
@@ -187,21 +170,14 @@ namespace
     }
 }
 
-auto main(int argc, char* argv[]) -> int
+TEST(SocketData, CoreAndOperations)
 {
-    try {
-        parse_arguments(argc, argv);
-        const auto sr {run(is_verbose)};
-        const auto* rt {sr.get()};
-        test_failed_listen(rt);
-        test_failed_shutdown(rt);
-        test_null_runtime_pointer();
-        test_null_socket_descriptor(rt);
-        test_null_socket_domain_family(rt);
-        test_valid(rt);
-    }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
+    const auto sr {run(false)};
+    const auto* rt {sr.get()};
+    test_failed_listen(rt);
+    test_failed_shutdown(rt);
+    test_null_runtime_pointer();
+    test_null_socket_descriptor(rt);
+    test_null_socket_domain_family(rt);
+    test_valid(rt);
 }

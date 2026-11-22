@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "network/assert.hpp"           // assert()
+#include "network/gtest.hpp"
 #include "network/network.hpp"          // Address, ByteString,
                                         // EndpointView, Error,
                                         // IpSocketHints, Socket,
@@ -100,35 +100,13 @@ namespace
                  << self
                  << std::endl;
             // clang-format on
-            assert(host.text() == self.text());
+            EXPECT_EQ(host.text(), self.text());
         }
 
     private:
         EndpointView m_endpoint;
         std::ostream& m_os;
     };
-
-    auto parse_arguments(int argc, char** argv) -> EndpointView
-    {
-        const auto [operands, options] {parse(argc, argv, "v")};
-
-        if (options.contains('?')) {
-            std::cerr << "Usage: "
-                      << *argv
-                      << " [-v]"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-        }
-
-        if (options.contains('v')) {
-            is_verbose = true;
-        }
-
-        return {
-            !operands.empty() ? operands[0] : localhost,
-            {}
-        };
-    }
 
     auto test_bind(const EndpointView& endpoint,
                    const SocketHints& hints) -> void
@@ -146,18 +124,11 @@ namespace
 }
 
 
-auto main(int argc, char* argv[]) -> int
+TEST(Bind, Localhost)
 {
-    try {
-        const auto endpoint {parse_arguments(argc, argv)};
-        const auto rt {run(is_verbose)};
-
-        if (!test_has_environment_variable("http_proxy")) {
-            test_bind_valid(endpoint, socket_hints);
-        }
-    }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
+    const EndpointView endpoint {localhost, {}};
+    static_cast<void>(run(false));
+    if (!test_has_environment_variable("http_proxy")) {
+        test_bind_valid(endpoint, socket_hints);
     }
 }
