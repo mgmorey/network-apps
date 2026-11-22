@@ -353,7 +353,8 @@ Windows-specific sources and WinSock library.
 
 This project has been tested on the following platforms and toolchains. The
 Visual Studio 2026 row records a successful CMake configure and build, with all
-12 CTest tests passing.
+12 CTest tests passing. The Ubuntu row records a Podman container build with
+the `ubuntu-x64-debug` preset, with all 14 CTest tests passing.
 
 | OS Family | Distro / Environment | OS Version (Port) | GCC | Clang | MSVC |
 |-----------|----------------------|-------------------|-----|-------|-------|
@@ -361,6 +362,7 @@ Visual Studio 2026 row records a successful CMake configure and build, with all
 | GNU/Linux | Fedora | 42 (x86_64) | 15.2.1 | 20.1.8 | N/A |
 | GNU/Linux | Oracle | 9.8 (x86_64) | 14.2.1 | 21.1.8 | N/A |
 | GNU/Linux | openSUSE Tumbleweed | 20261024 (x86_64) | 16.2.1 | 23.1.3 | N/A |
+| GNU/Linux | Ubuntu (Podman container) | 24.04 (x86_64) | 14.2.0 | N/A | N/A |
 | Unix | Apple macOS | 26.0 (arm64) | N/A | 21.1.8 | N/A |
 | Windows | Cygwin | 10.0 (amd64) | 16.0.0 | 21.1.8 | N/A |
 | Windows | MinGW | 10.0 (amd64) | 15.1.0 | 21.1.5 | N/A |
