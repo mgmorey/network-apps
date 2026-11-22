@@ -68,8 +68,8 @@ Each preset has matching configure, build, and test preset names.
 
 The `Containerfile.ubuntu` file in the repository root describes a build image
 based on Ubuntu 24.04 with GCC 14 (for C++23 library support), CMake, Ninja,
-GDB, Git, and GoogleTest from the distribution package, so configuration does
-not download GoogleTest. Build the image with:
+GDB, `clangd`, Git, and GoogleTest from the distribution package, so
+configuration does not download GoogleTest. Build the image with:
 
 ```sh
 podman build -t network-apps-build:24.04 -f Containerfile.ubuntu .
@@ -104,6 +104,27 @@ Ubuntu presets mirror the macOS presets, without the architecture setting:
 | `ubuntu-x64-small` | x64 | Small |
 
 Each preset has matching configure, build, and test preset names.
+
+#### Emacs
+
+To edit and debug from Emacs, start a long-lived container and open the source
+tree through TRAMP's `podman` method (built into Emacs 29 and later):
+
+```sh
+podman run -d --name network-apps-dev --userns=keep-id \
+  -v /path/to/network-apps:/src:Z -w /src \
+  network-apps-build:24.04 sleep infinity
+```
+
+Visit `/podman:network-apps-dev:/src/` and run `M-x gdb` there to debug the
+binaries in `build-cmake/ubuntu-x64-debug` with the container's GDB. The
+`dape` package can debug through GDB's Debug Adapter Protocol support instead:
+run `M-x dape`, which defaults to `unix-server`; edit the `:program` value to
+debug another binary such as `unix-client`. The `.dir-locals.el` file sets
+`M-x compile` to build with the `ubuntu-x64-debug` preset, sets that `dape`
+default, and points Eglot at the container's `clangd` and that build's
+`compile_commands.json`. Emacs asks once to trust these directory-local
+variables.
 
 ### Visual Studio and MSVC
 
