@@ -64,6 +64,47 @@ build profiles:
 
 Each preset has matching configure, build, and test preset names.
 
+### Ubuntu and Podman
+
+The `Containerfile.ubuntu` file in the repository root describes a build image
+based on Ubuntu 24.04 with GCC 14 (for C++23 library support), CMake, Ninja,
+GDB, Git, and GoogleTest from the distribution package, so configuration does
+not download GoogleTest. Build the image with:
+
+```sh
+podman build -t network-apps-build:24.04 -f Containerfile.ubuntu .
+```
+
+To pull the base image from a registry mirror, add
+`--build-arg BASE_IMAGE=<mirror>/library/ubuntu:24.04`. Mount the source tree
+into the container and run the Ubuntu presets there. The `--userns=keep-id`
+option keeps build output owned by the invoking user, and `:Z` relabels the
+mount for SELinux hosts:
+
+```sh
+podman run --rm --userns=keep-id \
+  -v /path/to/network-apps:/src:Z -w /src \
+  network-apps-build:24.04 \
+  sh -c 'cmake --preset ubuntu-x64-debug \
+    && cmake --build --preset ubuntu-x64-debug --parallel \
+    && ctest --preset ubuntu-x64-debug'
+```
+
+The presets use the Unix Makefiles generator and are enabled on any Linux
+host, so they also work outside the container when a suitable toolchain is
+installed. Build files are written to `build-cmake/ubuntu-x64-debug`. The
+Ubuntu presets mirror the macOS presets, without the architecture setting:
+
+| Preset | Architecture | Build type |
+|--------|--------------|------------|
+| `ubuntu-x64-default` | x64 | Default |
+| `ubuntu-x64-debug` | x64 | Debug |
+| `ubuntu-x64-minimal` | x64 | Minimal |
+| `ubuntu-x64-release` | x64 | Release |
+| `ubuntu-x64-small` | x64 | Small |
+
+Each preset has matching configure, build, and test preset names.
+
 ### Visual Studio and MSVC
 
 Install Visual Studio with the **Desktop development with C++** workload,

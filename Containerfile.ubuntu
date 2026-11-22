@@ -1,0 +1,26 @@
+ARG BASE_IMAGE=docker.io/library/ubuntu:24.04
+FROM ${BASE_IMAGE}
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+# GCC 14 for C++23 library support; GoogleTest from apt avoids a network fetch at configure time.
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        cmake \
+        g++-14 \
+        gcc-14 \
+        gdb \
+        git \
+        libgtest-dev \
+        make \
+        ninja-build \
+        pkg-config && \
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100 \
+        --slave /usr/bin/g++ g++ /usr/bin/g++-14 \
+        --slave /usr/bin/gcov gcov /usr/bin/gcov-14 && \
+    update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 100 && \
+    update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 100 && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /src
