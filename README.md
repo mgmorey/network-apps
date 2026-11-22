@@ -123,8 +123,10 @@ run `M-x dape`, which defaults to `unix-server`; edit the `:program` value to
 debug another binary such as `unix-client`. The `.dir-locals.el` file sets
 `M-x compile` to build with the `ubuntu-x64-debug` preset, sets that `dape`
 default, and points Eglot at the container's `clangd` and that build's
-`compile_commands.json`. Emacs asks once to trust these directory-local
-variables.
+`compile_commands.json`. Emacs ignores directory-local variables on remote
+files unless `enable-remote-dir-locals` is non-nil, so set it in the Emacs
+initialization file with `(setq enable-remote-dir-locals t)`. Emacs then asks
+once to trust these directory-local variables.
 
 ### Visual Studio and MSVC
 

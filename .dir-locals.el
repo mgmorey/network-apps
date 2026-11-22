@@ -2,7 +2,8 @@
 ((nil
   . ((compile-command . "cmake --build --preset ubuntu-x64-debug --parallel")
      (dape-command
-      . (gdb :program "build-cmake/ubuntu-x64-debug/unix-server"))
+      . (gdb :program "build-cmake/ubuntu-x64-debug/unix-server"
+             :stopAtBeginningOfMainSubprogram t))
      (eglot-server-programs
       . (((c++-mode c++-ts-mode)
           . ("clangd"
