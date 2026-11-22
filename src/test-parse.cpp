@@ -14,15 +14,14 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "network/argumentdata.hpp"             // ArgumentData
-#include "network/assert.hpp"                   // assert()
-#include "network/error.hpp"                    // Error
 #include "network/get-option.hpp"               // get_optind()
 #include "network/parse-argumentspan.hpp"       // ArgumentSpan, parse(),
                                                 // std::span
 #include "network/to-size.hpp"                  // to_size()
 
+#include <gtest/gtest.h>
+
 #include <cstring>      // std::strlen()
-#include <iostream>     // std::cerr, std::cout, std::endl
 #include <span>         // std::span
 #include <string>       // std::string
 #include <vector>       // std::vector
@@ -31,7 +30,6 @@ namespace
 {
     using Network::ArgumentData;
     using Network::ArgumentSpan;
-    using Network::Error;
     using Network::get_optind;
     using Network::parse;
     using Network::to_size;
@@ -48,75 +46,52 @@ namespace
         const auto optind_begin {get_optind()};
         const auto [_, options] {parse(args, optstring)};
         const auto length {static_cast<int>(std::strlen(optstring))};
-        assert(get_optind() == optind_begin + length);
+        EXPECT_EQ(get_optind(), optind_begin + length);
         filename = options.at('f');
         is_verbose = options.contains('v');
     }
 
-    auto print(ArgumentSpan args, const std::string& scope = {}) -> void
-    {
-        auto index {0};
-
-        for (const auto* arg : args) {
-            std::cout << (scope.empty() ? "Argument" : scope)
-                      << ' '
-                      << ++index
-                      << ": "
-                      << arg
-                      << std::endl;
-        }
-    }
-
     auto test_arguments(ArgumentSpan args, const char* argv0) -> void
     {
-        print(args);
-        assert(std::string {args[0]} == argv0);
+        ASSERT_FALSE(args.empty());
+        EXPECT_EQ(std::string {args[0]}, argv0);
     }
 
     auto test_operands(ArgumentSpan args) -> void
     {
-        print(args, "Operand");
-        assert(std::string {args[0]} == "one");
-        assert(std::string {args[1]} == "two");
-        assert(std::string {args[2]} == "three");
-        assert(args.size() == 3);
+        ASSERT_EQ(args.size(), 3);
+        EXPECT_EQ(std::string {args[0]}, "one");
+        EXPECT_EQ(std::string {args[1]}, "two");
+        EXPECT_EQ(std::string {args[2]}, "three");
     }
 
     auto test_options(ArgumentSpan args, const char* argv0) -> void
     {
-        print(args, "Option");
-        assert(std::string {args[0]} == "-f");
-        assert(std::string {args[1]} == argv0);
-        assert(std::string {args[2]} == "-v");
-        assert(args.size() == 3);
+        ASSERT_EQ(args.size(), 3);
+        EXPECT_EQ(std::string {args[0]}, "-f");
+        EXPECT_EQ(std::string {args[1]}, argv0);
+        EXPECT_EQ(std::string {args[2]}, "-v");
     }
 
-    auto test_arguments(int argc, char** argv) -> void
+    auto test_arguments(const char* argv0) -> void
     {
-        assert(argc > 0);
-        assert(*argv != nullptr);
-        ArgumentData data {get_strings(*argv)};
+        ASSERT_NE(argv0, nullptr);
+        ArgumentData data {get_strings(argv0)};
         const std::span args {data.data(), data.size()};
         std::string filename;
         bool is_verbose {false};
         parse_arguments(filename, is_verbose, args);
-        test_arguments(args, *argv);
+        test_arguments(args, argv0);
         auto options {args.subspan(1, to_size(get_optind()) - 1)};
-        test_options(options, *argv);
+        test_options(options, argv0);
         auto operands {args.subspan(to_size(get_optind()))};
         test_operands(operands);
-        assert(filename == *argv);
-        assert(is_verbose);
+        EXPECT_EQ(filename, argv0);
+        EXPECT_TRUE(is_verbose);
     }
 }
 
-auto main(int argc, char* argv[]) -> int
+TEST(Parse, ArgumentsAndOptions)
 {
-    try {
-        test_arguments(argc, argv);
-    }
-    catch (const Error& error) {
-        std::cerr << error.what()
-                  << std::endl;
-    }
+    test_arguments("test-parse");
 }

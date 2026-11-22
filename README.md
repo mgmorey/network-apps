@@ -177,6 +177,19 @@ to run the paired example as a smoke test. With GNU Make, use `gmake examples`
 to build the programs or `gmake run-examples` to run that smoke test. Examples
 are not installed with the library.
 
+## Tests
+
+Test targets use GoogleTest when available. CMake first searches for an
+system-installed package with `find_package(GTest)`. If it is unavailable,
+CMake fetches the pinned GoogleTest 1.17.0 release with `FetchContent`.
+
+Run the complete CTest suite with:
+
+```sh
+cmake --build /path/to/network-apps/build-cmake --target check
+ctest --test-dir /path/to/network-apps/build-cmake --output-on-failure
+```
+
 ## Installing and Packaging
 
 Install the library, public headers, and test executables using CMake's

@@ -572,6 +572,28 @@ endif()
 enable_testing()
 include(CTest)
 
+find_package(GTest QUIET)
+if(NOT GTest_FOUND)
+    include(FetchContent)
+    set(INSTALL_GTEST OFF CACHE BOOL "Do not install GoogleTest" FORCE)
+    FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/releases/download/v1.17.0/googletest-1.17.0.tar.gz
+        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+    )
+    FetchContent_MakeAvailable(googletest)
+endif()
+
+foreach(gtest_target IN ITEMS gtest gtest_main)
+    if(TARGET ${gtest_target})
+        if(MSVC)
+            target_compile_options(${gtest_target} PRIVATE /W0)
+        else()
+            target_compile_options(${gtest_target} PRIVATE -w)
+        endif()
+    endif()
+endforeach()
+
 # Helper function to create test executable
 set(TEST_EXECUTABLES)
 
@@ -615,6 +637,7 @@ add_test_executable(test-runtime src/test-runtime.cpp)
 add_test_executable(test-socket-api src/test-socket-api.cpp)
 add_test_executable(test-socket-data src/test-socket-data.cpp)
 add_test_executable(test-socket-inet src/test-socket-inet.cpp)
+target_link_libraries(test-parse PRIVATE GTest::gtest_main)
 
 # Unix-specific tests
 if(UNIX)
