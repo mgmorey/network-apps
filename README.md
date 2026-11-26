@@ -60,10 +60,21 @@ build profiles:
 
 Each preset has matching configure, build, and test preset names.
 
-For native macOS debugging, LLDB is available with the Xcode command-line
-tools. Homebrew's GDB also supports native debugging, but must be code-signed
-with the debugger entitlement to access macOS processes; see the [GDB Darwin
-permissions guide](https://sourceware.org/gdb/wiki/PermissionsDarwin).
+For local macOS debugging from Emacs, `.dir-locals.el` selects Dape's
+`lldb-dap` adapter. Install it with `brew install lldb`; see Dape's [LLDB
+adapter documentation](https://github.com/svaante/dape#supported-debug-adapters)
+and Homebrew's [`lldb` formula](https://formulae.brew.sh/formula/lldb). Since
+Homebrew keeps `lldb` keg-only, add its executable directory to Emacs's `PATH`,
+for example in `~/.zprofile`:
+
+```sh
+export PATH="$(brew --prefix lldb)/bin:$PATH"
+```
+
+Restart Emacs after changing the path. If using GDB directly, macOS may
+require code-signing it with the debugger entitlement to access local
+processes; see the [GDB Darwin permissions
+guide](https://sourceware.org/gdb/wiki/PermissionsDarwin).
 
 ### Ubuntu and Podman
 
@@ -124,11 +135,12 @@ run `M-x dape`, which defaults to `unix-server`; edit the `:program` value to
 debug another binary such as `unix-client`. The `.dir-locals.el` file selects
 the macOS ARM64 preset for local macOS Emacs and the Ubuntu x64 preset for
 Linux or Podman remote Emacs. It sets `M-x compile` to configure and build with
-that preset, sets the matching `dape` default, and points Eglot at the
-corresponding `compile_commands.json`. Emacs ignores directory-local variables
-on remote files unless `enable-remote-dir-locals` is non-nil. Set it in the
-Emacs initialization file with `(setq enable-remote-dir-locals t)`. Emacs then
-asks once to trust these directory-local variables.
+that preset, selects Dape's `lldb-dap` adapter on local macOS and GDB on Linux
+or Podman, and points Eglot at the corresponding `compile_commands.json`.
+Emacs ignores directory-local variables on remote files unless
+`enable-remote-dir-locals` is non-nil. Set it in the Emacs initialization file
+with `(setq enable-remote-dir-locals t)`. Emacs then asks once to trust these
+directory-local variables.
 
 ### Visual Studio and MSVC
 
