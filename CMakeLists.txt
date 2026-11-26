@@ -694,7 +694,7 @@ if(EXAMPLE_TARGETS)
         COMMAND $<TARGET_FILE:tcp-loopback>
         DEPENDS ${EXAMPLE_TARGETS}
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-        COMMENT "Run Unix socket examples"
+        COMMENT "Run networking example smoke tests"
         USES_TERMINAL
         VERBATIM
     )

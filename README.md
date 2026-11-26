@@ -278,9 +278,10 @@ run the cross-platform smoke examples with
 
 ## Tests
 
-Test targets are enabled by default with `BUILD_TESTING=ON`. CMake first searches for an
-system-installed package with `find_package(GTest)`. If it is unavailable,
-CMake fetches the pinned GoogleTest 1.17.0 release with `FetchContent`.
+Test targets are enabled by default with `BUILD_TESTING=ON`. CMake first
+searches for a system-installed package with `find_package(GTest)`. If none is
+available, CMake fetches the pinned GoogleTest 1.17.0 release with
+`FetchContent`.
 
 Run the complete CTest suite with:
 
