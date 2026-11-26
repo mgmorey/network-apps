@@ -624,17 +624,7 @@ if(BUILD_TESTING)
 function(add_test_executable test_name test_source)
     add_executable(${test_name} ${test_source})
     set(TEST_EXECUTABLES ${TEST_EXECUTABLES} ${test_name} PARENT_SCOPE)
-    target_include_directories(${test_name} PRIVATE
-        ${PROJECT_SOURCE_DIR}/include
-    )
-    if(UNIX)
-        target_include_directories(${test_name} PRIVATE
-            ${PROJECT_SOURCE_DIR}/include/unix
-        )
-    elseif(WIN32)
-        target_include_directories(${test_name} PRIVATE
-            ${PROJECT_SOURCE_DIR}/include/windows
-        )
+    if(WIN32)
         target_link_libraries(${test_name} PRIVATE ws2_32)
     endif()
     target_link_libraries(${test_name} PRIVATE network)
@@ -692,10 +682,6 @@ foreach(example_source IN LISTS UNIX_EXAMPLE_SOURCES)
         ${example_source}
         ${UNIX_CONNECTION_SOURCES}
     )
-    target_include_directories(${example_name} PRIVATE
-        ${PROJECT_SOURCE_DIR}/include
-        ${PROJECT_SOURCE_DIR}/include/unix
-    )
     target_link_libraries(${example_name} PRIVATE network)
     network_enable_link_map(${example_name})
 endforeach()
@@ -703,17 +689,7 @@ endforeach()
 foreach(example_source IN LISTS COMMON_EXAMPLE_SOURCES)
     get_filename_component(example_name ${example_source} NAME_WE)
     add_executable(${example_name} ${example_source})
-    target_include_directories(${example_name} PRIVATE
-        ${PROJECT_SOURCE_DIR}/include
-    )
-    if(UNIX)
-        target_include_directories(${example_name} PRIVATE
-            ${PROJECT_SOURCE_DIR}/include/unix
-        )
-    elseif(WIN32)
-        target_include_directories(${example_name} PRIVATE
-            ${PROJECT_SOURCE_DIR}/include/windows
-        )
+    if(WIN32)
         target_link_libraries(${example_name} PRIVATE ws2_32)
     endif()
     target_link_libraries(${example_name} PRIVATE network)
