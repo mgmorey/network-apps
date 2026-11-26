@@ -131,10 +131,7 @@
       },
       "generator": "Visual Studio 17 2022",
       "architecture": "x64",
-      "binaryDir": "${sourceDir}/build-vs/vs2022-x64-debug",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
-      }
+      "binaryDir": "${sourceDir}/build-vs/vs2022-x64-debug"
     },
     {
       "name": "vs2026-x64-debug",
@@ -146,10 +143,7 @@
       },
       "generator": "Visual Studio 18 2026",
       "architecture": "x64",
-      "binaryDir": "${sourceDir}/build-vs/vs2026-x64-debug",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
-      }
+      "binaryDir": "${sourceDir}/build-vs/vs2026-x64-debug"
     }
   ],
   "buildPresets": [
