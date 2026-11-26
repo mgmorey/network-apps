@@ -40,8 +40,8 @@
 
 #define EXPECT_EQ(actual, expected)                                        \
     do {                                                                   \
-        const auto network_test_actual = (actual);                         \
-        const auto network_test_expected = (expected);                     \
+        const auto& network_test_actual = (actual);                        \
+        const auto& network_test_expected = (expected);                    \
         if (!(network_test_actual == network_test_expected)) {             \
             std::cerr << "EXPECT_EQ failed\n";                             \
             std::exit(EXIT_FAILURE);                                       \

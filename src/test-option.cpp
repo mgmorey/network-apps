@@ -96,7 +96,7 @@ namespace
     auto test_operands(ArgumentSpan args) -> void
     {
         print(args, "Operand");
-        ASSERT_EQ(args.size(), 3);
+        ASSERT_EQ(args.size(), 3U);
         EXPECT_EQ(std::string {args.front()}, "one");
         EXPECT_EQ(std::string {args.subspan(1).front()}, "two");
         EXPECT_EQ(std::string {args.subspan(2).front()}, "three");
@@ -105,7 +105,7 @@ namespace
     auto test_options(ArgumentSpan args, const char* argv0) -> void
     {
         print(args, "Option");
-        ASSERT_EQ(args.size(), 3);
+        ASSERT_EQ(args.size(), 3U);
         EXPECT_EQ(std::string {args.front()}, "-f");
         EXPECT_EQ(std::string {args.subspan(1).front()}, argv0);
         EXPECT_EQ(std::string {args.subspan(2).front()}, "-v");
