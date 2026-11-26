@@ -118,6 +118,7 @@ namespace
     }
 }
 
+// NOLINTNEXTLINE(bugprone-throwing-static-initialization)
 TEST(Hostname, ResultAndLocalHostname)
 {
     const auto sr {run(false)};

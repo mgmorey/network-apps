@@ -256,6 +256,7 @@ namespace
     }
 }
 
+// NOLINTNEXTLINE(bugprone-throwing-static-initialization)
 TEST(Runtime, SharedAndGlobalScopes)
 {
     test_versions(RuntimeScope::shared);

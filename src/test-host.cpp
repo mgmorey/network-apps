@@ -308,6 +308,7 @@ namespace
     }
 }
 
+// NOLINTNEXTLINE(bugprone-throwing-static-initialization)
 TEST(Host, EndpointResolution)
 {
     const auto sr {run(false)};

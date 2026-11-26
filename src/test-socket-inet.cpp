@@ -269,6 +269,7 @@ namespace
     }
 }
 
+// NOLINTNEXTLINE(bugprone-throwing-static-initialization)
 TEST(SocketInet, HandleCreationAndErrors)
 {
     const auto sr {run(false)};

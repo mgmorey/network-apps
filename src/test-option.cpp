@@ -130,6 +130,7 @@ namespace
     }
 }
 
+// NOLINTNEXTLINE(bugprone-throwing-static-initialization)
 TEST(Option, ArgumentsOptionsAndOperands)
 {
     test_arguments("test-option");

@@ -91,6 +91,7 @@ namespace
     }
 }
 
+// NOLINTNEXTLINE(bugprone-throwing-static-initialization)
 TEST(Parse, ArgumentsAndOptions)
 {
     test_arguments("test-parse");

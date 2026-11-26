@@ -446,6 +446,7 @@ namespace
     }
 }
 
+// NOLINTNEXTLINE(bugprone-throwing-static-initialization)
 TEST(Address, ValidationAndLookup)
 {
     test_address_empty();

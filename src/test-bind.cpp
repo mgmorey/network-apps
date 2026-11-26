@@ -124,6 +124,7 @@ namespace
 }
 
 
+// NOLINTNEXTLINE(bugprone-throwing-static-initialization)
 TEST(Bind, Localhost)
 {
     const EndpointView endpoint {localhost, {}};

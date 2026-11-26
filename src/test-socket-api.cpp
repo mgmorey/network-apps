@@ -236,6 +236,7 @@ namespace
     }
 }
 
+// NOLINTNEXTLINE(bugprone-throwing-static-initialization)
 TEST(SocketApi, VersionsAndInactive)
 {
     test_versions();

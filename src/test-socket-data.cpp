@@ -170,6 +170,7 @@ namespace
     }
 }
 
+// NOLINTNEXTLINE(bugprone-throwing-static-initialization)
 TEST(SocketData, CoreAndOperations)
 {
     const auto sr {run(false)};

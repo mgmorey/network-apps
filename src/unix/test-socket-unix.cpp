@@ -290,6 +290,7 @@ namespace
     }
 }
 
+// NOLINTNEXTLINE(bugprone-throwing-static-initialization)
 TEST(SocketUnix, PathsAndSocketCreation)
 {
     test_paths_invalid();

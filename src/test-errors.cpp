@@ -342,6 +342,7 @@ namespace
     }
 }
 
+// NOLINTNEXTLINE(bugprone-throwing-static-initialization)
 TEST(Errors, ConversionsAndExceptions)
 {
     test_get_api_error();

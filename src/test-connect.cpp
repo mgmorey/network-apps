@@ -177,6 +177,7 @@ namespace
     }
 }
 
+// NOLINTNEXTLINE(bugprone-throwing-static-initialization)
 TEST(Connect, RemoteHost)
 {
     const EndpointView endpoint {remotehost, service};

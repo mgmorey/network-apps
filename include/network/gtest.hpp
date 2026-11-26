@@ -17,11 +17,11 @@
 #define TEST(suite_name, test_name)                                        \
     static void suite_name##_##test_name();                                \
     static const int suite_name##_##test_name##_registered                \
-    {[]() { suite_name##_##test_name(); return 0; }()};                   \
+    {[]() -> int { suite_name##_##test_name(); return 0; }()};             \
     static void suite_name##_##test_name()
 
 #define EXPECT_TRUE(value)                                                 \
-    do {                                                                   \
+    do { /* NOLINT(cppcoreguidelines-avoid-do-while) */                    \
         const auto network_test_value = static_cast<bool>(value);          \
         if (!network_test_value) {                                         \
             std::cerr << "EXPECT_TRUE failed\n";                           \
@@ -30,7 +30,7 @@
     } while (false)
 
 #define EXPECT_FALSE(value)                                                \
-    do {                                                                   \
+    do { /* NOLINT(cppcoreguidelines-avoid-do-while) */                    \
         const auto network_test_value = static_cast<bool>(value);          \
         if (network_test_value) {                                          \
             std::cerr << "EXPECT_FALSE failed\n";                          \
@@ -39,17 +39,17 @@
     } while (false)
 
 #define EXPECT_EQ(actual, expected)                                        \
-    do {                                                                   \
+    do { /* NOLINT(cppcoreguidelines-avoid-do-while) */                    \
         const auto& network_test_actual = (actual);                        \
         const auto& network_test_expected = (expected);                    \
-        if (!(network_test_actual == network_test_expected)) {             \
+        if (!(network_test_actual == network_test_expected)) { /* NOLINT(cppcoreguidelines-pro-bounds-array-to-pointer-decay) */ \
             std::cerr << "EXPECT_EQ failed\n";                             \
             std::exit(EXIT_FAILURE);                                       \
         }                                                                  \
     } while (false)
 
 #define EXPECT_LE(actual, upper)                                           \
-    do {                                                                   \
+    do { /* NOLINT(cppcoreguidelines-avoid-do-while) */                    \
         const auto network_test_actual = (actual);                         \
         const auto network_test_upper = (upper);                           \
         if (!(network_test_actual <= network_test_upper)) {                \
@@ -59,7 +59,7 @@
     } while (false)
 
 #define EXPECT_GT(actual, lower)                                           \
-    do {                                                                   \
+    do { /* NOLINT(cppcoreguidelines-avoid-do-while) */                    \
         const auto network_test_actual = (actual);                         \
         const auto network_test_lower = (lower);                           \
         if (!(network_test_actual > network_test_lower)) {                 \
@@ -69,7 +69,7 @@
     } while (false)
 
 #define EXPECT_NE(actual, expected)                                        \
-    do {                                                                   \
+    do { /* NOLINT(cppcoreguidelines-avoid-do-while) */                    \
         const auto network_test_actual = (actual);                         \
         const auto network_test_expected = (expected);                     \
         if (network_test_actual == network_test_expected) {                \
@@ -82,7 +82,7 @@
 #define ASSERT_TRUE(value) EXPECT_TRUE(value)
 #define ASSERT_EQ(actual, expected) EXPECT_EQ(actual, expected)
 #define ASSERT_NE(actual, expected)                                        \
-    do {                                                                   \
+    do { /* NOLINT(cppcoreguidelines-avoid-do-while) */                    \
         const auto network_test_actual = (actual);                         \
         const auto network_test_expected = (expected);                     \
         if (network_test_actual == network_test_expected) {                \

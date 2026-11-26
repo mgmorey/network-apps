@@ -113,6 +113,7 @@ namespace
     }
 }
 
+// NOLINTNEXTLINE(bugprone-throwing-static-initialization)
 TEST(SocketPair, InvalidAndValidHints)
 {
     test_socketpair_invalid_socktype();
