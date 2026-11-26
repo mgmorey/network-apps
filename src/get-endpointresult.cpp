@@ -144,11 +144,11 @@ auto Network::get_endpointresult(ByteSpan bs, int flags,
     TextBuffer hostname {hostname_length_max};
     TextBuffer service {service_length_max};
 
-    if (auto error {get_endpointresult(hostname,
-                                       service,
-                                       bs,
-                                       flags,
-                                       rt)}) {
+    if (const auto error {get_endpointresult(hostname,
+                                             service,
+                                             bs,
+                                             flags,
+                                             rt)}) {
         return std::unexpected {error};
     }
 

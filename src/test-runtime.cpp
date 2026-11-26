@@ -206,7 +206,7 @@ namespace
                   << ao.version().value_or(Version {})
                   << std::endl;
         print(ao);
-        auto sr {get_runtime(ao, rs)};
+        const auto sr {get_runtime(ao, rs)};
         test(*sr);
     }
 

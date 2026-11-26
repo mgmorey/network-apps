@@ -223,7 +223,7 @@ namespace
     {
         os_error_type actual_code {0};
         std::vector<SocketHost> hosts;
-        auto it {std::back_inserter(hosts)};
+        const auto it {std::back_inserter(hosts)};
 
         if (const auto error {insert(it, host, {}, hints, is_verbose)}) {
             if (is_verbose || expected_codes == ErrorCodeSet {0}) {

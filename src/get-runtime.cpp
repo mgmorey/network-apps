@@ -22,7 +22,7 @@
 
 auto Network::get_runtime(ApiOptions ao) -> SharedRuntime
 {
-    static auto sr {create_runtime(ao)};
+    static const auto sr {create_runtime(ao)};
     return sr;
 }
 

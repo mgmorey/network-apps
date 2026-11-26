@@ -32,7 +32,7 @@ auto Network::get_hostnameresult(const Runtime* rt) -> HostnameResult
 {
     TextBuffer hostname {hostname_length_max};
 
-    if (auto error {get_hostname(hostname, rt)}) {
+    if (const auto error {get_hostname(hostname, rt)}) {
         return std::unexpected {error};
     }
 

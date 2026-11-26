@@ -11,7 +11,7 @@ auto main() -> int
         const Network::EndpointView bind_endpoint {"127.0.0.1", "0"};
 
         const auto bound {Network::bind(bind_endpoint, hints, false)};
-        Network::Socket* server {nullptr};
+        const Network::Socket* server {nullptr};
 
         for (auto& result : bound) {
             if (result) {
@@ -38,7 +38,7 @@ auto main() -> int
         };
 
         const auto connected {Network::connect(connect_endpoint, hints, false)};
-        Network::Socket* client {nullptr};
+        const Network::Socket* client {nullptr};
 
         for (auto& result : connected) {
             if (result) {
@@ -69,7 +69,7 @@ auto main() -> int
             return EXIT_FAILURE;
         }
 
-        std::string message {buffer};
+        const std::string message {buffer};
         std::cout << "Received: " << message << '\n';
 
         if (peer->write("ack") == Network::socket_error) {

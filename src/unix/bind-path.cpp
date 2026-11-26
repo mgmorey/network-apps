@@ -31,7 +31,7 @@ auto Network::bind(const PathnameView& pathname,
 {
     auto s {create_socket(hints, rt)};
 
-    if (auto error {s->bind(pathname)}) {
+    if (const auto error {s->bind(pathname)}) {
         return std::unexpected(error);
     }
 

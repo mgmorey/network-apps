@@ -79,7 +79,7 @@ namespace
         std::string actual_str;
         std::string hostname_str(1, '\0');
 
-        if (auto error {get_hostname(hostname_str, rt)}) {
+        if (const auto error {get_hostname(hostname_str, rt)}) {
             print(error);
             actual_str = error.string();
         }

@@ -37,7 +37,7 @@ auto Network::open(const OpenInputs& oi,
     }
 
     SocketResultVector srv;
-    auto open = [&](const SocketTemplate& st) -> SocketResult {
+    const auto open = [&](const SocketTemplate& st) -> SocketResult {
         auto result {create_socketresult(st.hints(), oi.runtime())};
 
         if (result) {

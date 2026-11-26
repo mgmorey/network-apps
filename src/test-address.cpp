@@ -214,7 +214,7 @@ namespace
     {
         const Address address {ByteString {}};
         EXPECT_TRUE(address.empty());
-        EXPECT_EQ(address.port(), 0);
+        EXPECT_EQ(address.port(), Network::port_type {0});
         EXPECT_EQ(address.text(), string_null);
     }
 
@@ -424,7 +424,7 @@ namespace
         static const Hostname localhost {"localhost"};
 
         std::vector<SocketHost> hosts;
-        auto it {std::back_inserter(hosts)};
+        const auto it {std::back_inserter(hosts)};
         const auto result {insert(it, localhost, {}, unspec, is_verbose)};
 
         if (result) {

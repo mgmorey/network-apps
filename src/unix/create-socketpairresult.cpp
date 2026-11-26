@@ -125,7 +125,7 @@ auto Network::create_socketpairresult(const SocketHints& hints,
     }
 
     SocketPair sp;
-    auto create = [=](handle_type handle) -> UniqueSocket {
+    const auto create = [=](handle_type handle) -> UniqueSocket {
         return create_socket(handle, family, rt);
     };
     std::ranges::transform(handles, std::back_inserter(sp), create);

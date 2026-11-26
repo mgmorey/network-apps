@@ -145,27 +145,27 @@ namespace
 
     auto test_null_runtime_pointer() -> void
     {
-        auto family {AF_INET};
-        auto handle {::socket(family, SOCK_STREAM, 0)};
+        const auto family {AF_INET};
+        const auto handle {::socket(family, SOCK_STREAM, 0)};
         test(handle, family, nullptr, expected_runtime_pointer_re);
     }
 
     auto test_null_socket_descriptor(const Runtime* rt) -> void
     {
-        auto family {AF_INET};
+        const auto family {AF_INET};
         test(handle_null, family, rt, expected_socket_descriptor_re);
     }
 
     auto test_null_socket_domain_family(const Runtime* rt) -> void
     {
-        auto handle {::socket(AF_INET, SOCK_STREAM, 0)};
+        const auto handle {::socket(AF_INET, SOCK_STREAM, 0)};
         test(handle, family_null, rt, expected_socket_domain_family_re);
     }
 
     auto test_valid(const Runtime* rt) -> void
     {
-        auto family {AF_INET};
-        auto handle {::socket(family, SOCK_STREAM, 0)};
+        const auto family {AF_INET};
+        const auto handle {::socket(family, SOCK_STREAM, 0)};
         test(handle, family, rt, expected_valid_re);
     }
 }

@@ -82,9 +82,9 @@ namespace
         bool is_verbose {false};
         parse_arguments(filename, is_verbose, args);
         test_arguments(args, argv0);
-        auto options {args.subspan(1, to_size(get_optind()) - 1)};
+        const auto options {args.subspan(1, to_size(get_optind()) - 1)};
         test_options(options, argv0);
-        auto operands {args.subspan(to_size(get_optind()))};
+        const auto operands {args.subspan(to_size(get_optind()))};
         test_operands(operands);
         EXPECT_EQ(filename, argv0);
         EXPECT_TRUE(is_verbose);

@@ -29,7 +29,7 @@ auto Network::connect(const PathnameView& pathname,
 {
     auto s {create_socket(hints, rt)};
 
-    if (auto error {s->connect(pathname)}) {
+    if (const auto error {s->connect(pathname)}) {
         return std::unexpected(error);
     }
 
