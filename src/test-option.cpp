@@ -89,25 +89,26 @@ namespace
     auto test_arguments(ArgumentSpan args, const char* argv0) -> void
     {
         print(args);
-        EXPECT_EQ(std::string {args[0]}, argv0);
+        ASSERT_FALSE(args.empty());
+        EXPECT_EQ(std::string {args.front()}, argv0);
     }
 
     auto test_operands(ArgumentSpan args) -> void
     {
         print(args, "Operand");
-        EXPECT_EQ(std::string {args[0]}, "one");
-        EXPECT_EQ(std::string {args[1]}, "two");
-        EXPECT_EQ(std::string {args[2]}, "three");
-        EXPECT_EQ(args.size(), 3);
+        ASSERT_EQ(args.size(), 3);
+        EXPECT_EQ(std::string {args.front()}, "one");
+        EXPECT_EQ(std::string {args.subspan(1).front()}, "two");
+        EXPECT_EQ(std::string {args.subspan(2).front()}, "three");
     }
 
     auto test_options(ArgumentSpan args, const char* argv0) -> void
     {
         print(args, "Option");
-        EXPECT_EQ(std::string {args[0]}, "-f");
-        EXPECT_EQ(std::string {args[1]}, argv0);
-        EXPECT_EQ(std::string {args[2]}, "-v");
-        EXPECT_EQ(args.size(), 3);
+        ASSERT_EQ(args.size(), 3);
+        EXPECT_EQ(std::string {args.front()}, "-f");
+        EXPECT_EQ(std::string {args.subspan(1).front()}, argv0);
+        EXPECT_EQ(std::string {args.subspan(2).front()}, "-v");
     }
 
     auto test_arguments(const char* argv0) -> void

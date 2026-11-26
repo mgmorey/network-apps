@@ -63,9 +63,9 @@ auto Network::create_socketpairresult(const SocketHints& hints,
                   << SocketProtocol(hints.m_protocol, family)
                   << Format(delim, tab, "fds")
                   << '{'
-                  << handles[0]
+                  << handles.at(0)
                   << ", "
-                  << handles[1]
+                  << handles.at(1)
                   << "})"
                   << std::endl;
         // clang-format on
@@ -90,9 +90,9 @@ auto Network::create_socketpairresult(const SocketHints& hints,
             << SocketProtocol(hints.m_protocol, family)
             << Format(delim, tab, "fds")
             << '{'
-            << handles[0]
+            << handles.at(0)
             << ", "
-            << handles[1]
+            << handles.at(1)
             << "}) failed with error "
             << api_error
             << ": "
@@ -112,13 +112,13 @@ auto Network::create_socketpairresult(const SocketHints& hints,
                   << SocketProtocol(hints.m_protocol, family)
                   << Format(delim, tab, "fds")
                   << '{'
-                  << handles[0]
+                  << handles.at(0)
                   << ", "
-                  << handles[1]
+                  << handles.at(1)
                   << "}) returned data {"
-                  << handles[0]
+                  << handles.at(0)
                   << ", "
-                  << handles[1]
+                  << handles.at(1)
                   << '}'
                   << std::endl;
         // clang-format on

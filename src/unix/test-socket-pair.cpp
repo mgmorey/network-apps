@@ -78,11 +78,11 @@ namespace
         try {
             auto sp {create_socketpair(hints, is_verbose)};
             std::cout << "Socket "
-                      << std::right << std::setw(handle_width) << *sp[0]
+                      << std::right << std::setw(handle_width) << *sp.at(0)
                       << " connected to "
                       << std::endl
                       << "Socket "
-                      << std::right << std::setw(handle_width) << *sp[1]
+                      << std::right << std::setw(handle_width) << *sp.at(1)
                       << std::endl;
         }
         catch (const Error& error) {
