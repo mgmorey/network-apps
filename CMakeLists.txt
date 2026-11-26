@@ -10,6 +10,8 @@ include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(CTest)
 
+add_library(network_build_options INTERFACE)
+
 # ============================================================================
 # Build Configuration
 # ============================================================================
@@ -66,9 +68,7 @@ endif()
 # C++ Standard and Flags
 # ============================================================================
 
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(NETWORK_CXX_STANDARD 23)
 
 # ============================================================================
 # Compiler Flags
@@ -83,15 +83,19 @@ endif()
 include(CheckCXXCompilerFlag)
 
 if(MSVC)
-    add_compile_options(/W4 /WX /permissive- /Zc:__cplusplus)
-    add_compile_definitions(NOMINMAX)
+    target_compile_options(network_build_options INTERFACE
+        /W4 /WX /permissive- /Zc:__cplusplus
+    )
+    target_compile_definitions(network_build_options INTERFACE NOMINMAX)
 else()
-    add_compile_options(-Wall -Werror -Wextra -Wshadow -Wsign-conversion)
+    target_compile_options(network_build_options INTERFACE
+        -Wall -Werror -Wextra -Wshadow -Wsign-conversion
+    )
     if(NOT APPLE)
-        add_compile_options(-Wpedantic)
+        target_compile_options(network_build_options INTERFACE -Wpedantic)
     endif()
     if(APPLE)
-        add_compile_options(-fno-common)
+        target_compile_options(network_build_options INTERFACE -fno-common)
     endif()
 endif()
 
@@ -123,9 +127,13 @@ if(MSVC)
     # The Visual Studio generator supplies the MSVC standard library and runtime.
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     if(NOT USING_STDLIB STREQUAL "")
-        add_compile_options(-stdlib=${NETWORK_STDLIB})
+        target_compile_options(network_build_options INTERFACE
+            -stdlib=${NETWORK_STDLIB}
+        )
         string(REGEX REPLACE "^lib" "" NETWORK_STDLIB_LINK ${NETWORK_STDLIB})
-        link_libraries(${NETWORK_STDLIB_LINK})
+        target_link_libraries(network_build_options INTERFACE
+            ${NETWORK_STDLIB_LINK}
+        )
     endif()
 elseif(NOT NETWORK_STDLIB STREQUAL "libstdc++")
     message(FATAL_ERROR "GCC supports libstdc++ only")
@@ -134,22 +142,26 @@ endif()
 if(NOT MSVC)
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         if(APPLE)
-            add_compile_options(-g3 -Og)
+            target_compile_options(network_build_options INTERFACE -g3 -Og)
         else()
-            add_compile_options(-ggdb -Og)
+            target_compile_options(network_build_options INTERFACE -ggdb -Og)
         endif()
     elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-        add_compile_options(-O2 -UNDEBUG)
+        target_compile_options(network_build_options INTERFACE -O2 -UNDEBUG)
     elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-        add_compile_options(-O2 -g -UNDEBUG)
+        target_compile_options(network_build_options INTERFACE
+            -O2 -g -UNDEBUG
+        )
     elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-        add_compile_options(-Os -UNDEBUG)
+        target_compile_options(network_build_options INTERFACE -Os -UNDEBUG)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Minimal")
-        add_compile_options(-O1 -fno-omit-frame-pointer)
+        target_compile_options(network_build_options INTERFACE
+            -O1 -fno-omit-frame-pointer
+        )
     elseif(CMAKE_BUILD_TYPE STREQUAL "Small")
-        add_compile_options(-Os)
+        target_compile_options(network_build_options INTERFACE -Os)
     elseif(CMAKE_BUILD_TYPE STREQUAL "Default")
-        add_compile_options(-g)
+        target_compile_options(network_build_options INTERFACE -g)
     endif()
 endif()
 
@@ -167,11 +179,13 @@ if(USING_GDBDWARF AND
             "Compiler does not support DWARF version ${USING_GDBDWARF}"
         )
     endif()
-    add_compile_options(-gdwarf-${USING_GDBDWARF})
+    target_compile_options(network_build_options INTERFACE
+        -gdwarf-${USING_GDBDWARF}
+    )
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_options(-pipe)
+    target_compile_options(network_build_options INTERFACE -pipe)
 endif()
 
 if(NOT MSVC)
@@ -180,7 +194,9 @@ if(NOT MSVC)
         NETWORK_HAS_TRIVIAL_AUTO_VAR_INIT
     )
     if(NETWORK_HAS_TRIVIAL_AUTO_VAR_INIT)
-        add_compile_options(-ftrivial-auto-var-init=pattern)
+        target_compile_options(network_build_options INTERFACE
+            -ftrivial-auto-var-init=pattern
+        )
     endif()
 endif()
 
@@ -190,19 +206,23 @@ if(MSVC)
     endif()
 elseif(NETWORK_STDLIB STREQUAL "libstdc++")
     if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "Default")
-        add_compile_definitions(_GLIBCXX_DEBUG)
+        target_compile_definitions(network_build_options INTERFACE
+            _GLIBCXX_DEBUG
+        )
         if(WITH_BACKTRACE)
-            add_compile_definitions(_GLIBCXX_DEBUG_BACKTRACE)
-            link_libraries(stdc++exp)
+            target_compile_definitions(network_build_options INTERFACE
+                _GLIBCXX_DEBUG_BACKTRACE
+            )
+            target_link_libraries(network_build_options INTERFACE stdc++exp)
         endif()
     elseif(NOT WITH_FORTIFY_SOURCE STREQUAL "")
-        add_compile_options(
+        target_compile_options(network_build_options INTERFACE
             -U_FORTIFY_SOURCE
             -D_FORTIFY_SOURCE=${WITH_FORTIFY_SOURCE}
         )
     endif()
 elseif(NOT WITH_FORTIFY_SOURCE STREQUAL "")
-    add_compile_options(
+    target_compile_options(network_build_options INTERFACE
         -U_FORTIFY_SOURCE
         -D_FORTIFY_SOURCE=${WITH_FORTIFY_SOURCE}
     )
@@ -210,7 +230,9 @@ endif()
 
 if(USING_LINKER)
     if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        add_link_options(-fuse-ld=${USING_LINKER})
+        target_link_options(network_build_options INTERFACE
+            -fuse-ld=${USING_LINKER}
+        )
     else()
         message(FATAL_ERROR "USING_LINKER is supported only with Clang")
     endif()
@@ -222,7 +244,6 @@ if(WITH_LTO)
     if(NOT NETWORK_IPO_SUPPORTED)
         message(FATAL_ERROR "LTO is not supported: ${NETWORK_IPO_ERROR}")
     endif()
-    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 endif()
 
 if(WITH_BACKTRACE)
@@ -245,9 +266,11 @@ if(MSVC AND WITH_COVERAGE)
 endif()
 
 if(WITH_COVERAGE AND (CMAKE_BUILD_TYPE STREQUAL "Default" OR CMAKE_BUILD_TYPE STREQUAL "Debug"))
-    add_compile_options(--coverage)
-    add_link_options(--coverage)
-    add_compile_definitions(CODE_COVERAGE_ENABLED)
+    target_compile_options(network_build_options INTERFACE --coverage)
+    target_link_options(network_build_options INTERFACE --coverage)
+    target_compile_definitions(network_build_options INTERFACE
+        CODE_COVERAGE_ENABLED
+    )
 endif()
 
 # ============================================================================
@@ -280,15 +303,19 @@ if(WITH_SANITIZE)
             "Compiler does not support sanitizer: ${WITH_SANITIZE}"
         )
     endif()
-    add_compile_options(
+    target_compile_options(network_build_options INTERFACE
         -fsanitize=${WITH_SANITIZE}
         -fno-omit-frame-pointer
     )
-    add_link_options(-fsanitize=${WITH_SANITIZE})
+    target_link_options(network_build_options INTERFACE
+        -fsanitize=${WITH_SANITIZE}
+    )
     if(CMAKE_BUILD_TYPE STREQUAL "Release" OR
        CMAKE_BUILD_TYPE STREQUAL "Minimal" OR
        CMAKE_BUILD_TYPE STREQUAL "Small")
-        add_compile_options(-fno-optimize-sibling-calls)
+        target_compile_options(network_build_options INTERFACE
+            -fno-optimize-sibling-calls
+        )
     endif()
 endif()
 
@@ -516,6 +543,16 @@ function(network_enable_link_map target_name)
     endif()
 endfunction()
 
+function(network_apply_build_options target_name)
+    target_link_libraries(${target_name} PRIVATE network_build_options)
+    set_target_properties(${target_name} PROPERTIES CXX_EXTENSIONS OFF)
+    if(WITH_LTO)
+        set_property(TARGET ${target_name} PROPERTY
+            INTERPROCEDURAL_OPTIMIZATION TRUE
+        )
+    endif()
+endfunction()
+
 if(WITH_LISTINGS)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND NOT APPLE)
         file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/listings)
@@ -552,6 +589,7 @@ endif()
 add_library(network SHARED ${NETWORK_SOURCES})
 add_library(network::network ALIAS network)
 target_compile_features(network PUBLIC cxx_std_23)
+network_apply_build_options(network)
 network_enable_link_map(network)
 
 # Set library properties
@@ -607,58 +645,64 @@ if(BUILD_TESTING)
             DOWNLOAD_EXTRACT_TIMESTAMP TRUE
         )
         FetchContent_MakeAvailable(googletest)
-    endif()
-
-    foreach(gtest_target IN ITEMS gtest gtest_main)
-        if(TARGET ${gtest_target})
-            if(MSVC)
-                target_compile_options(${gtest_target} PRIVATE /W0)
-            else()
-                target_compile_options(${gtest_target} PRIVATE -w)
-            endif()
+        if(NETWORK_STDLIB STREQUAL "libstdc++" AND
+           (CMAKE_BUILD_TYPE STREQUAL "Debug" OR
+            CMAKE_BUILD_TYPE STREQUAL "Default"))
+            foreach(gtest_target IN ITEMS gtest gtest_main)
+                if(TARGET ${gtest_target})
+                    target_compile_definitions(${gtest_target} PRIVATE
+                        _GLIBCXX_DEBUG
+                    )
+                    if(WITH_BACKTRACE)
+                        target_compile_definitions(${gtest_target} PRIVATE
+                            _GLIBCXX_DEBUG_BACKTRACE
+                        )
+                    endif()
+                endif()
+            endforeach()
         endif()
-    endforeach()
+    endif()
 
     # Helper function to create test executable
+    function(add_test_executable test_name test_source)
+        add_executable(${test_name} ${test_source})
+        set(TEST_EXECUTABLES ${TEST_EXECUTABLES} ${test_name} PARENT_SCOPE)
+        if(WIN32)
+            target_link_libraries(${test_name} PRIVATE ws2_32)
+        endif()
+        target_link_libraries(${test_name} PRIVATE network GTest::gtest_main)
+        network_apply_build_options(${test_name})
+        network_enable_link_map(${test_name})
+        if(UNIX)
+            set_target_properties(${test_name} PROPERTIES
+                INSTALL_RPATH "${NETWORK_INSTALL_RPATH}"
+            )
+        endif()
+        add_test(NAME ${test_name} COMMAND ${test_name})
+        set_tests_properties(${test_name} PROPERTIES LABELS "unit")
+    endfunction()
 
-function(add_test_executable test_name test_source)
-    add_executable(${test_name} ${test_source})
-    set(TEST_EXECUTABLES ${TEST_EXECUTABLES} ${test_name} PARENT_SCOPE)
-    if(WIN32)
-        target_link_libraries(${test_name} PRIVATE ws2_32)
-    endif()
-    target_link_libraries(${test_name} PRIVATE network GTest::gtest_main)
-    network_enable_link_map(${test_name})
+    # Common tests
+    add_test_executable(test-address src/test-address.cpp)
+    add_test_executable(test-bind src/test-bind.cpp)
+    add_test_executable(test-connect src/test-connect.cpp)
+    add_test_executable(test-errors src/test-errors.cpp)
+    add_test_executable(test-host src/test-host.cpp)
+    add_test_executable(test-hostname src/test-hostname.cpp)
+    add_test_executable(test-option src/test-option.cpp)
+    add_test_executable(test-parse src/test-parse.cpp)
+    add_test_executable(test-runtime src/test-runtime.cpp)
+    add_test_executable(test-socket-api src/test-socket-api.cpp)
+    add_test_executable(test-socket-data src/test-socket-data.cpp)
+    add_test_executable(test-socket-inet src/test-socket-inet.cpp)
+
+    # Unix-specific tests
     if(UNIX)
-        set_target_properties(${test_name} PROPERTIES
-            INSTALL_RPATH "${NETWORK_INSTALL_RPATH}"
-        )
+        add_test_executable(test-socket-pair src/unix/test-socket-pair.cpp)
+        set_tests_properties(test-socket-pair PROPERTIES LABELS "unit;unix")
+        add_test_executable(test-socket-unix src/unix/test-socket-unix.cpp)
+        set_tests_properties(test-socket-unix PROPERTIES LABELS "unit;unix")
     endif()
-    add_test(NAME ${test_name} COMMAND ${test_name})
-    set_tests_properties(${test_name} PROPERTIES LABELS "unit")
-endfunction()
-
-# Common tests
-add_test_executable(test-address src/test-address.cpp)
-add_test_executable(test-bind src/test-bind.cpp)
-add_test_executable(test-connect src/test-connect.cpp)
-add_test_executable(test-errors src/test-errors.cpp)
-add_test_executable(test-host src/test-host.cpp)
-add_test_executable(test-hostname src/test-hostname.cpp)
-add_test_executable(test-option src/test-option.cpp)
-add_test_executable(test-parse src/test-parse.cpp)
-add_test_executable(test-runtime src/test-runtime.cpp)
-add_test_executable(test-socket-api src/test-socket-api.cpp)
-add_test_executable(test-socket-data src/test-socket-data.cpp)
-add_test_executable(test-socket-inet src/test-socket-inet.cpp)
-
-# Unix-specific tests
-if(UNIX)
-    add_test_executable(test-socket-pair src/unix/test-socket-pair.cpp)
-    set_tests_properties(test-socket-pair PROPERTIES LABELS "unit;unix")
-    add_test_executable(test-socket-unix src/unix/test-socket-unix.cpp)
-    set_tests_properties(test-socket-unix PROPERTIES LABELS "unit;unix")
-endif()
 endif()
 
 if(BUILD_EXAMPLES)
@@ -669,6 +713,7 @@ foreach(example_source IN LISTS UNIX_EXAMPLE_SOURCES)
         ${UNIX_CONNECTION_SOURCES}
     )
     target_link_libraries(${example_name} PRIVATE network)
+    network_apply_build_options(${example_name})
     network_enable_link_map(${example_name})
 endforeach()
 
@@ -679,6 +724,7 @@ foreach(example_source IN LISTS COMMON_EXAMPLE_SOURCES)
         target_link_libraries(${example_name} PRIVATE ws2_32)
     endif()
     target_link_libraries(${example_name} PRIVATE network)
+    network_apply_build_options(${example_name})
     network_enable_link_map(${example_name})
 endforeach()
 
@@ -748,8 +794,20 @@ add_source_count_target(count-source-files ${PROJECT_SOURCES})
 add_source_count_target(count-test-source-files ${TEST_SOURCES})
 add_source_count_target(count-unix-source-files ${UNIX_SOURCES})
 
-get_directory_property(NETWORK_COMPILE_OPTIONS COMPILE_OPTIONS)
-get_directory_property(NETWORK_COMPILE_DEFINITIONS COMPILE_DEFINITIONS)
+get_target_property(
+    NETWORK_COMPILE_OPTIONS network_build_options INTERFACE_COMPILE_OPTIONS
+)
+get_target_property(
+    NETWORK_COMPILE_DEFINITIONS
+    network_build_options
+    INTERFACE_COMPILE_DEFINITIONS
+)
+if(NOT NETWORK_COMPILE_OPTIONS)
+    set(NETWORK_COMPILE_OPTIONS)
+endif()
+if(NOT NETWORK_COMPILE_DEFINITIONS)
+    set(NETWORK_COMPILE_DEFINITIONS)
+endif()
 get_target_property(NETWORK_INCLUDE_DIRECTORIES network INCLUDE_DIRECTORIES)
 string(TOUPPER "${CMAKE_BUILD_TYPE}" NETWORK_BUILD_TYPE_UPPER)
 set(NETWORK_CONFIG_FLAGS
@@ -776,7 +834,7 @@ endforeach()
 foreach(include_directory IN LISTS NETWORK_INCLUDE_DIRECTORIES)
     list(APPEND NETWORK_COMPILE_FLAGS "-I${include_directory}")
 endforeach()
-list(APPEND NETWORK_COMPILE_FLAGS "-std=c++${CMAKE_CXX_STANDARD}")
+list(APPEND NETWORK_COMPILE_FLAGS "-std=c++${NETWORK_CXX_STANDARD}")
 list(JOIN NETWORK_COMPILE_FLAGS " " NETWORK_COMPILE_FLAGS_TEXT)
 file(GENERATE
     OUTPUT "${PROJECT_BINARY_DIR}/compile_flags.txt"
@@ -1121,7 +1179,7 @@ include(CPack)
 message(STATUS "")
 message(STATUS "=== ${PROJECT_NAME} Build Configuration ===")
 message(STATUS "Build Type:     ${CMAKE_BUILD_TYPE}")
-message(STATUS "C++ Standard:   ${CMAKE_CXX_STANDARD}")
+message(STATUS "C++ Standard:   ${NETWORK_CXX_STANDARD}")
 message(STATUS "C++ Library:    ${NETWORK_STDLIB}")
 message(STATUS "Coverage:       ${WITH_COVERAGE}")
 message(STATUS "Sanitizers:     ${WITH_SANITIZE}")
