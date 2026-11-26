@@ -127,6 +127,9 @@ sizes.txt
 *.tmp
 
 # POSIX executables
+resolve-host
+runtime-info
+tcp-loopback
 test-address
 test-bind
 test-connect
