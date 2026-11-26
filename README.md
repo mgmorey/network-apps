@@ -120,9 +120,10 @@ Visit `/podman:network-apps-dev:/src/` and run `M-x gdb` there to debug the
 binaries in `build-cmake/ubuntu-x64-debug` with the container's GDB. The
 `dape` package can debug through GDB's Debug Adapter Protocol support instead:
 run `M-x dape`, which defaults to `unix-server`; edit the `:program` value to
-debug another binary such as `unix-client`. The `.dir-locals.el` file sets
-`M-x compile` to build with the `ubuntu-x64-debug` preset, sets that `dape`
-default, and points Eglot at the container's `clangd` and that build's
+debug another binary such as `unix-client`. The `.dir-locals.el` file selects
+the macOS ARM64 preset for local macOS Emacs and the Ubuntu x64 preset for
+Linux or Podman remote Emacs. It sets `M-x compile` to build with that preset,
+sets the matching `dape` default, and points Eglot at the corresponding
 `compile_commands.json`. Emacs ignores directory-local variables on remote
 files unless `enable-remote-dir-locals` is non-nil, so set it in the Emacs
 initialization file with `(setq enable-remote-dir-locals t)`. Emacs then asks

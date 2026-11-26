@@ -1,10 +1,19 @@
-;; Intended for Emacs visiting /podman:<container>:/src/ (see README.md).
+;; Select a CMake preset matching the local platform or Podman remote.
 ((nil
-  . ((compile-command . "cmake --build --preset ubuntu-x64-debug --parallel")
-     (dape-command
-      . (gdb defer-launch-attach t
-             :program "build-cmake/ubuntu-x64-debug/unix-server"))
-     (eglot-server-programs
-      . (((c++-mode c++-ts-mode)
-          . ("clangd"
-             "--compile-commands-dir=build-cmake/ubuntu-x64-debug")))))))
+  . ((eval
+      . (let* ((preset
+                (cond
+                 ((file-remote-p default-directory) "ubuntu-x64-debug")
+                 ((eq system-type 'darwin) "macos-arm64-debug")
+                 ((eq system-type 'gnu/linux) "ubuntu-x64-debug")
+                 (t (error "No CMake preset for %s" system-type))))
+               (build-dir (concat "build-cmake/" preset)))
+          (setq-local compile-command
+                      (format "cmake --build --preset %s --parallel" preset))
+          (setq-local dape-command
+                      `(gdb defer-launch-attach t
+                            :program ,(concat build-dir "/unix-server")))
+          (setq-local eglot-server-programs
+                      `(((c++-mode c++-ts-mode)
+                         . ("clangd"
+                            ,(concat "--compile-commands-dir=" build-dir))))))))))
