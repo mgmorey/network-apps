@@ -599,6 +599,7 @@ if(BUILD_TESTING)
     if(NOT GTest_FOUND)
         include(FetchContent)
         set(INSTALL_GTEST OFF CACHE BOOL "Do not install GoogleTest" FORCE)
+        set(BUILD_GMOCK OFF CACHE BOOL "Do not build GoogleMock" FORCE)
         FetchContent_Declare(
             googletest
             URL https://github.com/google/googletest/releases/download/v1.17.0/googletest-1.17.0.tar.gz
