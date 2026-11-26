@@ -1125,18 +1125,18 @@ add_custom_target(distclean
 )
 
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/network
-    DESTINATION include
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     FILES_MATCHING PATTERN "*.hpp"
 )
 
 if(WIN32)
     install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/windows/network
-        DESTINATION include/windows
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/windows
         FILES_MATCHING PATTERN "*.hpp"
     )
 elseif(UNIX)
     install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/unix/network
-        DESTINATION include/unix
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/unix
         FILES_MATCHING PATTERN "*.hpp"
     )
 endif()
