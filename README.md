@@ -6,9 +6,8 @@ A cross-platform C++23 networking library and accompanying test suite.
 
 This repository contains a network library implementation plus test programs. It supports building with both the existing `GNUmakefile` and a new `CMakeLists.txt` for better portability across platforms and toolchains.
 
-Replace `/path/to/network-apps` in the examples with the repository's
-location. CMake commands specify source and build directories explicitly, so
-they can be run without changing directories.
+Run the commands in this README from the repository root unless noted
+otherwise.
 
 ## Build Options
 
@@ -17,7 +16,6 @@ they can be run without changing directories.
 The existing build system uses `gmake` and the provided `GNUmakefile`.
 
 ```sh
-cd network-apps
 gmake clean
 gmake all
 ```
@@ -28,10 +26,8 @@ The CMake build supports the core library, tests, and platform-specific
 utilities. You can build in a separate directory:
 
 ```sh
-cmake -S /path/to/network-apps \
-  -B /path/to/network-apps/build-cmake \
-  -DCMAKE_BUILD_TYPE=Default
-cmake --build /path/to/network-apps/build-cmake
+cmake -S . -B build-cmake -DCMAKE_BUILD_TYPE=Default
+cmake --build build-cmake
 ```
 
 CMake supports `Debug`, `Default`, `Minimal`, `Release`, `Small`,
@@ -83,11 +79,11 @@ mount for SELinux hosts:
 
 ```sh
 podman run --rm --userns=keep-id \
-  -v /path/to/network-apps:/src:Z -w /src \
+  -v "$PWD":/src:Z -w /src \
   network-apps-build:24.04 \
-  sh -c 'cmake --preset ubuntu-x64-debug \
-    && cmake --build --preset ubuntu-x64-debug --parallel \
-    && ctest --preset ubuntu-x64-debug'
+  sh -c 'cmake --preset ubuntu-x64-debug && \
+         cmake --build --preset ubuntu-x64-debug --parallel && \
+         ctest --preset ubuntu-x64-debug'
 ```
 
 The presets use the Unix Makefiles generator and are enabled on any Linux
@@ -112,7 +108,7 @@ tree through TRAMP's `podman` method (built into Emacs 29 and later):
 
 ```sh
 podman run -d --name network-apps-dev --userns=keep-id \
-  -v /path/to/network-apps:/src:Z -w /src \
+  -v "$PWD":/src:Z -w /src \
   network-apps-build:24.04 sleep infinity
 ```
 
@@ -186,8 +182,7 @@ generator; compiler-specific flags and supported options still vary by
 toolchain.
 
 ```sh
-cmake -S /path/to/network-apps \
-  -B /path/to/network-apps/build-cmake \
+cmake -S . -B build-cmake \
   -DCMAKE_BUILD_TYPE=Debug \
   -DWITH_COVERAGE=ON \
   -DWITH_SANITIZE=address,undefined \
@@ -215,29 +210,29 @@ On Linux and FreeBSD, the project builds a Unix-domain sequenced-packet
 client/server example pair:
 
 ```sh
-cmake --build /path/to/network-apps/build-cmake --target examples
+cmake --build build-cmake --target examples
 ```
 
 Start the server in one terminal:
 
 ```sh
-/path/to/network-apps/build-cmake/unix-server
+build-cmake/unix-server
 ```
 
 Then send a sequence of integers from another terminal; the client prints
 their sum:
 
 ```sh
-/path/to/network-apps/build-cmake/unix-client 1 2 3
+build-cmake/unix-client 1 2 3
 ```
 
 Send `DOWN` to stop the server:
 
 ```sh
-/path/to/network-apps/build-cmake/unix-client DOWN
+build-cmake/unix-client DOWN
 ```
 
-Use `cmake --build /path/to/network-apps/build-cmake --target run-examples`
+Use `cmake --build build-cmake --target run-examples`
 to run the paired example as a smoke test. With GNU Make, use `gmake examples`
 to build the programs or `gmake run-examples` to run that smoke test. Examples
 are not installed with the library.
@@ -261,8 +256,8 @@ CMake fetches the pinned GoogleTest 1.17.0 release with `FetchContent`.
 Run the complete CTest suite with:
 
 ```sh
-cmake --build /path/to/network-apps/build-cmake --target check
-ctest --test-dir /path/to/network-apps/build-cmake --output-on-failure
+cmake --build build-cmake --target check
+ctest --test-dir build-cmake --output-on-failure
 ```
 
 ## Installing and Packaging
@@ -271,14 +266,14 @@ Install the library, public headers, and test executables using CMake's
 install prefix:
 
 ```sh
-cmake --install /path/to/network-apps/build-cmake \
-  --prefix /path/to/install
+cmake --install build-cmake \
+  --prefix install
 ```
 
 Create a `.tar.gz` package containing the installed files with:
 
 ```sh
-cmake --build /path/to/network-apps/build-cmake --target package
+cmake --build build-cmake --target package
 ```
 
 The archive is written to the build directory.
@@ -288,11 +283,11 @@ The archive is written to the build directory.
 The CMake build provides equivalents for common Make maintenance targets:
 
 ```sh
-cmake --build /path/to/network-apps/build-cmake --target assembly
-cmake --build /path/to/network-apps/build-cmake --target compile-flags
-cmake --build /path/to/network-apps/build-cmake --target sizes
-cmake --build /path/to/network-apps/build-cmake --target tags
-cmake --build /path/to/network-apps/build-cmake --target distclean
+cmake --build build-cmake --target assembly
+cmake --build build-cmake --target compile-flags
+cmake --build build-cmake --target sizes
+cmake --build build-cmake --target tags
+cmake --build build-cmake --target distclean
 ```
 
 `assembly` writes per-source `.s` files under `assembly/`; `compile-flags`
@@ -312,13 +307,13 @@ With CMake, the project is integrated with CTest.
 - Run all tests:
 
 ```sh
-cmake --build /path/to/network-apps/build-cmake --target check
+cmake --build build-cmake --target check
 ```
 
 - Run all tests in parallel:
 
 ```sh
-cmake --build /path/to/network-apps/build-cmake --target check-parallel
+cmake --build build-cmake --target check-parallel
 ```
 
 ## Static Analysis
@@ -328,8 +323,8 @@ enabled. The `tidy` target is enabled when `clang-tidy` is available and the
 CMake generator exports a compile commands database:
 
 ```sh
-cmake --build /path/to/network-apps/build-cmake --target analyze
-cmake --build /path/to/network-apps/build-cmake --target tidy
+cmake --build build-cmake --target analyze
+cmake --build build-cmake --target tidy
 ```
 
 ## Coverage
@@ -337,7 +332,7 @@ cmake --build /path/to/network-apps/build-cmake --target tidy
 The CMake build also includes a coverage target.
 
 ```sh
-cmake --build /path/to/network-apps/build-cmake --target coverage
+cmake --build build-cmake --target coverage
 ```
 
 If coverage is enabled, this generates:
