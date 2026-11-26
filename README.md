@@ -280,8 +280,7 @@ ctest --test-dir build-cmake --output-on-failure
 
 ## Installing and Packaging
 
-Install the library, public headers, and test executables using CMake's
-install prefix:
+Install the library and public headers using CMake's install prefix:
 
 ```sh
 cmake --install build-cmake \

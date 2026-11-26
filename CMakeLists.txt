@@ -1085,10 +1085,6 @@ add_custom_target(distclean
     COMMENT "Remove generated developer artifacts"
 )
 
-install(TARGETS ${TEST_EXECUTABLES}
-    RUNTIME DESTINATION bin
-)
-
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/network
     DESTINATION include
     FILES_MATCHING PATTERN "*.hpp"
