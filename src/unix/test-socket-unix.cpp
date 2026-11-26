@@ -20,7 +20,8 @@
                                         // LogicError, OsError,
                                         // Pathname, Socket,
                                         // SocketHints,
-                                        // UnixSocketHints, close(),
+                                        // UnixSocketHints, bind(),
+                                        // close(), connect(),
                                         // create_socket(),
                                         // handle_null, handle_type,
                                         // os_error_type,
@@ -29,6 +30,7 @@
 #include "network/parse.hpp"            // parse()
 
 #include <sys/socket.h>     // AF_UNIX, AF_UNSPEC, SOCK_STREAM
+#include <unistd.h>         // ::getpid()
 
 #include <cerrno>       // EACCES, EADDRINUSE, EBADF, EINVAL, ENOENT,
                         // EROFS
@@ -126,6 +128,15 @@ namespace
             path.replace(0, prefix.length(), prefix);
         }
 
+        return path;
+    }
+
+    auto get_test_pathname(std::string_view suffix) -> Pathname
+    {
+        Pathname path {"/tmp/network-apps-test-"};
+        path += std::to_string(::getpid());
+        path += '-';
+        path += suffix;
         return path;
     }
 
@@ -287,6 +298,34 @@ namespace
         const SocketHints hints {AF_UNIX, SOCK_STREAM, 0};
         test(hints, "");
     }
+
+    auto test_path_bind_connect_wrappers() -> void
+    {
+        const auto pathname {get_test_pathname("bind-connect")};
+        const auto pathname_view {std::string_view {pathname}};
+        const SocketHints hints {AF_UNIX, SOCK_STREAM, 0};
+        const auto server {Network::bind(pathname_view, hints, false)};
+
+        ASSERT_TRUE(server)
+            << (server ? "" : server.error().string());
+
+        const auto bind_again {Network::bind(pathname_view, hints, false)};
+        EXPECT_FALSE(bind_again);
+
+        const auto listen_error {(*server)->listen(1)};
+        ASSERT_FALSE(listen_error) << listen_error.string();
+
+        const auto client {Network::connect(pathname_view, hints, false)};
+        ASSERT_TRUE(client)
+            << (client ? "" : client.error().string());
+
+        const auto missing_path {get_test_pathname("missing")};
+        const auto missing_path_view {std::string_view {missing_path}};
+        const auto missing_client {
+            Network::connect(missing_path_view, hints, false)
+        };
+        EXPECT_FALSE(missing_client);
+    }
 }
 
 // NOLINTNEXTLINE(bugprone-throwing-static-initialization)
@@ -298,6 +337,11 @@ TEST(SocketUnix, PathsAndSocketCreation)
     test_unix_invalid_protocol();
     test_unix_accept();
     test_unix_valid();
+}
+
+TEST(SocketUnix, PathBindAndConnectWrappers)
+{
+    test_path_bind_connect_wrappers();
 }
 
 #endif
