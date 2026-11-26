@@ -104,12 +104,12 @@ namespace
     auto get_expected_re() -> std::string
     {
         std::string result;
-        result += "(";
+        result += '(';
         result += expected_runtime_platform_re;
         result += expected_runtime_version_re;
         result += expected_runtime_options_re;
         result += expected_runtime_status_re;
-        result += ")";
+        result += ')';
         return result;
     }
 

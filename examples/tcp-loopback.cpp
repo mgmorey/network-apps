@@ -7,13 +7,14 @@
 auto main() -> int
 {
     try {
+        constexpr auto buffer_size {64};
         const Network::IpSocketHints hints {SOCK_STREAM, 0};
         const Network::EndpointView bind_endpoint {"127.0.0.1", "0"};
 
         const auto bound {Network::bind(bind_endpoint, hints, false)};
         const Network::Socket* server {nullptr};
 
-        for (auto& result : bound) {
+        for (const auto& result : bound) {
             if (result) {
                 server = result->get();
                 break;
@@ -40,7 +41,7 @@ auto main() -> int
         const auto connected {Network::connect(connect_endpoint, hints, false)};
         const Network::Socket* client {nullptr};
 
-        for (auto& result : connected) {
+        for (const auto& result : connected) {
             if (result) {
                 client = result->get();
                 break;
@@ -63,7 +64,7 @@ auto main() -> int
             return EXIT_FAILURE;
         }
 
-        Network::TextBuffer buffer {64};
+        Network::TextBuffer buffer {buffer_size};
         if (peer->read(buffer) == Network::socket_error) {
             std::cerr << "Could not read TCP server message\n";
             return EXIT_FAILURE;
@@ -77,7 +78,7 @@ auto main() -> int
             return EXIT_FAILURE;
         }
 
-        Network::TextBuffer response {64};
+        Network::TextBuffer response {buffer_size};
         if (client->read(response) == Network::socket_error) {
             std::cerr << "Could not read TCP client response\n";
             return EXIT_FAILURE;
