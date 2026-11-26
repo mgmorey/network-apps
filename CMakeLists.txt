@@ -6,6 +6,13 @@ project(network
     LANGUAGES CXX
 )
 
+if(NOT UNIX AND NOT WIN32)
+    message(FATAL_ERROR
+        "Unsupported operating system '${CMAKE_SYSTEM_NAME}'; "
+        "this project supports Unix-like platforms and Windows."
+    )
+endif()
+
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(CTest)
