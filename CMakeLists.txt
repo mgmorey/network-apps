@@ -460,7 +460,8 @@ set(TEST_UNIX_SOURCES
     src/unix/test-socket-unix.cpp
 )
 
-# Unix socket examples are available on Linux and FreeBSD.
+# Unix socket examples use stream sockets on macOS and sequenced-packet
+# sockets on Linux and FreeBSD.
 # Examples that use only portable networking APIs.
 set(COMMON_EXAMPLE_SOURCES
     examples/resolve-host.cpp
@@ -469,10 +470,15 @@ set(COMMON_EXAMPLE_SOURCES
 )
 
 set(UNIX_EXAMPLE_SOURCES)
-if(CMAKE_SYSTEM_NAME MATCHES "^(Linux|FreeBSD)$")
+set(UNIX_CONNECTION_SOURCES)
+if(CMAKE_SYSTEM_NAME MATCHES "^(Darwin|Linux|FreeBSD)$")
     set(UNIX_EXAMPLE_SOURCES
         examples/unix/unix-client.cpp
         examples/unix/unix-server.cpp
+    )
+    set(UNIX_CONNECTION_SOURCES
+        examples/unix/read-message.cpp
+        examples/unix/write-message.cpp
     )
 endif()
 
@@ -516,6 +522,7 @@ if(WITH_LISTINGS)
             ${TEST_COMMON_SOURCES}
             ${COMMON_EXAMPLE_SOURCES}
             ${UNIX_EXAMPLE_SOURCES}
+            ${UNIX_CONNECTION_SOURCES}
         )
         if(UNIX)
             list(APPEND LISTING_SOURCES ${TEST_UNIX_SOURCES})
@@ -670,7 +677,10 @@ endif()
 
 foreach(example_source IN LISTS UNIX_EXAMPLE_SOURCES)
     get_filename_component(example_name ${example_source} NAME_WE)
-    add_executable(${example_name} ${example_source})
+    add_executable(${example_name}
+        ${example_source}
+        ${UNIX_CONNECTION_SOURCES}
+    )
     target_include_directories(${example_name} PRIVATE
         ${PROJECT_SOURCE_DIR}/include
         ${PROJECT_SOURCE_DIR}/include/unix
@@ -727,13 +737,14 @@ if(UNIX)
     list(APPEND PROJECT_SOURCES ${TEST_UNIX_SOURCES})
 endif()
 list(APPEND PROJECT_SOURCES ${UNIX_EXAMPLE_SOURCES})
+list(APPEND PROJECT_SOURCES ${UNIX_CONNECTION_SOURCES})
 
 set(LIBRARY_SOURCES ${NETWORK_SOURCES})
 set(TEST_SOURCES ${TEST_COMMON_SOURCES})
 if(UNIX)
     list(APPEND TEST_SOURCES ${TEST_UNIX_SOURCES})
 endif()
-set(UNIX_SOURCES ${UNIX_EXAMPLE_SOURCES})
+set(UNIX_SOURCES ${UNIX_EXAMPLE_SOURCES} ${UNIX_CONNECTION_SOURCES})
 
 function(add_source_count_target target_name)
     set(source_list ${ARGN})
@@ -956,6 +967,7 @@ elseif(WIN32)
     set(PLATFORM_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include/windows)
 endif()
 list(APPEND ANALYSIS_SOURCES ${UNIX_EXAMPLE_SOURCES})
+list(APPEND ANALYSIS_SOURCES ${UNIX_CONNECTION_SOURCES})
 
 find_program(CPPCHECK_PATH cppcheck)
 if(CPPCHECK_PATH)

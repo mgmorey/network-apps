@@ -140,6 +140,7 @@ test_unix_sources = test-socket-pair.cpp test-socket-unix.cpp
 test_main_source = test-main.cpp
 
 unix_example_sources = unix-server.cpp unix-client.cpp
+unix_connection_sources = read-message.cpp write-message.cpp
 common_example_sources = resolve-host.cpp runtime-info.cpp tcp-loopback.cpp
 
 sizes = sizes.txt sizes.txt~
@@ -156,11 +157,11 @@ package = $(output_prefix)$(library_stem).tar.gz
 
 sources = $(library_sources) $(test_sources) $(test_main_source)		\
 $(common_example_sources)						\
-$(if $(is_posix),$(unix_example_sources),)
+$(if $(is_unix),$(unix_example_sources) $(unix_connection_sources),)
 library_sources = $(library_common_sources) $(library_native_sources)	\
 $(if $(filter unix,$(api)),$(library_unix_sources),)
 program_sources = $(test_sources) $(common_example_sources)		\
-$(if $(is_posix),$(unix_example_sources),)
+$(if $(is_unix),$(unix_example_sources) $(unix_connection_sources),)
 test_sources = $(test_common_sources) $(if $(filter	\
 unix,$(api)),$(test_unix_sources),)
 
@@ -174,7 +175,7 @@ program_objects = $(call get-objects-from-sources,$(program_sources))
 programs = $(test_programs) $(common_programs) $(unix_programs)
 test_programs = $(call get-programs-from-sources,$(test_sources))
 common_programs = $(call get-programs-from-sources,$(common_example_sources))
-unix_programs = $(if $(is_posix),\
+unix_programs = $(if $(is_unix),\
 $(call get-programs-from-sources,$(unix_example_sources)),)
 
 library_aliases = $(addprefix $(output_prefix)$(library_stem),$(alias_suffixes))
@@ -287,7 +288,7 @@ count-test-source-files: $(test_sources)
 	@printf '%s\n' $(words $^)
 
 .PHONY: count-unix-source-files
-count-unix-source-files: $(unix_example_sources)
+count-unix-source-files: $(unix_example_sources) $(unix_connection_sources)
 	@printf '%s\n' $(words $^)
 
 .PHONY: distclean
@@ -295,7 +296,7 @@ distclean:
 	$(call clean-all,$(artifacts))
 
 .PHONY: examples run-examples
-ifneq "$(is_posix)" ""
+ifneq "$(is_unix)" ""
 examples: $(common_programs) $(unix_programs)
 
 run-examples: $(common_programs) $(unix_programs)
@@ -379,6 +380,10 @@ $(static_library): $(library_objects)
 	$(strip rm -f $@ && $(AR) $(ARFLAGS) $@ $^)
 
 $(programs): $(firstword $(libraries))
+
+ifneq "$(is_unix)" ""
+$(unix_programs): $(call get-objects-from-sources,$(unix_connection_sources))
+endif
 
 $(test_programs): $(object_prefix)test-main$(object_suffix)
 

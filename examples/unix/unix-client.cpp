@@ -13,13 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-// This UNIX domain sequenced-packet socket example is adapted from the
-// example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
+// This UNIX domain socket example is adapted from the example in
+// https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
 #include "network/network.hpp"          // Address, Error, Socket,
-                                        // TextBuffer,
-                                        // UniqueSocket, connect(),
-                                        // socket_error
+                                        // UniqueSocket, connect()
 #include "connection.hpp"               // NetworkExamples::Unix
 #include "network/parse.hpp"            // parse()
 
@@ -29,7 +27,6 @@
 #include <sys/socket.h>     // SHUT_WR
 #endif
 
-#include <cstdio>       // std::perror()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <cstring>      // std::strcmp()
 #include <iomanip>      // std::right, std::setw()
@@ -42,10 +39,8 @@ namespace
     using Network::Address;
     using Network::Error;
     using Network::Socket;
-    using Network::TextBuffer;
     using Network::UniqueSocket;
     using Network::connect;
-    using Network::socket_error;
 
     constexpr auto handle_width {6};
     constexpr auto indent_width {handle_width + 18};
@@ -109,15 +104,7 @@ namespace
 
     auto read(const Socket& s) -> std::string
     {
-        TextBuffer buffer {NetworkExamples::Unix::buffer_size};
-        const auto error {s.read(buffer)};
-
-        if (error == socket_error) {
-            std::perror("read");
-            std::exit(EXIT_FAILURE);
-        }
-
-        return buffer;
+        return NetworkExamples::Unix::read_message(s);
     }
 
     auto shutdown(const Socket& s)
@@ -130,12 +117,7 @@ namespace
 
     auto write(const std::string& str, const Socket& s)
     {
-        const auto error {s.write(str)};
-
-        if (error == socket_error) {
-            std::perror("write");
-            std::exit(EXIT_FAILURE);
-        }
+        NetworkExamples::Unix::write_message(s, str);
     }
 }
 

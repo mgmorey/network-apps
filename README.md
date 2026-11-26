@@ -223,8 +223,9 @@ the build directory's `listings/` folder.
 
 ## Examples
 
-On Linux and FreeBSD, the project builds a Unix-domain sequenced-packet
-client/server example pair:
+The project builds a Unix-domain client/server example pair on macOS, Linux,
+and FreeBSD. It uses sequenced-packet sockets on Linux and FreeBSD, and
+newline-delimited stream sockets on macOS:
 
 ```sh
 cmake --build build-cmake --target examples

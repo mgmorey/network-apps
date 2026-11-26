@@ -13,17 +13,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-// This UNIX domain sequenced-packet socket example is adapted from the
-// example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
+// This UNIX domain socket example is adapted from the example in
+// https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
 #include "network/network.hpp"          // Address, Error, Socket,
-                                        // TextBuffer,
-                                        // UniqueSocket, accept(),
-                                        // bind(), socket_error
+                                        // UniqueSocket, accept(), bind()
 #include "connection.hpp"               // NetworkExamples::Unix
 #include "network/parse.hpp"            // parse()
 
-#include <cstdio>       // std::perror()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
 #include <iomanip>      // std::right, std::setw()
 #include <iostream>     // std::cerr, std::cout, std::endl
@@ -35,11 +32,9 @@ namespace
     using Network::Address;
     using Network::Error;
     using Network::Socket;
-    using Network::TextBuffer;
     using Network::UniqueSocket;
     using Network::accept;
     using Network::bind;
-    using Network::socket_error;
 
     using Number = long long;
 
@@ -136,26 +131,13 @@ namespace
 
     auto read(const Socket& s) -> std::string
     {
-        TextBuffer buffer {NetworkExamples::Unix::buffer_size};
-        const auto error {s.read(buffer)};
-
-        if (error == socket_error) {
-            std::perror("read");
-            std::exit(EXIT_FAILURE);
-        }
-
-        return buffer;
+        return NetworkExamples::Unix::read_message(s);
     }
 
     auto write(const Socket& s, auto value)
     {
         const auto str {std::to_string(value)};
-        const auto error {s.write(str)};
-
-        if (error == socket_error) {
-            std::perror("write");
-            std::exit(EXIT_FAILURE);
-        }
+        NetworkExamples::Unix::write_message(s, str);
     }
 }
 
