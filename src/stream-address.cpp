@@ -28,8 +28,10 @@
 
 #include <ostream>      // std::ostream
 #include <string>       // std::string
+#include <string_view>  // std::string_view
 
-static auto get_prefix(Network::family_type family) noexcept -> std::string
+static auto get_prefix(Network::family_type family) noexcept ->
+    std::string_view
 {
     switch (family) {
     case AF_INET:
@@ -46,7 +48,8 @@ static auto get_prefix(Network::family_type family) noexcept -> std::string
     }
 }
 
-static auto get_suffix(Network::family_type family) noexcept -> std::string
+static auto get_suffix(Network::family_type family) noexcept ->
+    std::string_view
 {
     switch (family) {
     case AF_INET:
@@ -77,26 +80,26 @@ auto Network::operator<<(std::ostream& os,
        << '(';
 
 #ifdef HAVE_SOCKADDR_SA_LEN
-    os << Format(prefix + "len")
+    os << Format(std::string {prefix} + "len")
        << address.length()
-       << Format(delim, tab, prefix + "family");
+       << Format(delim, tab, std::string {prefix} + "family");
 #else
-    os << Format(prefix + "family");
+    os << Format(std::string {prefix} + "family");
 #endif
     os << SocketFamily(family);
 
     switch (family) {
     case AF_INET:
     case AF_INET6:
-        os << Format(delim, tab, prefix + "port")
+        os << Format(delim, tab, std::string {prefix} + "port")
            << address.port()
-           << Format(delim, tab, prefix + "addr");
+           << Format(delim, tab, std::string {prefix} + "addr");
         break;
     case AF_UNIX:
-        os << Format(delim, tab, prefix + "path");
+        os << Format(delim, tab, std::string {prefix} + "path");
         break;
     default:
-        os << Format(delim, tab, prefix + "data");
+        os << Format(delim, tab, std::string {prefix} + "data");
     }
 
     os << address.text()
