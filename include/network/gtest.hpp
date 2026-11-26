@@ -1,7 +1,7 @@
 #ifndef NETWORK_GTEST_HPP
 #define NETWORK_GTEST_HPP
 
-#if defined(__has_include)
+#ifdef __has_include
 # if __has_include(<gtest/gtest.h>)
 #  include <gtest/gtest.h>
 #  define NETWORK_HAS_GTEST 1
@@ -14,6 +14,7 @@
 #include <iostream>
 #include <utility>
 
+// NOLINTBEGIN(cppcoreguidelines-macro-usage): the fallback test API requires macros.
 #define TEST(suite_name, test_name)                                        \
     static void suite_name##_##test_name();                                \
     static const int suite_name##_##test_name##_registered                \
@@ -90,6 +91,8 @@
             std::exit(EXIT_FAILURE);                                       \
         }                                                                  \
     } while (false)
+
+// NOLINTEND(cppcoreguidelines-macro-usage)
 
 #endif
 

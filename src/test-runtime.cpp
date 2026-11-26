@@ -177,6 +177,8 @@ namespace
         }
     }
 
+    // Fallback EXPECT macros expand into branches, inflating this score.
+    // NOLINTNEXTLINE(readability-function-cognitive-complexity)
     auto test(Runtime& rt) -> void
     {
         EXPECT_FALSE(static_cast<bool>(rt.version()));

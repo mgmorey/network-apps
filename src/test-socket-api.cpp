@@ -161,6 +161,8 @@ namespace
         }
     }
 
+    // Fallback EXPECT macros expand into branches, inflating this score.
+    // NOLINTNEXTLINE(readability-function-cognitive-complexity)
     auto test(SocketApi& sa) -> void
     {
         EXPECT_FALSE(static_cast<bool>(sa.version()));
