@@ -52,10 +52,10 @@ namespace
     auto accept(const UniqueSocket& s1)
     {
         auto s2 {accept(*s1)};
-        const Address peer {s2->get_peername()};
-        const Address self {s2->get_sockname()};
 
         if (is_verbose) {
+            const Address peer {s2->get_peername()};
+            const Address self {s2->get_sockname()};
             // clang-format off
             std::cout << "Socket "
                       << std::right << std::setw(handle_width) << *s2
