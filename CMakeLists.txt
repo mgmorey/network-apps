@@ -1090,10 +1090,9 @@ if(WITH_COVERAGE AND BUILD_TESTING AND NETWORK_DEBUG_CONFIG_AVAILABLE)
             --gcov-executable=${GCOVR_GCOV_EXECUTABLE}
             --html-details
             --html-theme=github.dark-green
-            --html-title='NETWORK Code Coverage Report'
+            "--html-title=NETWORK Code Coverage Report"
             --json-add-tracefile=coverage.json
             --output=coverage/coverage.html
-            ${PROJECT_BINARY_DIR}
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         DEPENDS ${TEST_EXECUTABLES}
         COMMENT "Run tests and generate code coverage report"
