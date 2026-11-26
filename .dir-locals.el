@@ -9,7 +9,8 @@
                  (t (error "No CMake preset for %s" system-type))))
                (build-dir (concat "build-cmake/" preset)))
           (setq-local compile-command
-                      (format "cmake --build --preset %s --parallel" preset))
+                      (format "cmake --preset %s && cmake --build --preset %s --parallel"
+                              preset preset))
           (setq-local dape-command
                       `(gdb defer-launch-attach t
                             :program ,(concat build-dir "/unix-server")))
