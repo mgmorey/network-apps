@@ -35,6 +35,14 @@ CMake supports `Debug`, `Default`, `Minimal`, `Release`, `Small`,
 CMake's standard `CMAKE_CXX_COMPILER` setting. The following options provide
 Make-like control over instrumentation and toolchain settings:
 
+Tests and examples are enabled by default. Use the standard CMake
+`-DBUILD_TESTING=OFF` option to disable tests or
+`-DBUILD_EXAMPLES=OFF` to disable examples:
+
+```sh
+cmake -S . -B build-cmake -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF
+```
+
 ### macOS
 
 On Apple silicon, use the macOS preset to configure for arm64 with Apple
@@ -267,7 +275,7 @@ run the cross-platform smoke examples with
 
 ## Tests
 
-Test targets use GoogleTest when available. CMake first searches for an
+Test targets are enabled by default with `BUILD_TESTING=ON`. CMake first searches for an
 system-installed package with `find_package(GTest)`. If it is unavailable,
 CMake fetches the pinned GoogleTest 1.17.0 release with `FetchContent`.
 

@@ -8,6 +8,7 @@ project(network
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
+include(CTest)
 
 # ============================================================================
 # Build Configuration
@@ -51,6 +52,7 @@ option(WITH_BACKTRACE "Enable libstdc++ debug-mode backtraces" OFF)
 option(WITH_LTO "Enable link-time optimization" OFF)
 option(WITH_LISTINGS "Generate assembler listings when supported" OFF)
 option(WITH_LOADMAPS "Generate linker map files" OFF)
+option(BUILD_EXAMPLES "Build the example executables" ON)
 if(NOT WITH_FORTIFY_SOURCE STREQUAL "" AND
    NOT WITH_FORTIFY_SOURCE MATCHES "^[0-3]$")
     message(FATAL_ERROR "WITH_FORTIFY_SOURCE must be empty or between 0 and 3")
@@ -519,13 +521,19 @@ if(WITH_LISTINGS)
         file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/listings)
         set(LISTING_SOURCES
             ${NETWORK_SOURCES}
-            ${TEST_COMMON_SOURCES}
-            ${COMMON_EXAMPLE_SOURCES}
-            ${UNIX_EXAMPLE_SOURCES}
-            ${UNIX_CONNECTION_SOURCES}
         )
-        if(UNIX)
-            list(APPEND LISTING_SOURCES ${TEST_UNIX_SOURCES})
+        if(BUILD_TESTING)
+            list(APPEND LISTING_SOURCES ${TEST_COMMON_SOURCES})
+            if(UNIX)
+                list(APPEND LISTING_SOURCES ${TEST_UNIX_SOURCES})
+            endif()
+        endif()
+        if(BUILD_EXAMPLES)
+            list(APPEND LISTING_SOURCES
+                ${COMMON_EXAMPLE_SOURCES}
+                ${UNIX_EXAMPLE_SOURCES}
+                ${UNIX_CONNECTION_SOURCES}
+            )
         endif()
         foreach(source IN LISTS LISTING_SOURCES)
             get_filename_component(source_name ${source} NAME_WE)
@@ -584,33 +592,32 @@ endif()
 # Create Test Executables
 # ============================================================================
 
-enable_testing()
-include(CTest)
-
-find_package(GTest QUIET)
-if(NOT GTest_FOUND)
-    include(FetchContent)
-    set(INSTALL_GTEST OFF CACHE BOOL "Do not install GoogleTest" FORCE)
-    FetchContent_Declare(
-        googletest
-        URL https://github.com/google/googletest/releases/download/v1.17.0/googletest-1.17.0.tar.gz
-        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
-    )
-    FetchContent_MakeAvailable(googletest)
-endif()
-
-foreach(gtest_target IN ITEMS gtest gtest_main)
-    if(TARGET ${gtest_target})
-        if(MSVC)
-            target_compile_options(${gtest_target} PRIVATE /W0)
-        else()
-            target_compile_options(${gtest_target} PRIVATE -w)
-        endif()
-    endif()
-endforeach()
-
-# Helper function to create test executable
 set(TEST_EXECUTABLES)
+
+if(BUILD_TESTING)
+    find_package(GTest QUIET)
+    if(NOT GTest_FOUND)
+        include(FetchContent)
+        set(INSTALL_GTEST OFF CACHE BOOL "Do not install GoogleTest" FORCE)
+        FetchContent_Declare(
+            googletest
+            URL https://github.com/google/googletest/releases/download/v1.17.0/googletest-1.17.0.tar.gz
+            DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+        )
+        FetchContent_MakeAvailable(googletest)
+    endif()
+
+    foreach(gtest_target IN ITEMS gtest gtest_main)
+        if(TARGET ${gtest_target})
+            if(MSVC)
+                target_compile_options(${gtest_target} PRIVATE /W0)
+            else()
+                target_compile_options(${gtest_target} PRIVATE -w)
+            endif()
+        endif()
+    endforeach()
+
+    # Helper function to create test executable
 
 function(add_test_executable test_name test_source)
     add_executable(${test_name} ${test_source})
@@ -674,7 +681,9 @@ if(UNIX)
     set_tests_properties(test-socket-unix PROPERTIES LABELS "unit;unix")
     target_link_libraries(test-socket-unix PRIVATE GTest::gtest_main)
 endif()
+endif()
 
+if(BUILD_EXAMPLES)
 foreach(example_source IN LISTS UNIX_EXAMPLE_SOURCES)
     get_filename_component(example_name ${example_source} NAME_WE)
     add_executable(${example_name}
@@ -726,25 +735,37 @@ if(EXAMPLE_TARGETS)
         VERBATIM
     )
 endif()
+endif()
 
 # ============================================================================
 # Maintenance and Developer Targets
 # ============================================================================
 
-set(PROJECT_SOURCES ${NETWORK_SOURCES} ${TEST_COMMON_SOURCES})
-list(APPEND PROJECT_SOURCES ${COMMON_EXAMPLE_SOURCES})
-if(UNIX)
-    list(APPEND PROJECT_SOURCES ${TEST_UNIX_SOURCES})
+set(PROJECT_SOURCES ${NETWORK_SOURCES})
+if(BUILD_TESTING)
+    list(APPEND PROJECT_SOURCES ${TEST_COMMON_SOURCES})
+    if(UNIX)
+        list(APPEND PROJECT_SOURCES ${TEST_UNIX_SOURCES})
+    endif()
 endif()
-list(APPEND PROJECT_SOURCES ${UNIX_EXAMPLE_SOURCES})
-list(APPEND PROJECT_SOURCES ${UNIX_CONNECTION_SOURCES})
+if(BUILD_EXAMPLES)
+    list(APPEND PROJECT_SOURCES ${COMMON_EXAMPLE_SOURCES})
+    list(APPEND PROJECT_SOURCES ${UNIX_EXAMPLE_SOURCES})
+    list(APPEND PROJECT_SOURCES ${UNIX_CONNECTION_SOURCES})
+endif()
 
 set(LIBRARY_SOURCES ${NETWORK_SOURCES})
-set(TEST_SOURCES ${TEST_COMMON_SOURCES})
-if(UNIX)
-    list(APPEND TEST_SOURCES ${TEST_UNIX_SOURCES})
+set(TEST_SOURCES)
+if(BUILD_TESTING)
+    set(TEST_SOURCES ${TEST_COMMON_SOURCES})
+    if(UNIX)
+        list(APPEND TEST_SOURCES ${TEST_UNIX_SOURCES})
+    endif()
 endif()
-set(UNIX_SOURCES ${UNIX_EXAMPLE_SOURCES} ${UNIX_CONNECTION_SOURCES})
+set(UNIX_SOURCES)
+if(BUILD_EXAMPLES)
+    set(UNIX_SOURCES ${UNIX_EXAMPLE_SOURCES} ${UNIX_CONNECTION_SOURCES})
+endif()
 
 function(add_source_count_target target_name)
     set(source_list ${ARGN})
@@ -856,10 +877,15 @@ endif()
 
 find_program(SIZE_PATH NAMES llvm-size size)
 if(SIZE_PATH)
-    set(SIZE_TARGETS network ${TEST_EXECUTABLES}
-        resolve-host runtime-info tcp-loopback)
-    if(UNIX_EXAMPLE_SOURCES)
-        list(APPEND SIZE_TARGETS unix-client unix-server)
+    set(SIZE_TARGETS network)
+    if(BUILD_TESTING)
+        list(APPEND SIZE_TARGETS ${TEST_EXECUTABLES})
+    endif()
+    if(BUILD_EXAMPLES)
+        list(APPEND SIZE_TARGETS resolve-host runtime-info tcp-loopback)
+        if(UNIX_EXAMPLE_SOURCES)
+            list(APPEND SIZE_TARGETS unix-client unix-server)
+        endif()
     endif()
     set(SIZE_COMMAND_ARGS)
     foreach(target_name IN LISTS SIZE_TARGETS)
@@ -880,24 +906,28 @@ else()
 endif()
 
 # Convenience target for running all tests
-add_custom_target(check
-    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
-    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-    COMMENT "Run all CTest tests"
-)
+if(BUILD_TESTING)
+    add_custom_target(check
+        COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+        DEPENDS ${TEST_EXECUTABLES}
+        WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+        COMMENT "Run all CTest tests"
+    )
 
-# Convenience target for running tests in parallel
-add_custom_target(check-parallel
-    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -j 4
-    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-    COMMENT "Run all CTest tests in parallel"
-)
+    # Convenience target for running tests in parallel
+    add_custom_target(check-parallel
+        COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -j 4
+        DEPENDS ${TEST_EXECUTABLES}
+        WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+        COMMENT "Run all CTest tests in parallel"
+    )
+endif()
 
 # ============================================================================
 # Coverage Target (Optional)
 # ============================================================================
 
-if(WITH_COVERAGE AND
+if(WITH_COVERAGE AND BUILD_TESTING AND
    (CMAKE_BUILD_TYPE STREQUAL "Default" OR CMAKE_BUILD_TYPE STREQUAL "Debug"))
     find_program(GCOVR_PATH gcovr REQUIRED)
 
@@ -947,6 +977,8 @@ if(WITH_COVERAGE AND
         DEPENDS ${TEST_EXECUTABLES}
         COMMENT "Run tests and generate code coverage report"
     )
+elseif(WITH_COVERAGE AND NOT BUILD_TESTING)
+    message(STATUS "Coverage requires BUILD_TESTING")
 elseif(WITH_COVERAGE)
     message(STATUS "Coverage is supported only for Default and Debug builds")
 endif()
@@ -957,17 +989,23 @@ endif()
 
 set(ANALYSIS_SOURCES
     ${NETWORK_SOURCES}
-    ${TEST_COMMON_SOURCES}
-    ${COMMON_EXAMPLE_SOURCES}
 )
+if(BUILD_TESTING)
+    list(APPEND ANALYSIS_SOURCES ${TEST_COMMON_SOURCES})
+    if(UNIX)
+        list(APPEND ANALYSIS_SOURCES ${TEST_UNIX_SOURCES})
+    endif()
+endif()
+if(BUILD_EXAMPLES)
+    list(APPEND ANALYSIS_SOURCES ${COMMON_EXAMPLE_SOURCES})
+    list(APPEND ANALYSIS_SOURCES ${UNIX_EXAMPLE_SOURCES})
+    list(APPEND ANALYSIS_SOURCES ${UNIX_CONNECTION_SOURCES})
+endif()
 if(UNIX)
-    list(APPEND ANALYSIS_SOURCES ${TEST_UNIX_SOURCES})
     set(PLATFORM_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include/unix)
 elseif(WIN32)
     set(PLATFORM_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include/windows)
 endif()
-list(APPEND ANALYSIS_SOURCES ${UNIX_EXAMPLE_SOURCES})
-list(APPEND ANALYSIS_SOURCES ${UNIX_CONNECTION_SOURCES})
 
 find_program(CPPCHECK_PATH cppcheck)
 if(CPPCHECK_PATH)
@@ -1130,5 +1168,7 @@ message(STATUS "Fortify:        ${WITH_FORTIFY_SOURCE}")
 message(STATUS "Backtraces:     ${WITH_BACKTRACE}")
 message(STATUS "Listings:       ${WITH_LISTINGS}")
 message(STATUS "Linker maps:    ${WITH_LOADMAPS}")
+message(STATUS "Tests:          ${BUILD_TESTING}")
+message(STATUS "Examples:       ${BUILD_EXAMPLES}")
 message(STATUS "Install Prefix: ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "")
