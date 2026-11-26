@@ -56,17 +56,17 @@ namespace
 #else
     constexpr auto expected_code_stopped {0};
     constexpr auto expected_runtime_platform_re {
-        "Berkeley Software Distribution Sockets "
+        "Berkeley Software Distribution Sockets ",
     };
 #endif
     constexpr auto expected_runtime_version_re {
         "(\\d{1,3}\\.\\d{1,3} )?" // NOLINT
     };
     constexpr auto expected_runtime_options_re {
-        "(\\(with code coverage enabled\\) )?"
+        "(\\(with code coverage enabled\\) )?",
     };
     constexpr auto expected_runtime_status_re {
-        "Running"
+        "Running",
     };
 
     const auto fail_mode {FailMode::return_error};

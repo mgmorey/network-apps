@@ -83,10 +83,10 @@ namespace
     using Network::validate;
 
     constexpr auto expected_family_re {
-        R"(Invalid socket address family: (\d+))"
+        R"(Invalid socket address family: (\d+))",
     };
     constexpr auto expected_length_re {
-        R"(Value (\d+) is out of range \[\d+, \d+\] of \w+_type)"
+        R"(Value (\d+) is out of range \[\d+, \d+\] of \w+_type)",
     };
     constexpr auto print_key_width {20};
     constexpr auto print_value_width {10};

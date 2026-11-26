@@ -60,19 +60,19 @@ namespace
     using Network::to_handle_type;
 
     constexpr auto expected_accept_re {
-        R"(Call to ::accept\(.+\) failed with error \d+: .+)"
+        R"(Call to ::accept\(.+\) failed with error \d+: .+)",
     };
     constexpr auto expected_handle_re {
-        R"(Value (\d+|-\d+) is out of range \[-?\d+, \d+\] of handle_type)"
+        R"(Value (\d+|-\d+) is out of range \[-?\d+, \d+\] of handle_type)",
     };
     constexpr auto expected_peername_re {
-        R"(Call to ::getpeername\(.+\) failed with error \d+: .+)"
+        R"(Call to ::getpeername\(.+\) failed with error \d+: .+)",
     };
     constexpr auto expected_socket_re {
-        R"(Call to ::socket\(.+\) failed with error \d+: .+)"
+        R"(Call to ::socket\(.+\) failed with error \d+: .+)",
     };
     constexpr auto expected_socket_null_re {
-        R"(Null socket descriptor)"
+        R"(Null socket descriptor)",
     };
 
     auto is_verbose {false}; // NOLINT

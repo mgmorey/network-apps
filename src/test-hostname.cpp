@@ -42,7 +42,7 @@ namespace
 
 #if defined(__APPLE__) && defined(__MACH__)
     constexpr auto expected_gethostname_re {
-        R"()"
+        R"()",
     };
 #elif defined(__CYGWIN__) && !defined(_WIN32)
     constexpr auto expected_gethostname_re {

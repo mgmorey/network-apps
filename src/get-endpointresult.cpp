@@ -83,7 +83,7 @@ auto Network::get_endpointresult(CharSpan hostname,
                                             hostname_size,
                                             service.data(),
                                             service_size,
-                                            flags)}) {
+                                            flags),}) {
         const auto os_error {to_os_error(api_error)};
         std::ostringstream oss;
         // clang-format off
@@ -148,7 +148,7 @@ auto Network::get_endpointresult(ByteSpan bs, int flags,
                                              service,
                                              bs,
                                              flags,
-                                             rt)}) {
+                                             rt),}) {
         return std::unexpected {error};
     }
 

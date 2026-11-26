@@ -32,7 +32,7 @@ namespace Network
         af_unix = AF_UNIX,
 #endif
         af_inet = AF_INET,
-        af_inet6 = AF_INET6
+        af_inet6 = AF_INET6,
     };
 }
 

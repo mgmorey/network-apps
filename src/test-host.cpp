@@ -82,7 +82,7 @@ namespace
     };
 #else
     constexpr auto expected_getnameinfo_re {
-        R"(Call to ::getnameinfo\(.+\) returned -?\d+ \(.+\))"
+        R"(Call to ::getnameinfo\(.+\) returned -?\d+ \(.+\))",
     };
 #endif
 
@@ -112,7 +112,7 @@ namespace
             StringList list = {
                 Address(addr).text(),
                 endpoint.at(0),
-                t_host.canonical_name().value_or(std::string {})
+                t_host.canonical_name().value_or(std::string {}),
             };
             list.remove(std::string {});
             uniquify(list);

@@ -24,7 +24,7 @@ namespace Network
         allocated,
         connected,
         bound,
-        closing
+        closing,
     };
 }
 

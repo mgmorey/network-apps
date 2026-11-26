@@ -23,7 +23,7 @@ namespace Network
     enum class FailMode : std::uint8_t {
         throw_error,
         return_error,
-        return_zero
+        return_zero,
     };
 }
 

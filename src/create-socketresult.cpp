@@ -64,7 +64,7 @@ auto Network::create_socketresult(const SocketHints& hints,
     reset_api_error();
     const auto handle {::socket(family,
                                 hints.m_socktype,
-                                hints.m_protocol)};
+                                hints.m_protocol),};
 
     if (handle == handle_null) {
         const auto api_error {get_api_error()};

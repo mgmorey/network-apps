@@ -25,10 +25,10 @@
 namespace Network
 {
     constexpr auto sun_path_size {
-        sizeof(sockaddr_un) - offsetof(sockaddr_un, sun_path)
+        sizeof(sockaddr_un) - offsetof(sockaddr_un, sun_path),
     };
     constexpr auto sun_size {
-        sizeof(sockaddr_un)
+        sizeof(sockaddr_un),
     };
 }
 

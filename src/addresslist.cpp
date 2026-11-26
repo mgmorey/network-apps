@@ -103,7 +103,7 @@ Network::AddressList::AddressList(const HostnameView& t_hostname,
     if (const auto error {::getaddrinfo(hostname.c_str(),
                                         service.c_str(),
                                         hints_ptr.get(),
-                                        &m_list)}) {
+                                        &m_list),}) {
         const auto os_error {to_os_error(error)};
         std::ostringstream oss;
         // clang-format off

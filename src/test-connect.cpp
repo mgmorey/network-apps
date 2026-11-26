@@ -91,7 +91,7 @@ namespace
                 EACCES,
                 EHOSTUNREACH,
                 ENETDOWN,
-                ENETUNREACH
+                ENETUNREACH,
             };
 #endif
             return codes;

@@ -26,7 +26,7 @@ auto main(int argc, char* argv[]) -> int
                                 hostname,
                                 {},
                                 hints,
-                                false)})
+                                false),})
         {
             std::cerr << error.string() << '\n';
             return EXIT_FAILURE;

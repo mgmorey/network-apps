@@ -26,11 +26,11 @@ namespace Network
 {
     static constexpr auto handle_type_max
     {
-        std::numeric_limits<handle_type>::max()
+        std::numeric_limits<handle_type>::max(),
     };
     static constexpr auto handle_type_min
     {
-        0
+        0,
     };
 }
 

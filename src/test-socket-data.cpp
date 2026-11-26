@@ -62,16 +62,16 @@ namespace
     constexpr auto expected_failed_shutdown_code {EBADF};
 #endif
     constexpr auto expected_runtime_pointer_re {
-        R"(Null runtime pointer)"
+        R"(Null runtime pointer)",
     };
     constexpr auto expected_socket_descriptor_re {
-        R"(Null socket descriptor)"
+        R"(Null socket descriptor)",
     };
     constexpr auto expected_socket_domain_family_re {
-        R"(Null socket domain/family)"
+        R"(Null socket domain/family)",
     };
     constexpr auto expected_valid_re {
-        R"()"
+        R"()",
     };
 
     auto is_verbose {false}; // NOLINT

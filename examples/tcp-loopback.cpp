@@ -35,7 +35,7 @@ auto main() -> int
         const std::string port {std::to_string(bound_address.port())};
         const Network::EndpointView connect_endpoint {
             "127.0.0.1",
-            port
+            port,
         };
 
         const auto connected {Network::connect(connect_endpoint, hints, false)};

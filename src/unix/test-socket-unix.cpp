@@ -67,16 +67,16 @@ namespace
     using ErrorCodeSet = std::set<os_error_type>;
 
     constexpr auto expected_accept_re {
-        R"(Call to ::accept\(.+\) failed with error \d+: .+)"
+        R"(Call to ::accept\(.+\) failed with error \d+: .+)",
     };
     constexpr auto expected_path_length_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)",
     };
     constexpr auto expected_payload_length_re {
-        R"(Address payload length is zero: .+)"
+        R"(Address payload length is zero: .+)",
     };
     constexpr auto expected_socket_re {
-        R"(Call to ::socket\(.+\) failed with error \d+: .+)"
+        R"(Call to ::socket\(.+\) failed with error \d+: .+)",
     };
     constexpr auto handle_width {6};
     constexpr std::size_t size_max {path_length_max};

@@ -32,7 +32,7 @@ namespace Network
         ipproto_ip = IPPROTO_IP,
         ipproto_tcp = IPPROTO_TCP,
         ipproto_udp = IPPROTO_UDP,
-        ipproto_raw = IPPROTO_RAW
+        ipproto_raw = IPPROTO_RAW,
     };
 }
 

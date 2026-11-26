@@ -79,28 +79,28 @@ namespace
 #endif
 
     constexpr auto expected_handle_re {
-        R"(Value (\d+|-\d+) is out of range \[-?\d+, \d+\] of handle_type)"
+        R"(Value (\d+|-\d+) is out of range \[-?\d+, \d+\] of handle_type)",
     };
     constexpr auto expected_name_length_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_length_type)"
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of name_length_type)",
     };
     constexpr auto expected_os_error_re {
-        R"(Value (\d+|-\d+) is out of range \[-?\d+, \d+\] of os_error_type)"
+        R"(Value (\d+|-\d+) is out of range \[-?\d+, \d+\] of os_error_type)",
     };
 #ifndef _WIN32
     constexpr auto expected_path_length_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)"
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of path_length_type)",
     };
 #endif
     constexpr auto expected_sa_length_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sa_length_type)"
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sa_length_type)",
     };
     constexpr auto expected_std_size_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of std::size_t)"
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of std::size_t)",
     };
 #ifndef _WIN32
     constexpr auto expected_sun_length_re {
-        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sun_length_type)"
+        R"(Value (\d+|-\d+) is out of range \[\d+, \d+\] of sun_length_type)",
     };
 #endif
 

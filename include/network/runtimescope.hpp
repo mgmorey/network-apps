@@ -22,7 +22,7 @@ namespace Network
 {
     enum class RuntimeScope : std::uint8_t {
         global,
-        shared
+        shared,
     };
 }
 

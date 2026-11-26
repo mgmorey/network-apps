@@ -54,7 +54,7 @@ namespace
     using ErrorCodeSet = std::set<os_error_type>;
 
     constexpr auto expected_socketpair_re {
-        R"(Call to ::socketpair\(.+\) failed with error \d+: .+)"
+        R"(Call to ::socketpair\(.+\) failed with error \d+: .+)",
     };
     constexpr auto handle_width {6};
 
