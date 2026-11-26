@@ -17,12 +17,11 @@
 // example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
 #include "network/network.hpp"          // Address, Error, Socket,
-                                        // Symbol, TextBuffer,
+                                        // TextBuffer,
                                         // UniqueSocket, connect(),
                                         // socket_error
+#include "connection.hpp"               // NetworkExamples::Unix
 #include "network/parse.hpp"            // parse()
-#include "connection.hpp"               // BUFFER_SIZE, SOCKET_HINTS,
-                                        // SOCKET_NAME
 
 #ifdef _WIN32
 #include <winsock2.h>       // SD_SEND
@@ -43,7 +42,6 @@ namespace
     using Network::Address;
     using Network::Error;
     using Network::Socket;
-    using Network::Symbol;
     using Network::TextBuffer;
     using Network::UniqueSocket;
     using Network::connect;
@@ -61,7 +59,9 @@ namespace
 
     auto connect()
     {
-        auto result {connect(SOCKET_NAME, SOCKET_HINTS, is_verbose)};
+        auto result {connect(NetworkExamples::Unix::socket_name,
+                             NetworkExamples::Unix::socket_hints,
+                             is_verbose),};
 
         if (!result) {
             std::cerr << result.error().string() << std::endl;
@@ -109,7 +109,7 @@ namespace
 
     auto read(const Socket& s) -> std::string
     {
-        TextBuffer buffer {BUFFER_SIZE};
+        TextBuffer buffer {NetworkExamples::Unix::buffer_size};
         const auto error {s.read(buffer)};
 
         if (error == socket_error) {
@@ -122,7 +122,7 @@ namespace
 
     auto shutdown(const Socket& s)
     {
-        if (auto error = s.shutdown(shutdown_flags)) {
+        if (const auto error = s.shutdown(shutdown_flags)) {
             std::cerr << error.string() << std::endl;
             std::exit(EXIT_FAILURE);
         }
@@ -146,7 +146,7 @@ auto main(int argc, char* argv[]) -> int
 
     try {
         // Connect Unix domain socket to pathname.
-        auto s {connect()};
+        const auto s {connect()};
         auto shutdown_pending {false};
 
         // Send arguments to server.

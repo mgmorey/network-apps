@@ -17,12 +17,11 @@
 // example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
 #include "network/network.hpp"          // Address, Error, Socket,
-                                        // Symbol, TextBuffer,
+                                        // TextBuffer,
                                         // UniqueSocket, accept(),
                                         // bind(), socket_error
+#include "connection.hpp"               // NetworkExamples::Unix
 #include "network/parse.hpp"            // parse()
-#include "connection.hpp"               // BUFFER_SIZE, SOCKET_HINTS,
-                                        // SOCKET_NAME
 
 #include <cstdio>       // std::perror()
 #include <cstdlib>      // EXIT_FAILURE, std::exit()
@@ -36,7 +35,6 @@ namespace
     using Network::Address;
     using Network::Error;
     using Network::Socket;
-    using Network::Symbol;
     using Network::TextBuffer;
     using Network::UniqueSocket;
     using Network::accept;
@@ -75,7 +73,9 @@ namespace
 
     auto bind()
     {
-        auto result {bind(SOCKET_NAME, SOCKET_HINTS, is_verbose)};
+        auto result {bind(NetworkExamples::Unix::socket_name,
+                          NetworkExamples::Unix::socket_hints,
+                          is_verbose),};
 
         if (!result) {
             std::cerr << result.error().string() << std::endl;
@@ -136,7 +136,7 @@ namespace
 
     auto read(const Socket& s) -> std::string
     {
-        TextBuffer buffer {BUFFER_SIZE};
+        TextBuffer buffer {NetworkExamples::Unix::buffer_size};
         const auto error {s.read(buffer)};
 
         if (error == socket_error) {

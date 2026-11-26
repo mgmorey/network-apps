@@ -46,11 +46,11 @@ namespace
     };
 #elif defined(__CYGWIN__) && !defined(_WIN32)
     constexpr auto expected_gethostname_re {
-        R"()"
+        R"()",
     };
 #else
     constexpr auto expected_gethostname_re {
-        R"(Call to ::gethostname\(.+\) failed with error \d+: .+)"
+        R"(Call to ::gethostname\(.+\) failed with error \d+: .+)",
     };
 #endif
 

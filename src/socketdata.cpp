@@ -30,7 +30,7 @@ Network::SocketData::SocketData(handle_type t_handle,
 
 Network::SocketData::SocketData(const AcceptData& t_ad) : m_sc(t_ad.core())
 {
-    m_nc[Symbol::accept] = t_ad.name();
+    m_nc.insert_or_assign(Symbol::accept, t_ad.name());
 }
 
 auto Network::SocketData::core() const noexcept -> const SocketCore&
@@ -40,5 +40,5 @@ auto Network::SocketData::core() const noexcept -> const SocketCore&
 
 auto Network::SocketData::name(Symbol t_symbol) const noexcept -> Name&
 {
-    return m_nc[t_symbol];
+    return m_nc.try_emplace(t_symbol).first->second;
 }

@@ -16,6 +16,7 @@
 // This UNIX domain sequenced-packet socket example is adapted from the
 // example in https://www.man7.org/linux/man-pages/man7/unix.7.html.
 
+// NOLINTNEXTLINE(llvm-header-guard)
 #ifndef UNIX_CONNECTION_HPP
 #define UNIX_CONNECTION_HPP
 
@@ -25,8 +26,11 @@
 
 #include <cstddef>      // std::size_t
 
-constexpr std::size_t BUFFER_SIZE {12};
-constexpr Network::UnixSocketHints SOCKET_HINTS {SOCK_SEQPACKET};
-constexpr const char* SOCKET_NAME {"/tmp/9Lq7BNBnBycd6nxy.socket"};
+namespace NetworkExamples::Unix
+{
+	inline constexpr std::size_t buffer_size {12};
+	inline constexpr Network::UnixSocketHints socket_hints {SOCK_SEQPACKET};
+	inline constexpr const char* socket_name {"/tmp/9Lq7BNBnBycd6nxy.socket"};
+}
 
 #endif

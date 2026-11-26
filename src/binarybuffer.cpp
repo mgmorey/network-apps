@@ -39,6 +39,5 @@ auto Network::BinaryBuffer::operator*() noexcept -> Buffer::buffer_type&
 auto Network::BinaryBuffer::span() -> span_type
 {
     void* pointer {data()};
-    auto& length {m_length};
-    return {static_cast<sockaddr*>(pointer), length};
+    return {static_cast<sockaddr*>(pointer), m_length};
 }
