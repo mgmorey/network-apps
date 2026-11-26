@@ -23,9 +23,9 @@ namespace Network
     {
     public:
         using buffer_type = T;
-        using iterator = typename T::iterator;
-        using size_type = typename T::size_type;
-        using value_type = typename T::value_type;
+        using iterator = T::iterator;
+        using size_type = T::size_type;
+        using value_type = T::value_type;
 
         explicit Buffer(size_type t_size)
             : m_buffer(t_size, {})
