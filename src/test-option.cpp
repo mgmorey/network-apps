@@ -15,10 +15,10 @@
 
 #include "network/argumentdata.hpp"     // ArgumentData
 #include "network/argumentspan.hpp"     // ArgumentSpan, std::span
-#include "network/gtest.hpp"
 #include "network/error.hpp"            // Error
 #include "network/get-option.hpp"       // get_optarg(), get_optind(),
                                         // get_option()
+#include "network/gtest.hpp"
 #include "network/to-size.hpp"          // to_size()
 
 #include <cstdlib>      // std::abort()

@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+// NOLINTNEXTLINE(llvm-header-guard): private src header would get an absolute-path guard.
 #ifndef NETWORK_TEST_ENVIRONMENT_HPP
 #define NETWORK_TEST_ENVIRONMENT_HPP
 
