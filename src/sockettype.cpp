@@ -40,15 +40,16 @@ auto Network::operator<<(std::ostream& os,
 #ifdef SOCK_NONBLOCK
         {SOCK_NONBLOCK,     "SOCK_NONBLOCK"},
 #endif
-        {0,                 nullptr}
+        {0,                 nullptr},
     };
-    static constexpr auto mask {0000017};
+    static constexpr unsigned mask {017U};
+    const auto socket_type {static_cast<unsigned>(st)};
 
     std::ostringstream oss;
     std::size_t index {0};
 
-    if ((st & mask) != 0) {
-        switch (st & mask) {
+    if ((socket_type & mask) != 0U) {
+        switch (socket_type & mask) {
         case SOCK_STREAM:
             oss << "SOCK_STREAM";
             break;
@@ -70,7 +71,8 @@ auto Network::operator<<(std::ostream& os,
 
     if (st != -1) {
         for (const auto& value : values) {
-            if ((st & value.first) != 0) {
+            const auto flag {static_cast<unsigned>(value.first)};
+            if ((socket_type & flag) != 0U) {
                 if (index++ > 0) {
                     oss << " | ";
                 }

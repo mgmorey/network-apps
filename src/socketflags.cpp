@@ -48,7 +48,8 @@ auto Network::operator<<(std::ostream& os,
     std::size_t index {0};
 
     for (const auto& value : values) {
-        if ((flags & value.first) != 0) {
+        const auto flag {static_cast<unsigned>(value.first)};
+        if ((static_cast<unsigned>(flags) & flag) != 0U) {
             if (index++ > 0) {
                 oss << " | ";
             }
