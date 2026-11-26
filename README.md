@@ -233,8 +233,10 @@ accepts levels 0 through 3 (or an empty value to disable Fortify); set
 `WITH_BACKTRACE=ON` for libstdc++ debug-mode backtraces and
 `USING_GDBDWARF` to 2 through 5 to choose the debug information format in
 `Default` or `Debug` builds. Coverage is off by default and is available for
-`Default` and `Debug` configurations; with a multi-configuration generator,
-build the `coverage` target using `--config Debug` (or `Default` if configured).
+`Default` and `Debug` configurations when `BUILD_TESTING=ON`. With a
+multi-configuration generator, build the `coverage` target using
+`--config Debug` (or `Default` if configured); with testing off, no coverage
+instrumentation is added.
 LTO and linker maps are opt-in. Assembler
 listings are also opt-in, require GCC with GNU assembler, and are written to
 the build directory's `listings/` folder.
@@ -397,7 +399,7 @@ the `ubuntu-x64-debug` preset, with all 14 CTest tests passing.
 | GNU/Linux | Oracle | 9.8 (x86_64) | 14.2.1 | 21.1.8 | N/A |
 | GNU/Linux | openSUSE Tumbleweed | 20261024 (x86_64) | 16.2.1 | 23.1.3 | N/A |
 | GNU/Linux | Ubuntu (Podman container) | 24.04 (x86_64) | 14.2.0 | N/A | N/A |
-| Unix | Apple macOS | 26.0 (arm64) | N/A | 21.1.8 | N/A |
+| Unix | Apple macOS | 27.2.1 (arm64) | N/A | 21.0.0 | N/A |
 | Windows | Cygwin | 10.0 (amd64) | 16.0.0 | 21.1.8 | N/A |
 | Windows | MinGW | 10.0 (amd64) | 15.1.0 | 21.1.5 | N/A |
 | Windows | Visual Studio 2026 Professional | Windows (x64) | N/A | N/A | 19.51.36256.0 |

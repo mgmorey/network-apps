@@ -314,7 +314,7 @@ if(MSVC AND WITH_COVERAGE)
     message(FATAL_ERROR "WITH_COVERAGE is not supported with MSVC")
 endif()
 
-if(WITH_COVERAGE AND NETWORK_DEBUG_CONFIG_AVAILABLE)
+if(WITH_COVERAGE AND BUILD_TESTING AND NETWORK_DEBUG_CONFIG_AVAILABLE)
     network_add_profile_compile_options(Debug --coverage)
     network_add_profile_compile_options(Default --coverage)
     network_add_profile_link_options(Debug --coverage)
@@ -675,12 +675,6 @@ elseif(WIN32)
     target_link_libraries(network PRIVATE ws2_32)
 endif()
 
-if(APPLE)
-    set(NETWORK_INSTALL_RPATH "@loader_path/../lib")
-elseif(UNIX)
-    set(NETWORK_INSTALL_RPATH "$ORIGIN/../lib")
-endif()
-
 # ============================================================================
 # Create Test Executables
 # ============================================================================
@@ -726,11 +720,6 @@ if(BUILD_TESTING)
         target_link_libraries(${test_name} PRIVATE network GTest::gtest_main)
         network_apply_build_options(${test_name})
         network_enable_link_map(${test_name})
-        if(UNIX)
-            set_target_properties(${test_name} PROPERTIES
-                INSTALL_RPATH "${NETWORK_INSTALL_RPATH}"
-            )
-        endif()
         add_test(NAME ${test_name} COMMAND ${test_name})
         set_tests_properties(${test_name} PROPERTIES LABELS "unit")
     endfunction()
