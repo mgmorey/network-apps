@@ -20,7 +20,7 @@ auto main() -> int
             }
         }
 
-        if (!server) {
+        if (server == nullptr) {
             std::cerr << "Could not bind TCP loopback socket\n";
             return EXIT_FAILURE;
         }
@@ -47,7 +47,7 @@ auto main() -> int
             }
         }
 
-        if (!client) {
+        if (client == nullptr) {
             std::cerr << "Could not connect to TCP loopback socket\n";
             return EXIT_FAILURE;
         }

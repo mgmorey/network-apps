@@ -1,3 +1,4 @@
+#include "network/argumentspan.hpp"
 #include "network/network.hpp"
 
 #include <cstdlib>
@@ -8,7 +9,13 @@
 
 auto main(int argc, char* argv[]) -> int
 {
-    const std::string hostname {argc > 1 ? argv[1] : "localhost"};
+    const Network::ArgumentSpan arguments {
+        argv,
+        static_cast<std::size_t>(argc)
+    };
+    const std::string hostname {
+        arguments.size() > 1 ? arguments.subspan(1).front() : "localhost"
+    };
 
     try {
         const Network::IpSocketHints hints {SOCK_STREAM, AI_CANONNAME};
