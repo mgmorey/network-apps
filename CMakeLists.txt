@@ -12,22 +12,78 @@ include(CTest)
 
 add_library(network_build_options INTERFACE)
 
+function(network_add_profile_compile_options configuration)
+    if(CMAKE_CONFIGURATION_TYPES)
+        foreach(option IN LISTS ARGN)
+            target_compile_options(network_build_options INTERFACE
+                "$<$<CONFIG:${configuration}>:${option}>"
+            )
+        endforeach()
+    elseif("${CMAKE_BUILD_TYPE}" STREQUAL "${configuration}")
+        target_compile_options(network_build_options INTERFACE ${ARGN})
+    endif()
+endfunction()
+
+function(network_add_profile_compile_definitions configuration)
+    if(CMAKE_CONFIGURATION_TYPES)
+        foreach(definition IN LISTS ARGN)
+            target_compile_definitions(network_build_options INTERFACE
+                "$<$<CONFIG:${configuration}>:${definition}>"
+            )
+        endforeach()
+    elseif("${CMAKE_BUILD_TYPE}" STREQUAL "${configuration}")
+        target_compile_definitions(network_build_options INTERFACE ${ARGN})
+    endif()
+endfunction()
+
+function(network_add_profile_link_options configuration)
+    if(CMAKE_CONFIGURATION_TYPES)
+        foreach(option IN LISTS ARGN)
+            target_link_options(network_build_options INTERFACE
+                "$<$<CONFIG:${configuration}>:${option}>"
+            )
+        endforeach()
+    elseif("${CMAKE_BUILD_TYPE}" STREQUAL "${configuration}")
+        target_link_options(network_build_options INTERFACE ${ARGN})
+    endif()
+endfunction()
+
+function(network_add_profile_link_libraries configuration)
+    if(CMAKE_CONFIGURATION_TYPES)
+        foreach(library IN LISTS ARGN)
+            target_link_libraries(network_build_options INTERFACE
+                "$<$<CONFIG:${configuration}>:${library}>"
+            )
+        endforeach()
+    elseif("${CMAKE_BUILD_TYPE}" STREQUAL "${configuration}")
+        target_link_libraries(network_build_options INTERFACE ${ARGN})
+    endif()
+endfunction()
+
 # ============================================================================
 # Build Configuration
 # ============================================================================
 
-# Default to Debug for multi-configuration generators and the Make build type
-# for single-configuration generators.
-if(NOT CMAKE_BUILD_TYPE)
-    if(CMAKE_CONFIGURATION_TYPES)
-        set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
-    else()
-        set(CMAKE_BUILD_TYPE Default CACHE STRING "Build type" FORCE)
-    endif()
+# Default to the project's Default profile for single-configuration generators.
+if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Default CACHE STRING "Build type" FORCE)
 endif()
-set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
-    Debug Default Minimal Release Small RelWithDebInfo MinSizeRel
-)
+if(DEFINED CMAKE_BUILD_TYPE)
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
+        Debug Default Minimal Release Small RelWithDebInfo MinSizeRel
+    )
+endif()
+
+set(NETWORK_DEBUG_CONFIG_AVAILABLE FALSE)
+if(CMAKE_CONFIGURATION_TYPES)
+    if("Debug" IN_LIST CMAKE_CONFIGURATION_TYPES OR
+       "Default" IN_LIST CMAKE_CONFIGURATION_TYPES)
+        set(NETWORK_DEBUG_CONFIG_AVAILABLE TRUE)
+    endif()
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug" OR
+       CMAKE_BUILD_TYPE STREQUAL "Default")
+    set(NETWORK_DEBUG_CONFIG_AVAILABLE TRUE)
+endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -140,36 +196,23 @@ elseif(NOT NETWORK_STDLIB STREQUAL "libstdc++")
 endif()
 
 if(NOT MSVC)
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        if(APPLE)
-            target_compile_options(network_build_options INTERFACE -g3 -Og)
-        else()
-            target_compile_options(network_build_options INTERFACE -ggdb -Og)
-        endif()
-    elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-        target_compile_options(network_build_options INTERFACE -O2 -UNDEBUG)
-    elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-        target_compile_options(network_build_options INTERFACE
-            -O2 -g -UNDEBUG
-        )
-    elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-        target_compile_options(network_build_options INTERFACE -Os -UNDEBUG)
-    elseif(CMAKE_BUILD_TYPE STREQUAL "Minimal")
-        target_compile_options(network_build_options INTERFACE
-            -O1 -fno-omit-frame-pointer
-        )
-    elseif(CMAKE_BUILD_TYPE STREQUAL "Small")
-        target_compile_options(network_build_options INTERFACE -Os)
-    elseif(CMAKE_BUILD_TYPE STREQUAL "Default")
-        target_compile_options(network_build_options INTERFACE -g)
+    if(APPLE)
+        network_add_profile_compile_options(Debug -g3 -Og)
+    else()
+        network_add_profile_compile_options(Debug -ggdb -Og)
     endif()
+    network_add_profile_compile_options(Release -O2 -UNDEBUG)
+    network_add_profile_compile_options(RelWithDebInfo -O2 -g -UNDEBUG)
+    network_add_profile_compile_options(MinSizeRel -Os -UNDEBUG)
+    network_add_profile_compile_options(Minimal -O1 -fno-omit-frame-pointer)
+    network_add_profile_compile_options(Small -Os)
+    network_add_profile_compile_options(Default -g)
 endif()
 
 if(MSVC AND USING_GDBDWARF)
     message(FATAL_ERROR "USING_GDBDWARF is not supported with MSVC")
 endif()
-if(USING_GDBDWARF AND
-   (CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "Default"))
+if(USING_GDBDWARF AND NETWORK_DEBUG_CONFIG_AVAILABLE)
     set(NETWORK_DWARF_CHECK NETWORK_HAS_DWARF_${USING_GDBDWARF})
     check_cxx_compiler_flag("-gdwarf-${USING_GDBDWARF}"
         ${NETWORK_DWARF_CHECK}
@@ -179,9 +222,8 @@ if(USING_GDBDWARF AND
             "Compiler does not support DWARF version ${USING_GDBDWARF}"
         )
     endif()
-    target_compile_options(network_build_options INTERFACE
-        -gdwarf-${USING_GDBDWARF}
-    )
+    network_add_profile_compile_options(Debug -gdwarf-${USING_GDBDWARF})
+    network_add_profile_compile_options(Default -gdwarf-${USING_GDBDWARF})
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -205,21 +247,22 @@ if(MSVC)
         message(STATUS "Fortify Source is not supported with MSVC; ignoring WITH_FORTIFY_SOURCE")
     endif()
 elseif(NETWORK_STDLIB STREQUAL "libstdc++")
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "Default")
-        target_compile_definitions(network_build_options INTERFACE
-            _GLIBCXX_DEBUG
-        )
-        if(WITH_BACKTRACE)
-            target_compile_definitions(network_build_options INTERFACE
-                _GLIBCXX_DEBUG_BACKTRACE
+    network_add_profile_compile_definitions(Debug _GLIBCXX_DEBUG)
+    network_add_profile_compile_definitions(Default _GLIBCXX_DEBUG)
+    if(WITH_BACKTRACE)
+        network_add_profile_compile_definitions(Debug _GLIBCXX_DEBUG_BACKTRACE)
+        network_add_profile_compile_definitions(Default _GLIBCXX_DEBUG_BACKTRACE)
+        network_add_profile_link_libraries(Debug stdc++exp)
+        network_add_profile_link_libraries(Default stdc++exp)
+    endif()
+    if(NOT WITH_FORTIFY_SOURCE STREQUAL "")
+        foreach(configuration IN ITEMS
+                Release RelWithDebInfo MinSizeRel Minimal Small)
+            network_add_profile_compile_options(${configuration}
+                -U_FORTIFY_SOURCE
+                -D_FORTIFY_SOURCE=${WITH_FORTIFY_SOURCE}
             )
-            target_link_libraries(network_build_options INTERFACE stdc++exp)
-        endif()
-    elseif(NOT WITH_FORTIFY_SOURCE STREQUAL "")
-        target_compile_options(network_build_options INTERFACE
-            -U_FORTIFY_SOURCE
-            -D_FORTIFY_SOURCE=${WITH_FORTIFY_SOURCE}
-        )
+        endforeach()
     endif()
 elseif(NOT WITH_FORTIFY_SOURCE STREQUAL "")
     target_compile_options(network_build_options INTERFACE
@@ -249,7 +292,13 @@ endif()
 if(WITH_BACKTRACE)
     if(NOT NETWORK_STDLIB STREQUAL "libstdc++")
         message(FATAL_ERROR "WITH_BACKTRACE requires libstdc++")
-    elseif(NOT CMAKE_BUILD_TYPE STREQUAL "Debug" AND
+    elseif(CMAKE_CONFIGURATION_TYPES AND
+           NOT NETWORK_DEBUG_CONFIG_AVAILABLE)
+        message(FATAL_ERROR
+            "WITH_BACKTRACE requires a Debug or Default configuration"
+        )
+    elseif(NOT CMAKE_CONFIGURATION_TYPES AND
+           NOT CMAKE_BUILD_TYPE STREQUAL "Debug" AND
            NOT CMAKE_BUILD_TYPE STREQUAL "Default")
         message(FATAL_ERROR
             "WITH_BACKTRACE requires a Debug or Default build"
@@ -265,12 +314,13 @@ if(MSVC AND WITH_COVERAGE)
     message(FATAL_ERROR "WITH_COVERAGE is not supported with MSVC")
 endif()
 
-if(WITH_COVERAGE AND (CMAKE_BUILD_TYPE STREQUAL "Default" OR CMAKE_BUILD_TYPE STREQUAL "Debug"))
-    target_compile_options(network_build_options INTERFACE --coverage)
-    target_link_options(network_build_options INTERFACE --coverage)
-    target_compile_definitions(network_build_options INTERFACE
-        CODE_COVERAGE_ENABLED
-    )
+if(WITH_COVERAGE AND NETWORK_DEBUG_CONFIG_AVAILABLE)
+    network_add_profile_compile_options(Debug --coverage)
+    network_add_profile_compile_options(Default --coverage)
+    network_add_profile_link_options(Debug --coverage)
+    network_add_profile_link_options(Default --coverage)
+    network_add_profile_compile_definitions(Debug CODE_COVERAGE_ENABLED)
+    network_add_profile_compile_definitions(Default CODE_COVERAGE_ENABLED)
 endif()
 
 # ============================================================================
@@ -310,13 +360,11 @@ if(WITH_SANITIZE)
     target_link_options(network_build_options INTERFACE
         -fsanitize=${WITH_SANITIZE}
     )
-    if(CMAKE_BUILD_TYPE STREQUAL "Release" OR
-       CMAKE_BUILD_TYPE STREQUAL "Minimal" OR
-       CMAKE_BUILD_TYPE STREQUAL "Small")
-        target_compile_options(network_build_options INTERFACE
-            -fno-optimize-sibling-calls
+    foreach(configuration IN ITEMS Release Minimal Small)
+        network_add_profile_compile_options(
+            ${configuration} -fno-optimize-sibling-calls
         )
-    endif()
+    endforeach()
 endif()
 
 # ============================================================================
@@ -602,17 +650,24 @@ if(WIN32)
 endif()
 
 # Set include directories for the library
+set(NETWORK_INCLUDE_DIRECTORIES "${PROJECT_SOURCE_DIR}/include")
 target_include_directories(network PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
 if(UNIX)
+    list(APPEND NETWORK_INCLUDE_DIRECTORIES
+        "${PROJECT_SOURCE_DIR}/include/unix"
+    )
     target_include_directories(network PUBLIC
         "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/unix>"
         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/unix>"
     )
 elseif(WIN32)
+    list(APPEND NETWORK_INCLUDE_DIRECTORIES
+        "${PROJECT_SOURCE_DIR}/include/windows"
+    )
     target_include_directories(network PUBLIC
         "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/windows>"
         "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/windows>"
@@ -645,17 +700,15 @@ if(BUILD_TESTING)
             DOWNLOAD_EXTRACT_TIMESTAMP TRUE
         )
         FetchContent_MakeAvailable(googletest)
-        if(NETWORK_STDLIB STREQUAL "libstdc++" AND
-           (CMAKE_BUILD_TYPE STREQUAL "Debug" OR
-            CMAKE_BUILD_TYPE STREQUAL "Default"))
+        if(NETWORK_STDLIB STREQUAL "libstdc++")
             foreach(gtest_target IN ITEMS gtest gtest_main)
                 if(TARGET ${gtest_target})
                     target_compile_definitions(${gtest_target} PRIVATE
-                        _GLIBCXX_DEBUG
+                        "$<$<OR:$<CONFIG:Debug>,$<CONFIG:Default>>:_GLIBCXX_DEBUG>"
                     )
                     if(WITH_BACKTRACE)
                         target_compile_definitions(${gtest_target} PRIVATE
-                            _GLIBCXX_DEBUG_BACKTRACE
+                            "$<$<OR:$<CONFIG:Debug>,$<CONFIG:Default>>:_GLIBCXX_DEBUG_BACKTRACE>"
                         )
                     endif()
                 endif()
@@ -808,14 +861,30 @@ endif()
 if(NOT NETWORK_COMPILE_DEFINITIONS)
     set(NETWORK_COMPILE_DEFINITIONS)
 endif()
-get_target_property(NETWORK_INCLUDE_DIRECTORIES network INCLUDE_DIRECTORIES)
 string(TOUPPER "${CMAKE_BUILD_TYPE}" NETWORK_BUILD_TYPE_UPPER)
-set(NETWORK_CONFIG_FLAGS
-    "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${NETWORK_BUILD_TYPE_UPPER}}"
-)
-separate_arguments(NETWORK_CONFIG_FLAGS_LIST NATIVE_COMMAND
-    "${NETWORK_CONFIG_FLAGS} ${CMAKE_CXX_COMPILER_ARG1}"
-)
+if(CMAKE_CONFIGURATION_TYPES)
+    separate_arguments(NETWORK_CONFIG_FLAGS_LIST NATIVE_COMMAND
+        "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_COMPILER_ARG1}"
+    )
+    foreach(configuration IN LISTS CMAKE_CONFIGURATION_TYPES)
+        string(TOUPPER "${configuration}" configuration_upper)
+        separate_arguments(configuration_flags NATIVE_COMMAND
+            "${CMAKE_CXX_FLAGS_${configuration_upper}}"
+        )
+        foreach(configuration_flag IN LISTS configuration_flags)
+            list(APPEND NETWORK_CONFIG_FLAGS_LIST
+                "$<$<CONFIG:${configuration}>:${configuration_flag}>"
+            )
+        endforeach()
+    endforeach()
+else()
+    set(NETWORK_CONFIG_FLAGS
+        "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${NETWORK_BUILD_TYPE_UPPER}}"
+    )
+    separate_arguments(NETWORK_CONFIG_FLAGS_LIST NATIVE_COMMAND
+        "${NETWORK_CONFIG_FLAGS} ${CMAKE_CXX_COMPILER_ARG1}"
+    )
+endif()
 set(NETWORK_COMPILE_FLAGS ${NETWORK_CONFIG_FLAGS_LIST} ${NETWORK_COMPILE_OPTIONS})
 if(UNIX)
     list(APPEND NETWORK_COMPILE_FLAGS -fPIC)
@@ -836,23 +905,32 @@ foreach(include_directory IN LISTS NETWORK_INCLUDE_DIRECTORIES)
 endforeach()
 list(APPEND NETWORK_COMPILE_FLAGS "-std=c++${NETWORK_CXX_STANDARD}")
 list(JOIN NETWORK_COMPILE_FLAGS " " NETWORK_COMPILE_FLAGS_TEXT)
+if(CMAKE_CONFIGURATION_TYPES)
+    set(NETWORK_COMPILE_FLAGS_FILE
+        "${PROJECT_BINARY_DIR}/compile_flags-$<CONFIG>.txt"
+    )
+else()
+    set(NETWORK_COMPILE_FLAGS_FILE "${PROJECT_BINARY_DIR}/compile_flags.txt")
+endif()
 file(GENERATE
-    OUTPUT "${PROJECT_BINARY_DIR}/compile_flags.txt"
+    OUTPUT "${NETWORK_COMPILE_FLAGS_FILE}"
     CONTENT "${CMAKE_CXX_COMPILER} ${NETWORK_COMPILE_FLAGS_TEXT}\n"
 )
 add_custom_target(compile-flags
-    DEPENDS "${PROJECT_BINARY_DIR}/compile_flags.txt"
+    DEPENDS "${NETWORK_COMPILE_FLAGS_FILE}"
 )
 
 set(ASSEMBLY_OUTPUTS)
 if(NOT MSVC)
     foreach(source IN LISTS PROJECT_SOURCES)
         string(REPLACE "/" "_" assembly_name "${source}")
-        set(assembly_output "${PROJECT_BINARY_DIR}/assembly/${assembly_name}.s")
+        set(assembly_output
+            "${PROJECT_BINARY_DIR}/assembly/$<CONFIG>/${assembly_name}.s"
+        )
         add_custom_command(
             OUTPUT "${assembly_output}"
             COMMAND ${CMAKE_COMMAND} -E make_directory
-                "${PROJECT_BINARY_DIR}/assembly"
+                "${PROJECT_BINARY_DIR}/assembly/$<CONFIG>"
             COMMAND ${CMAKE_CXX_COMPILER}
                 ${NETWORK_COMPILE_FLAGS}
                 -S "${PROJECT_SOURCE_DIR}/${source}"
@@ -930,7 +1008,7 @@ endif()
 # Convenience target for running all tests
 if(BUILD_TESTING)
     add_custom_target(check
-        COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+        COMMAND ${CMAKE_CTEST_COMMAND} -C "$<CONFIG>" --output-on-failure
         DEPENDS ${TEST_EXECUTABLES}
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         COMMENT "Run all CTest tests"
@@ -938,7 +1016,7 @@ if(BUILD_TESTING)
 
     # Convenience target for running tests in parallel
     add_custom_target(check-parallel
-        COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure -j 4
+        COMMAND ${CMAKE_CTEST_COMMAND} -C "$<CONFIG>" --output-on-failure -j 4
         DEPENDS ${TEST_EXECUTABLES}
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         COMMENT "Run all CTest tests in parallel"
@@ -949,8 +1027,7 @@ endif()
 # Coverage Target (Optional)
 # ============================================================================
 
-if(WITH_COVERAGE AND BUILD_TESTING AND
-   (CMAKE_BUILD_TYPE STREQUAL "Default" OR CMAKE_BUILD_TYPE STREQUAL "Debug"))
+if(WITH_COVERAGE AND BUILD_TESTING AND NETWORK_DEBUG_CONFIG_AVAILABLE)
     find_program(GCOVR_PATH gcovr REQUIRED)
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -974,7 +1051,7 @@ if(WITH_COVERAGE AND BUILD_TESTING AND
     endif()
 
     add_custom_target(coverage
-        COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+        COMMAND ${CMAKE_CTEST_COMMAND} -C "$<CONFIG>" --output-on-failure
         COMMAND ${GCOVR_PATH}
             --root=${PROJECT_SOURCE_DIR}
             --object-directory=${PROJECT_BINARY_DIR}
@@ -1002,7 +1079,7 @@ if(WITH_COVERAGE AND BUILD_TESTING AND
 elseif(WITH_COVERAGE AND NOT BUILD_TESTING)
     message(STATUS "Coverage requires BUILD_TESTING")
 elseif(WITH_COVERAGE)
-    message(STATUS "Coverage is supported only for Default and Debug builds")
+    message(STATUS "Coverage is supported only for Default and Debug configurations")
 endif()
 
 # ============================================================================
@@ -1178,7 +1255,11 @@ include(CPack)
 
 message(STATUS "")
 message(STATUS "=== ${PROJECT_NAME} Build Configuration ===")
-message(STATUS "Build Type:     ${CMAKE_BUILD_TYPE}")
+if(CMAKE_CONFIGURATION_TYPES)
+    message(STATUS "Build Configurations: ${CMAKE_CONFIGURATION_TYPES}")
+else()
+    message(STATUS "Build Type:     ${CMAKE_BUILD_TYPE}")
+endif()
 message(STATUS "C++ Standard:   ${NETWORK_CXX_STANDARD}")
 message(STATUS "C++ Library:    ${NETWORK_STDLIB}")
 message(STATUS "Coverage:       ${WITH_COVERAGE}")

@@ -37,6 +37,12 @@ CMake supports `Debug`, `Default`, `Minimal`, `Release`, `Small`,
 CMake's standard `CMAKE_CXX_COMPILER` setting. The following options provide
 Make-like control over instrumentation and toolchain settings:
 
+With multi-configuration GNU/Clang generators, select `Debug`, `Release`,
+`RelWithDebInfo`, or `MinSizeRel` at build time with `--config`; the project's
+profile-specific flags follow that selection. To use the additional `Default`,
+`Minimal`, or `Small` profiles, include them in `CMAKE_CONFIGURATION_TYPES`
+when configuring.
+
 Tests and examples are enabled by default. Use the standard CMake
 `-DBUILD_TESTING=OFF` option to disable tests or
 `-DBUILD_EXAMPLES=OFF` to disable examples:
@@ -227,7 +233,9 @@ accepts levels 0 through 3 (or an empty value to disable Fortify); set
 `WITH_BACKTRACE=ON` for libstdc++ debug-mode backtraces and
 `USING_GDBDWARF` to 2 through 5 to choose the debug information format in
 `Default` or `Debug` builds. Coverage is off by default and is available for
-`Default` and `Debug` builds. LTO and linker maps are opt-in. Assembler
+`Default` and `Debug` configurations; with a multi-configuration generator,
+build the `coverage` target using `--config Debug` (or `Default` if configured).
+LTO and linker maps are opt-in. Assembler
 listings are also opt-in, require GCC with GNU assembler, and are written to
 the build directory's `listings/` folder.
 
