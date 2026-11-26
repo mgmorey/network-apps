@@ -287,10 +287,11 @@ run the cross-platform smoke examples with
 
 ## Tests
 
-Test targets are enabled by default with `BUILD_TESTING=ON`. CMake first
-searches for a system-installed package with `find_package(GTest)`. If none is
-available, CMake fetches the pinned GoogleTest 1.17.0 release with
-`FetchContent`.
+Test targets are enabled by default with `BUILD_TESTING=ON`. CMake uses a
+system-installed GoogleTest package when available; otherwise, it fetches the
+pinned GoogleTest 1.17.0 release with `FetchContent`. For libstdc++ `Debug` or
+`Default` configurations, CMake skips the system package and builds the fetched
+dependency to keep its `_GLIBCXX_DEBUG` ABI consistent with the project.
 
 Run the complete CTest suite with:
 
@@ -329,10 +330,11 @@ cmake --build build-cmake --target distclean
 ```
 
 `assembly` writes per-source `.s` files under `assembly/`; `compile-flags`
-writes `compile_flags.txt`; and `sizes` writes built library and executable
-sizes to `sizes.txt`, preserving the previous report as `sizes.txt~`. The
-`tags` target is available when ctags is installed. Source-count targets are
-also available: `count-source-files`,
+writes `compile_flags.txt` for single-config generators and
+`compile_flags-<config>.txt` for multi-config generators; and `sizes` writes
+built library and executable sizes to `sizes.txt`, preserving the previous
+report as `sizes.txt~`. The `tags` target is available when ctags is installed.
+Source-count targets are also available: `count-source-files`,
 `count-library-common-source-files`, `count-library-source-files`,
 `count-test-source-files`, and `count-unix-source-files`. CMake's built-in
 `clean` target removes compiled outputs; `distclean` additionally removes

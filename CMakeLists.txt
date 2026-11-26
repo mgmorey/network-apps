@@ -92,7 +92,12 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Debug" OR
     set(NETWORK_DEBUG_CONFIG_AVAILABLE TRUE)
 endif()
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+if(CMAKE_GENERATOR MATCHES "Ninja|Makefiles" AND
+   "${CMAKE_EXPORT_COMPILE_COMMANDS}" STREQUAL "")
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL
+        "Generate compile_commands.json" FORCE
+    )
+endif()
 
 option(WITH_COVERAGE "Enable code coverage instrumentation" OFF)
 set(WITH_SANITIZE "" CACHE STRING "Sanitizers to enable (e.g. address,undefined)")
@@ -582,17 +587,21 @@ endif()
 
 function(network_enable_link_map target_name)
     if(WITH_LOADMAPS)
+        set(map_file "${PROJECT_BINARY_DIR}/${target_name}.map")
+        if(CMAKE_CONFIGURATION_TYPES)
+            set(map_file "${PROJECT_BINARY_DIR}/${target_name}-$<CONFIG>.map")
+        endif()
         if(APPLE)
             target_link_options(${target_name} PRIVATE
-                "LINKER:-map,${PROJECT_BINARY_DIR}/${target_name}.map"
+                "LINKER:-map,${map_file}"
             )
         elseif(MSVC)
             target_link_options(${target_name} PRIVATE
-                "/MAP:${PROJECT_BINARY_DIR}/${target_name}.map"
+                "/MAP:${map_file}"
             )
         else()
             target_link_options(${target_name} PRIVATE
-                "LINKER:-Map,${PROJECT_BINARY_DIR}/${target_name}.map"
+                "LINKER:-Map,${map_file}"
             )
         endif()
     endif()
@@ -611,6 +620,10 @@ endfunction()
 if(WITH_LISTINGS)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND NOT APPLE)
         file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/listings)
+        set(LISTING_CONFIG_SUFFIX)
+        if(CMAKE_CONFIGURATION_TYPES)
+            set(LISTING_CONFIG_SUFFIX "-$<CONFIG>")
+        endif()
         set(LISTING_SOURCES
             ${NETWORK_SOURCES}
         )
@@ -631,7 +644,7 @@ if(WITH_LISTINGS)
             get_filename_component(source_name ${source} NAME_WE)
             set_source_files_properties(${source} PROPERTIES
                 COMPILE_OPTIONS
-                    "-Wa,-adghln=${PROJECT_BINARY_DIR}/listings/${source_name}.lst"
+                    "-Wa,-adghln=${PROJECT_BINARY_DIR}/listings/${source_name}${LISTING_CONFIG_SUFFIX}.lst"
             )
         endforeach()
     else()
@@ -689,8 +702,18 @@ endif()
 set(TEST_EXECUTABLES)
 
 if(BUILD_TESTING)
-    find_package(GTest QUIET)
-    if(NOT GTest_FOUND)
+    set(NETWORK_FETCH_GTEST_FOR_GLIBCXX_DEBUG FALSE)
+    if(NETWORK_STDLIB STREQUAL "libstdc++" AND
+       NETWORK_DEBUG_CONFIG_AVAILABLE)
+        set(NETWORK_FETCH_GTEST_FOR_GLIBCXX_DEBUG TRUE)
+        message(STATUS
+            "Using fetched GoogleTest to match the libstdc++ debug-mode ABI"
+        )
+    else()
+        find_package(GTest QUIET)
+    endif()
+
+    if(NETWORK_FETCH_GTEST_FOR_GLIBCXX_DEBUG OR NOT GTest_FOUND)
         include(FetchContent)
         set(INSTALL_GTEST OFF CACHE BOOL "Do not install GoogleTest" FORCE)
         set(BUILD_GMOCK OFF CACHE BOOL "Do not build GoogleMock" FORCE)
@@ -1047,6 +1070,9 @@ if(WITH_COVERAGE AND BUILD_TESTING AND NETWORK_DEBUG_CONFIG_AVAILABLE)
     endif()
 
     add_custom_target(coverage
+        COMMAND ${CMAKE_COMMAND}
+            "-DCOVERAGE_CONFIG=$<CONFIG>"
+            -P "${PROJECT_SOURCE_DIR}/cmake/CheckCoverageConfig.cmake"
         COMMAND ${CMAKE_CTEST_COMMAND} -C "$<CONFIG>" --output-on-failure
         COMMAND ${GCOVR_PATH}
             --root=${PROJECT_SOURCE_DIR}
@@ -1071,6 +1097,7 @@ if(WITH_COVERAGE AND BUILD_TESTING AND NETWORK_DEBUG_CONFIG_AVAILABLE)
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         DEPENDS ${TEST_EXECUTABLES}
         COMMENT "Run tests and generate code coverage report"
+        VERBATIM
     )
 elseif(WITH_COVERAGE AND NOT BUILD_TESTING)
     message(STATUS "Coverage requires BUILD_TESTING")
@@ -1206,12 +1233,14 @@ add_custom_target(distclean
         "${PROJECT_BINARY_DIR}/assembly"
         "${PROJECT_BINARY_DIR}/cppcheck"
         "${PROJECT_BINARY_DIR}/coverage"
+        "${PROJECT_BINARY_DIR}/listings"
+    COMMAND ${CMAKE_COMMAND}
+        "-DNETWORK_BINARY_DIR=${PROJECT_BINARY_DIR}"
+        -P "${PROJECT_SOURCE_DIR}/cmake/CleanGeneratedFiles.cmake"
     COMMAND ${CMAKE_COMMAND} -E rm -f
         "${PROJECT_BINARY_DIR}/TAGS"
-        "${PROJECT_BINARY_DIR}/compile_flags.txt"
         "${PROJECT_BINARY_DIR}/coverage.json"
         "${PROJECT_BINARY_DIR}/cppcheck.log"
-        "${PROJECT_BINARY_DIR}/network.map"
         "${PROJECT_BINARY_DIR}/sizes.txt"
         "${PROJECT_BINARY_DIR}/sizes.txt~"
         "${PROJECT_BINARY_DIR}/network-${PROJECT_VERSION}.tar.gz"
