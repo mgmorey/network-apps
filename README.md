@@ -30,8 +30,7 @@ cmake -S . -B build-cmake -DCMAKE_BUILD_TYPE=Default
 cmake --build build-cmake
 ```
 
-CMake Presets require CMake 3.21 or newer; direct configure/build commands
-support the project's minimum CMake version of 3.20.
+CMake and its presets require version 3.24 or newer.
 
 CMake supports `Debug`, `Default`, `Minimal`, `Release`, `Small`,
 `RelWithDebInfo`, and `MinSizeRel` build types. Compiler selection uses
