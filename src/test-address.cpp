@@ -66,7 +66,6 @@ namespace
 #endif
     using Network::af_unspec;
     using Network::insert;
-    using Network::parse;
 #ifndef _WIN32
     using Network::path_length_max;
 #endif

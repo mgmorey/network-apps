@@ -69,7 +69,6 @@ namespace
     using Network::get_hostname;
     using Network::insert;
     using Network::os_error_type;
-    using Network::parse;
     using Network::run;
     using Network::to_bytestring;
     using Network::uniquify;

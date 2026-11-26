@@ -61,7 +61,6 @@ namespace
     using Network::family_type;
     using Network::handle_type;
     using Network::os_error_type;
-    using Network::parse;
     using Network::path_length_max;
     using Network::to_path;
 

@@ -56,7 +56,6 @@ namespace
     using Network::handle_null;
     using Network::handle_type;
     using Network::os_error_type;
-    using Network::parse;
     using Network::run;
     using Network::to_handle_type;
 

@@ -38,7 +38,6 @@ namespace
     using Network::Runtime;
     using Network::get_hostname;
     using Network::get_hostnameresult;
-    using Network::parse;
     using Network::run;
 
 #if defined(__APPLE__) && defined(__MACH__)

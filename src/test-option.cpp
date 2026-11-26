@@ -32,7 +32,6 @@ namespace
 {
     using Network::ArgumentData;
     using Network::ArgumentSpan;
-    using Network::Error;
     using Network::get_optarg;
     using Network::get_opterr;
     using Network::get_optind;

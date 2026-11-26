@@ -50,7 +50,6 @@ namespace
     using Network::name_length_type;
     using Network::os_error_type;
     using Network::quote;
-    using Network::parse;
 #ifndef _WIN32
     using Network::path_length_max;
     using Network::path_length_min;

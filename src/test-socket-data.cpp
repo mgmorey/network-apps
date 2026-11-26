@@ -50,7 +50,6 @@ namespace
     using Network::handle_type;
     using Network::os_error_type;
     using Network::listen;
-    using Network::parse;
     using Network::run;
     using Network::shutdown;
 

@@ -47,7 +47,6 @@ namespace
     using Network::Address;
     using Network::ByteString;
     using Network::EndpointView;
-    using Network::Error;
     using Network::IpSocketHints;
     using Network::Socket;
     using Network::SocketHints;
@@ -56,7 +55,6 @@ namespace
     using Network::UniqueSocket;
     using Network::bind;
     using Network::os_error_type;
-    using Network::parse;
     using Network::run;
 
     using ErrorCodeSet = std::set<os_error_type>;

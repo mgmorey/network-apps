@@ -50,7 +50,6 @@ namespace
     using Network::family_type;
     using Network::handle_type;
     using Network::os_error_type;
-    using Network::parse;
 
     using ErrorCodeSet = std::set<os_error_type>;
 

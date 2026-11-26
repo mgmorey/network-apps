@@ -46,7 +46,6 @@ namespace
     using Network::Version;
     using Network::get_runtime;
     using Network::quote;
-    using Network::parse;
 
 #ifdef _WIN32
     constexpr auto expected_code_stopped {WSANOTINITIALISED};

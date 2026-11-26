@@ -50,7 +50,6 @@ namespace
     using Network::Address;
     using Network::ByteString;
     using Network::EndpointView;
-    using Network::Error;
     using Network::Hostname;
     using Network::HostnameView;
     using Network::IpSocketHints;
@@ -62,7 +61,6 @@ namespace
     using Network::connect;
     using Network::get_hostname;
     using Network::os_error_type;
-    using Network::parse;
     using Network::run;
     using Network::string_null;
 
