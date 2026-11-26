@@ -22,9 +22,9 @@
 #include <memory>       // std::unique_ptr
 #include <string>       // std::to_string()
 
-namespace
+namespace Network::Test
 {
-    auto test_has_environment_variable(const char* name) -> bool
+    inline auto test_has_environment_variable(const char* name) -> bool
     {
 #ifdef _MSC_VER
         char* value {};

@@ -127,7 +127,7 @@ TEST(Bind, Localhost)
 {
     const EndpointView endpoint {localhost, {}};
     static_cast<void>(run(false));
-    if (!test_has_environment_variable("http_proxy")) {
+    if (!Network::Test::test_has_environment_variable("http_proxy")) {
         test_bind_valid(endpoint, socket_hints);
     }
 }

@@ -137,6 +137,8 @@ test-socket-data.cpp test-socket-inet.cpp
 
 test_unix_sources = test-socket-pair.cpp test-socket-unix.cpp
 
+test_main_source = test-main.cpp
+
 unix_example_sources = unix-server.cpp unix-client.cpp
 common_example_sources = resolve-host.cpp runtime-info.cpp tcp-loopback.cpp
 
@@ -152,7 +154,8 @@ package = $(output_prefix)$(library_stem).tar.gz
 
 # Define variables for computed file lists
 
-sources = $(library_sources) $(test_sources) $(common_example_sources)	\
+sources = $(library_sources) $(test_sources) $(test_main_source)		\
+$(common_example_sources)						\
 $(if $(is_posix),$(unix_example_sources),)
 library_sources = $(library_common_sources) $(library_native_sources)	\
 $(if $(filter unix,$(api)),$(library_unix_sources),)
@@ -376,6 +379,8 @@ $(static_library): $(library_objects)
 	$(strip rm -f $@ && $(AR) $(ARFLAGS) $@ $^)
 
 $(programs): $(firstword $(libraries))
+
+$(test_programs): $(object_prefix)test-main$(object_suffix)
 
 $(unix_logfiles): $(unix_programs)
 	$(call run-programs,$(^F),$(program_args))

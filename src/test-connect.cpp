@@ -181,7 +181,7 @@ TEST(Connect, RemoteHost)
     const EndpointView endpoint {remotehost, service};
     const auto sr {run(false)};
     const auto hostname {get_hostname(sr.get())};
-    if (!test_has_environment_variable("http_proxy")) {
+    if (!Network::Test::test_has_environment_variable("http_proxy")) {
         test_connect_valid(endpoint, socket_hints, hostname);
     }
 }

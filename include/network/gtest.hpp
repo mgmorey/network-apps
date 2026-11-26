@@ -91,11 +91,6 @@
         }                                                                  \
     } while (false)
 
-auto main() -> int
-{
-    return EXIT_SUCCESS;
-}
-
 #endif
 
 #endif
