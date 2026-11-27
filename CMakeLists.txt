@@ -1164,6 +1164,7 @@ endif()
 find_program(CLANG_TIDY_PATH NAMES clang-tidy)
 if(CLANG_TIDY_PATH AND CMAKE_GENERATOR MATCHES "Ninja|Makefiles")
     set(CLANG_TIDY_EXTRA_ARGS)
+    set(CLANG_TIDY_COMMAND ${CLANG_TIDY_PATH})
     if(APPLE)
         find_program(XCRUN_PATH xcrun)
         if(XCRUN_PATH)
@@ -1178,15 +1179,33 @@ if(CLANG_TIDY_PATH AND CMAKE_GENERATOR MATCHES "Ninja|Makefiles")
                 --extra-arg-before=${APPLE_SDK_PATH}
             )
         endif()
-    endif()
-
-    add_custom_target(tidy
-        COMMAND ${CLANG_TIDY_PATH}
+        find_package(Python3 COMPONENTS Interpreter REQUIRED)
+        set(CLANG_TIDY_COMMAND
+            ${Python3_EXECUTABLE}
+            "${PROJECT_SOURCE_DIR}/cmake/RunClangTidy.py"
+            --clang-tidy ${CLANG_TIDY_PATH}
+            --compile-commands
+                "${PROJECT_BINARY_DIR}/compile_commands.json"
+            --source-directory ${PROJECT_SOURCE_DIR}
+            --config-file "${PROJECT_SOURCE_DIR}/.clang-tidy"
+            --header-filter=.*
+            ${CLANG_TIDY_EXTRA_ARGS}
+            --sources
+            ${ANALYSIS_SOURCES}
+        )
+    else()
+        set(CLANG_TIDY_COMMAND
+            ${CLANG_TIDY_PATH}
             --config-file=${PROJECT_SOURCE_DIR}/.clang-tidy
             --header-filter=.*
             ${CLANG_TIDY_EXTRA_ARGS}
             -p ${PROJECT_BINARY_DIR}
             ${ANALYSIS_SOURCES}
+        )
+    endif()
+
+    add_custom_target(tidy
+        COMMAND ${CLANG_TIDY_COMMAND}
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
         COMMENT "Run clang-tidy"
         VERBATIM

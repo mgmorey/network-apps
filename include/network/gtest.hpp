@@ -4,6 +4,7 @@
 #ifdef __has_include
 # if __has_include(<gtest/gtest.h>)
 #  include <gtest/gtest.h>
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage): feature detection needs a macro.
 #  define NETWORK_HAS_GTEST 1
 # endif
 #endif

@@ -35,8 +35,8 @@
 #ifndef _WIN32
 #include "network/get-path-length.hpp"          // get_path_length()
 #include "network/get-sun-length.hpp"           // get_sun_length()
-#include "network/sun-offsets.hpp"              // sun_path_offset
 #include "network/os-features.hpp"              // HAVE_SOCKADDR_SA_LEN
+#include "network/sun-offsets.hpp"              // sun_path_offset
 
 #include <sys/un.h>     // sockaddr_un
 
@@ -62,24 +62,26 @@ namespace
     using Network::RuntimeScope;
     using Network::to_string;
 
+    // GoogleTest assertions inflate the cognitive-complexity score.
+    // NOLINTNEXTLINE(readability-function-cognitive-complexity)
     auto test_ip_socket_hints() -> void
     {
         const IpSocketHints full {af_ip_v4, SOCK_STREAM, ipproto_tcp,
-                                  AI_PASSIVE};
+                                  AI_PASSIVE,};
         EXPECT_EQ(full.m_family, AF_INET);
         EXPECT_EQ(full.m_socktype, SOCK_STREAM);
         EXPECT_EQ(full.m_protocol, IPPROTO_TCP);
         EXPECT_EQ(full.m_flags, AI_PASSIVE);
 
         const IpSocketHints family_and_type {af_ip_v4, SOCK_STREAM,
-                                             AI_PASSIVE};
+                                             AI_PASSIVE,};
         EXPECT_EQ(family_and_type.m_family, AF_INET);
         EXPECT_EQ(family_and_type.m_socktype, SOCK_STREAM);
         EXPECT_EQ(family_and_type.m_protocol, 0);
         EXPECT_EQ(family_and_type.m_flags, AI_PASSIVE);
 
         const IpSocketHints family_and_protocol {af_ip_v4, ipproto_tcp,
-                                                 AI_PASSIVE};
+                                                 AI_PASSIVE,};
         EXPECT_EQ(family_and_protocol.m_family, AF_INET);
         EXPECT_EQ(family_and_protocol.m_socktype, 0);
         EXPECT_EQ(family_and_protocol.m_protocol, IPPROTO_TCP);
@@ -101,11 +103,11 @@ namespace
     auto test_parse_argv() -> void
     {
         const std::vector<std::string> values {
-            "test-misc", "-v", "payload"
+            "test-misc", "-v", "payload",
         };
         ArgumentData data {values};
         const auto [operands, options] {
-            parse(static_cast<int>(data.size()), data.data(), "v")
+            parse(static_cast<int>(data.size()), data.data(), "v"),
         };
 
         ASSERT_EQ(operands.size(), 1U);
@@ -115,10 +117,12 @@ namespace
 
     auto test_to_string_void() -> void
     {
-        constexpr char bytes[] {"abc"};
-        EXPECT_EQ(to_string(bytes, sizeof(bytes) - 1), "0x616263");
+        constexpr std::array bytes {'a', 'b', 'c', '\0'};
+        EXPECT_EQ(to_string(bytes.data(), bytes.size() - 1), "0x616263");
     }
 
+    // GoogleTest assertions inflate the cognitive-complexity score.
+    // NOLINTNEXTLINE(readability-function-cognitive-complexity)
     auto test_verbose_socket_creation() -> void
     {
         const auto sr {run(RuntimeScope::shared, true)};
@@ -141,14 +145,14 @@ namespace
             static_cast<decltype(address.sin_len)>(sizeof(address));
 #endif
         const auto bytes {std::as_bytes(std::span {&address, 1})};
-        std::array<char, 64> hostname {};
-        std::array<char, 16> service {};
+        std::array<char, NI_MAXHOST> hostname {};
+        std::array<char, NI_MAXSERV> service {};
         const auto success {get_endpointresult(hostname,
                                                service,
                                                bytes,
                                                NI_NUMERICHOST |
                                                    NI_NUMERICSERV,
-                                               sr.get())};
+                                               sr.get()),};
         EXPECT_FALSE(success) << success.string();
 
         std::array<char, 1> short_hostname {};
@@ -157,16 +161,18 @@ namespace
                                              bytes,
                                              NI_NUMERICHOST |
                                                  NI_NUMERICSERV,
-                                             sr.get())};
+                                             sr.get()),};
         EXPECT_TRUE(error);
     }
 
 #ifndef _WIN32
     auto test_unix_socket_lengths() -> void
     {
-        constexpr char path[] {"abc"};
+        constexpr std::array path {'a', 'b', 'c', '\0'};
         sockaddr_un sun {};
-        std::memcpy(sun.sun_path, path, sizeof(path));
+        std::memcpy(static_cast<void*>(sun.sun_path),
+                    path.data(),
+                    path.size());
 
         EXPECT_EQ(Network::get_path_length(&sun, Network::sun_path_offset), 0U);
         EXPECT_EQ(Network::get_sun_length(&sun, Network::sun_path_offset),

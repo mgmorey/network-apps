@@ -299,6 +299,8 @@ namespace
         test(hints, "");
     }
 
+    // GoogleTest assertions inflate the cognitive-complexity score.
+    // NOLINTNEXTLINE(readability-function-cognitive-complexity)
     auto test_path_bind_connect_wrappers() -> void
     {
         const auto pathname {get_test_pathname("bind-connect")};
@@ -325,7 +327,7 @@ namespace
         const auto missing_path {get_test_pathname("missing")};
         const auto missing_path_view {std::string_view {missing_path}};
         const auto missing_client {
-            Network::connect(missing_path_view, hints, false)
+            Network::connect(missing_path_view, hints, false),
         };
         EXPECT_FALSE(missing_client);
     }
@@ -333,7 +335,7 @@ namespace
     auto test_unix_accept_verbose() -> void
     {
         const auto sr {
-            Network::run(Network::RuntimeScope::shared, true)
+            Network::run(Network::RuntimeScope::shared, true),
         };
         const auto pathname {get_test_pathname("verbose-accept")};
         const auto pathname_view {std::string_view {pathname}};

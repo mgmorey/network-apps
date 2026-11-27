@@ -131,7 +131,7 @@ namespace
         const std::string expected {"coverage"};
         std::string actual(expected.size(), '\0');
         const auto expected_size {
-            static_cast<ssize_type>(expected.size())
+            static_cast<ssize_type>(expected.size()),
         };
 
         EXPECT_EQ(sp.at(0)->write(expected), expected_size);
