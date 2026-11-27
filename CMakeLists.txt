@@ -535,6 +535,7 @@ set(TEST_COMMON_SOURCES
     src/test-errors.cpp
     src/test-host.cpp
     src/test-hostname.cpp
+    src/test-misc.cpp
     src/test-option.cpp
     src/test-parse.cpp
     src/test-runtime.cpp
@@ -761,6 +762,7 @@ if(BUILD_TESTING)
     add_test_executable(test-errors src/test-errors.cpp)
     add_test_executable(test-host src/test-host.cpp)
     add_test_executable(test-hostname src/test-hostname.cpp)
+    add_test_executable(test-misc src/test-misc.cpp)
     add_test_executable(test-option src/test-option.cpp)
     add_test_executable(test-parse src/test-parse.cpp)
     add_test_executable(test-runtime src/test-runtime.cpp)
@@ -1078,6 +1080,9 @@ if(WITH_COVERAGE AND BUILD_TESTING AND NETWORK_DEBUG_CONFIG_AVAILABLE)
             --root=${PROJECT_SOURCE_DIR}
             --object-directory=${PROJECT_BINARY_DIR}
             --exclude-unreachable-branches
+            --exclude=${PROJECT_SOURCE_DIR}/examples/.*
+            --exclude=${PROJECT_SOURCE_DIR}/src/test-.*
+            --exclude=${PROJECT_SOURCE_DIR}/src/unix/test-.*
             --gcov-executable=${GCOVR_GCOV_EXECUTABLE}
             --json
             --output=coverage.json
@@ -1087,9 +1092,12 @@ if(WITH_COVERAGE AND BUILD_TESTING AND NETWORK_DEBUG_CONFIG_AVAILABLE)
             --root=${PROJECT_SOURCE_DIR}
             --object-directory=${PROJECT_BINARY_DIR}
             --exclude-unreachable-branches
+            --exclude=${PROJECT_SOURCE_DIR}/examples/.*
+            --exclude=${PROJECT_SOURCE_DIR}/src/test-.*
+            --exclude=${PROJECT_SOURCE_DIR}/src/unix/test-.*
             --gcov-executable=${GCOVR_GCOV_EXECUTABLE}
             --html-details
-            --html-theme=github.dark-green
+            --html-theme=github.green
             "--html-title=NETWORK Code Coverage Report"
             --json-add-tracefile=coverage.json
             --output=coverage/coverage.html

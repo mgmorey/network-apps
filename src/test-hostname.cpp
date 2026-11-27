@@ -36,6 +36,7 @@ namespace
     using Network::Hostname;
     using Network::OsError;
     using Network::Runtime;
+    using Network::RuntimeScope;
     using Network::get_hostname;
     using Network::get_hostnameresult;
     using Network::run;
@@ -125,4 +126,11 @@ TEST(Hostname, ResultAndLocalHostname)
     test_get_hostnameresult_overflow(rt);
     test_get_hostnameresult_valid(rt);
     test_get_hostname_valid();
+}
+
+TEST(Hostname, VerboseLocalHostname)
+{
+    const auto sr {run(RuntimeScope::shared, true)};
+    const auto hostname {get_hostname(sr.get())};
+    EXPECT_FALSE(hostname.empty());
 }

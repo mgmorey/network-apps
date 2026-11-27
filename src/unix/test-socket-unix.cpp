@@ -319,12 +319,38 @@ namespace
         ASSERT_TRUE(client)
             << (client ? "" : client.error().string());
 
+        const auto accepted {Network::accept(**server)};
+        ASSERT_TRUE(accepted);
+
         const auto missing_path {get_test_pathname("missing")};
         const auto missing_path_view {std::string_view {missing_path}};
         const auto missing_client {
             Network::connect(missing_path_view, hints, false)
         };
         EXPECT_FALSE(missing_client);
+    }
+
+    auto test_unix_accept_verbose() -> void
+    {
+        const auto sr {
+            Network::run(Network::RuntimeScope::shared, true)
+        };
+        const auto pathname {get_test_pathname("verbose-accept")};
+        const auto pathname_view {std::string_view {pathname}};
+        const SocketHints hints {AF_UNIX, SOCK_STREAM, 0};
+        const auto server {create_socket(hints, sr.get())};
+        const auto bind_error {server->bind(pathname_view)};
+        ASSERT_FALSE(bind_error) << bind_error.string();
+        const auto listen_error {server->listen(1)};
+        ASSERT_FALSE(listen_error) << listen_error.string();
+
+        const auto client {create_socket(hints, sr.get())};
+        const auto connect_error {client->connect(pathname_view)};
+        ASSERT_FALSE(connect_error) << connect_error.string();
+
+        const auto accepted {Network::accept(*server)};
+        ASSERT_TRUE(accepted);
+        EXPECT_EQ(::unlink(pathname.c_str()), 0);
     }
 }
 
@@ -342,6 +368,11 @@ TEST(SocketUnix, PathsAndSocketCreation)
 TEST(SocketUnix, PathBindAndConnectWrappers)
 {
     test_path_bind_connect_wrappers();
+}
+
+TEST(SocketUnix, VerboseAccept)
+{
+    test_unix_accept_verbose();
 }
 
 #endif

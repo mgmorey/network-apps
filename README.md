@@ -380,6 +380,9 @@ If coverage is enabled, this generates:
 - `coverage.json`
 - `coverage/coverage.html`
 
+Both reports exclude programs under the `examples/` directory and test sources,
+so coverage totals reflect production code.
+
 ## Notes
 
 - The project is tested on multiple platforms, including Linux, macOS, Cygwin, MinGW, and Visual Studio.
